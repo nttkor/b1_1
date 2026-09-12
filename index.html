@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="순수 HTML, CSS, JavaScript로 만든 반응형 포트폴리오 웹사이트">
+  <title>김동조 | 개발자 포트폴리오</title>
+
+  <!-- 웹 폰트 (Google Fonts - Outfit & Noto Sans KR) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- 아이콘 (Font Awesome) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- 메인 스타일시트 -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- 메인 스크립트 (defer) -->
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+
+  <!-- 헤더 & 네비게이션 (Flexbox 사용) -->
+  <header id="header">
+    <nav class="nav-container">
+      <a href="#hero" class="nav-logo">Dongjo<span>.dev</span></a>
+
+      <!-- 데스크톱 & 모바일 메뉴 -->
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#hero" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <li><a href="#projects" class="nav-link">Projects</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- 테마 토글 버튼 -->
+        <button id="theme-toggle" class="icon-btn" aria-label="테마 전환">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+
+        <!-- 햄버거 메뉴 버튼 (모바일) -->
+        <button id="hamburger-btn" class="hamburger-btn" aria-label="메뉴 열기">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 1. Hero 섹션 -->
+    <section id="hero" class="section hero-section">
+      <div class="hero-content fade-in">
+        <span class="hero-subtitle">👋 안녕하세요! 만반의 준비를 하는 주니어 개발자</span>
+        <h1 class="hero-title">이벤트와 상태로 동작하는<br><span class="highlight">웹의 원리를 탐구합니다.</span></h1>
+        <p class="hero-description">
+          순수 HTML, CSS, JavaScript만으로 구축된 반응형 포트폴리오입니다.<br>
+          사용자 상호작용과 데이터 흐름을 직관적으로 시각화하고 설계합니다.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">프로젝트 구경하기 <i class="fa-solid fa-arrow-down"></i></a>
+          <a href="#contact" class="btn btn-outline">문의하기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. About 섹션 -->
+    <section id="about" class="section about-section">
+      <div class="container">
+        <h2 class="section-title fade-in">About Me</h2>
+        <div class="about-grid fade-in">
+          <div class="about-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="김동조 프로필 사진" class="about-image">
+          </div>
+          <div class="about-text">
+            <h3>성장하는 프론트엔드 개발자 <span class="text-gradient">김동조</span>입니다.</h3>
+            <p>
+              기본기를 탄탄히 다지며 "왜 이 코드가 동작하는가?"를 끊임없이 고민합니다.
+              프레임워크의 편리함 뒤에 숨겨진 브라우저의 동작 원리와 DOM 조작, 비동기 데이터 처리를 직접 구현하며 웹 기초 체력을 기르고 있습니다.
+            </p>
+            <div class="about-info">
+              <div class="info-item">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <div>
+                  <strong>학습 단계</strong>
+                  <p>AI/SW 기초 (웹 기초와 프론트엔드)</p>
+                </div>
+              </div>
+              <div class="info-item">
+                <i class="fa-solid fa-code-branch"></i>
+                <div>
+                  <strong>핵심 가치</strong>
+                  <p>이벤트 ➔ 상태 변경 ➔ UI 렌더링 흐름 이해</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Skills 섹션 -->
+    <section id="skills" class="section skills-section">
+      <div class="container">
+        <h2 class="section-title fade-in">Tech Skills</h2>
+        <div class="skills-grid fade-in">
+          <article class="skill-card">
+            <i class="fa-brands fa-html5 skill-icon html"></i>
+            <h3>HTML5</h3>
+            <p>시맨틱 마크업을 준수하여 웹 접근성 및 SEO를 고려한 구조를 설계합니다.</p>
+          </article>
+          <article class="skill-card">
+            <i class="fa-brands fa-css3-alt skill-icon css"></i>
+            <h3>CSS3</h3>
+            <p>CSS 변수, Flexbox 및 Grid를 활용하여 모바일 퍼스트 반응형 레이아웃을 구현합니다.</p>
+          </article>
+          <article class="skill-card">
+            <i class="fa-brands fa-js skill-icon js"></i>
+            <h3>JavaScript (ES6+)</h3>
+            <p>화살표 함수, 비동기 `fetch/async-await`, 중앙 상태 객체를 활용하여 동적 UI를 구현합니다.</p>
+          </article>
+          <article class="skill-card">
+            <i class="fa-brands fa-github skill-icon github"></i>
+            <h3>Git & GitHub</h3>
+            <p>버전 관리 및 GitHub REST API를 연동하여 공개 저장소 데이터를 동적으로 표현합니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Projects 섹션 (GitHub API 연동 & Grid 레이아웃) -->
+    <section id="projects" class="section projects-section">
+      <div class="container">
+        <h2 class="section-title fade-in">Projects (GitHub Repos)</h2>
+        <p class="section-subtitle fade-in">GitHub API에서 저장소 데이터를 동적으로 불러옵니다.</p>
+
+        <!-- 필터링 버튼 (보너스 기능) -->
+        <div class="filter-container fade-in" id="filter-container">
+          <button class="filter-btn active" data-lang="all">전체</button>
+          <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
+          <button class="filter-btn" data-lang="HTML">HTML</button>
+          <button class="filter-btn" data-lang="CSS">CSS</button>
+          <button class="filter-btn" data-lang="Python">Python</button>
+        </div>
+
+        <!-- 프로젝트 카드 Grid 영역 (로딩/성공/에러/빈 상태 표시) -->
+        <div id="projects-container" class="projects-grid fade-in">
+          <!-- JS에서 동적으로 상태별 UI가 렌더링됩니다. -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Contact 섹션 -->
+    <section id="contact" class="section contact-section">
+      <div class="container">
+        <h2 class="section-title fade-in">Contact Me</h2>
+        <div class="contact-wrapper fade-in">
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-group">
+              <label for="user-name">이름 <span class="required">*</span></label>
+              <input type="text" id="user-name" name="name" placeholder="홍길동" class="form-input">
+              <span class="error-msg" id="name-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="user-email">이메일 <span class="required">*</span></label>
+              <input type="email" id="user-email" name="email" placeholder="example@email.com" class="form-input">
+              <span class="error-msg" id="email-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="user-message">메시지 <span class="required">*</span></label>
+              <textarea id="user-message" name="message" rows="5" placeholder="궁금한 점이나 의견을 남겨주세요." class="form-input"></textarea>
+              <span class="error-msg" id="message-error"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">메시지 보내기 <i class="fa-solid fa-paper-plane"></i></button>
+            <div id="form-success-msg" class="form-success-msg" style="display: none;">
+              <i class="fa-solid fa-circle-check"></i> 메시지가 성공적으로 전송되었습니다!
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <p>&copy; 2026 Dongjo Kim. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://github.com/ntt65" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:mpeg46551@c6r4s3.codyssey.kr" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 맨 위로 이동 버튼 -->
+  <button id="scroll-top-btn" class="scroll-top-btn" aria-label="맨 위로 이동">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+</body>
+</html>
