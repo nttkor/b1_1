@@ -1,0 +1,156 @@
+100%
+(15 / 15 항목 통과)
+종합 평가
+대체로 미션 핵심요구사항을 소스와 문서로 충실히 구현했습니다. 반응형 레이아웃, 다크모드 로컬저장·유지, GitHub API의 로딩/에러/빈 상태 처리, 폼 유효성, 이벤트→상태→렌더 흐름이 명확하게 반영되어 있습니다. 이미지 실파일과 ARIA 보완으로 접근성 개선을 권장합니다.
+
+항목별 평가 (15개)
+PASS
+평가 항목 #1
+근거
+README.md > '* **[구현 1-3] 모바일 퍼스트 미디어 쿼리 (768px, 1024px)**'
+잘한 점
+모바일 퍼스트와 브레이크포인트(768/1024)를 명시하고 적용함.
+부족한 점
+레이아웃 동작을 증명하는 스크린샷 또는 브라우저별 검증 자료는 없음.
+보완
+브레이크포인트별 데스크톱/모바일 스크린샷을 README에 추가하세요.
+PASS
+평가 항목 #2
+근거
+js/app.js > 'theme: localStorage.getItem('theme') || 'light''
+잘한 점
+다크/라이트 상태를 localStorage에서 읽고 저장해 새로고침 유지함.
+부족한 점
+시스템 선호도(prefers-color-scheme) 자동 감지 미구현(선택사항).
+보완
+초기 로드 시 시스템 다크모드 감지 여부를 문서로 명시하세요.
+PASS
+평가 항목 #3
+근거
+README.md > '* **[구현 2-2] 스크롤 애니메이션 & 스크롤 탑 / 헤더 변경**'
+잘한 점
+햄버거 메뉴, Intersection Observer 기반 스크롤 애니, 스크롤탑 버튼을 설계·구현함.
+부족한 점
+스크롤/햄버거 동작을 캡처한 실행 증거(동작 영상 또는 스크린샷)는 없음.
+보완
+햄버거 열림/스크롤탑 표시 동작을 캡처해 README에 첨부하세요.
+PASS
+평가 항목 #4
+근거
+js/app.js > 'const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`);'
+잘한 점
+fetch + async/await와 상태(state.apiStatus)로 로딩/에러/빈/성공을 구분해 렌더링함.
+부족한 점
+API 재시도 전략(백오프 등)은 간단 재시도만 있어 고도화 여지 있음.
+보완
+재시도 실패 시 사용자 안내를 강화하거나 재시도 정책을 문서화하세요.
+PASS
+평가 항목 #5
+근거
+js/app.js > 'const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;'
+잘한 점
+빈값 검사와 이메일 정규식 검증, 입력별 에러 메시지 노출을 구현함.
+부족한 점
+스크린 리더를 위한 aria-live 등의 에러 접근성 속성은 없음.
+보완
+에러 메시지에 aria-live 또는 role='alert'을 추가해 접근성을 개선하세요.
+PASS
+평가 항목 #6
+근거
+README.md > '├── index.html # 시맨틱 HTML5 구조 문서'
+잘한 점
+index.html, css/, js/ 분리 구조를 명확히 제시함.
+부족한 점
+README에 images/ 표기는 있으나 제출 파일 목록에 로컬 images 폴더 내부 파일이 빠져 있음.
+보완
+실제 사용한 로컬 이미지가 있다면 images/ 폴더를 포함하거나 README에 원격 이미지를 명시하세요.
+PASS
+평가 항목 #7
+근거
+index.html > '<header id="header">'
+잘한 점
+header/nav/main/section/footer 구조와 이미지 alt, form label-for 매칭을 사용함.
+부족한 점
+일부 접근성 보강(예: skip link, aria-expanded 등)이 필요할 수 있음.
+보완
+네비게이션에 aria-expanded 등 상태표시를 추가해 접근성 명시하세요.
+PASS
+평가 항목 #8
+근거
+css/style.css > '--font-main: 'Noto Sans KR', sans-serif;'
+잘한 점
+:root에 색상·폰트 변수 정의하고 [data-theme="dark"]로 테마 변수 분리함.
+부족한 점
+공간(spacing) 변수 등 유지보수용 변수군 추가로 관리성 개선 가능.
+보완
+여백·타이포 등 디자인 토큰(간격, 폰트크기)을 변수로 추가해 유지보수를 용이하게 하세요.
+PASS
+평가 항목 #9
+근거
+js/app.js > 'elements.themeToggleBtn.addEventListener('click', () => {'
+잘한 점
+addEventListener로 이벤트를 분리해 인라인 이벤트를 사용하지 않음.
+부족한 점
+핸들러를 익명함수로 직접 등록해 재사용성 면에서는 추가 리팩토링 여지 있음.
+보완
+핸들러를 명명된 함수로 추출해 여러 곳에서 재활용 가능하게 만드세요.
+PASS
+평가 항목 #10
+근거
+js/app.js > 'state.theme = state.theme === 'light' ? 'dark' : 'light';'
+잘한 점
+이벤트→상태 변경→렌더(renderTheme/renderMenu 등) 흐름을 코드에서 명확히 구현함.
+부족한 점
+상태 변경을 중앙에서 일괄 관리하는 업데이트 함수(또는 옵저버)는 없음.
+보완
+상태 변경을 추적하는 단일 setter 함수를 도입해 변경 로그/사이드이펙트 관리를 개선하세요.
+PASS
+평가 항목 #11
+근거
+js/app.js > 'catch (error) {'
+잘한 점
+async/await와 try/catch로 성공/실패 분기 및 에러 메시지 저장을 처리함.
+부족한 점
+네트워크 오류 외 세부한 에러 처리(예: 404, 403 별도 UX)는 간단히 분기 처리만 함.
+보완
+주요 HTTP 상태에 대한 사용자 친화적 메시지와 재시도 로직을 문서로 정리하세요.
+PASS
+평가 항목 #12
+근거
+js/app.js > 'const cardsHtml = filtered.map(repo => {'
+잘한 점
+filter/map/forEach를 적절히 활용해 API 데이터를 카드로 변환·렌더링함.
+부족한 점
+대량 데이터 시 성능 최적화(virtualization 등)는 미적용임.
+보완
+비교적 많은 항목이 예상되면 페이징이나 lazy load 전략을 고려하세요.
+PASS
+평가 항목 #13
+근거
+css/style.css > '.nav-container { display: flex; '
+잘한 점
+네비게이션에 Flexbox, 프로젝트 카드에 Grid를 적용한 명확한 선택을 보임.
+부족한 점
+선택 근거는 README에 설명되어 있으나 CSS 주석으로도 간단히 남기면 가독성 향상됨.
+보완
+CSS 파일 내 해당 섹션에 선택 이유를 짧은 주석으로 추가하세요.
+PASS
+평가 항목 #14
+근거
+js/app.js > 'const state = {'
+잘한 점
+단일 STATE 객체로 애플리케이션 상태를 관리해 렌더 제어를 통일함.
+부족한 점
+직접 상태를 변경하는 곳이 분산되어 있어 변경 추적이 번거로울 수 있음.
+보완
+상태 변경 시 일관된 업데이트 API를 도입해 부작용 관리를 쉽게 하세요.
+PASS
+평가 항목 #15
+근거
+css/style.css > '@media (min-width: 768px)'
+잘한 점
+모바일 퍼스트 접근과 768/1024 브레이크포인트를 사용해 점진적 확장을 적용함.
+부족한 점
+접근성(키보드 네비게이션, 스킵 링크 등)과 관련된 상세 항목은 일부 보강 필요.
+보완
+키보드 사용성을 위한 skip link 및 focus 스타일을 추가해 접근성을 보완하세요.
