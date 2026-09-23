@@ -491,7 +491,32 @@ header.scrolled {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
+}
+
+/* 스킬 카테고리 그룹 */
+.skill-category {
+  margin-top: 2.5rem;
+}
+
+.skill-category:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.skill-category-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.skill-category-title i {
+  color: var(--accent-color);
 }
 
 .skill-card {
@@ -516,11 +541,16 @@ header.scrolled {
   margin-bottom: 1rem;
 }
 
-/* 각 기술 브랜드 공식 색상 */
-.skill-icon.html   { color: #e34f26; } /* HTML5 주황 */
-.skill-icon.css    { color: #1572b6; } /* CSS3 파랑 */
-.skill-icon.js     { color: #f7df1e; } /* JS 노랑 */
-.skill-icon.github { color: var(--text-primary); } /* GitHub: 테마에 따라 흑/백 */
+/* 각 기술 브랜드/아이콘 공식 색상 */
+.skill-icon.html    { color: #e34f26; } /* HTML5 주황 */
+.skill-icon.css     { color: #1572b6; } /* CSS3 파랑 */
+.skill-icon.js      { color: #f7df1e; } /* JS 노랑 */
+.skill-icon.github  { color: var(--text-primary); } /* GitHub: 테마에 따라 흑/백 */
+.skill-icon.python  { color: #3776ab; } /* Python 파랑 */
+.skill-icon.pytorch { color: #ee4c2c; } /* PyTorch 오렌지/레드 */
+.skill-icon.cv      { color: #06b6d4; } /* Computer Vision 청록 */
+.skill-icon.ros     { color: #8b5cf6; } /* ROS2 바이올렛 */
+.skill-icon.algo    { color: #10b981; } /* 알고리즘/자료구조 에메랄드 */
 
 .skill-card h3 {
   font-size: 1.2rem;
@@ -529,6 +559,7 @@ header.scrolled {
 .skill-card p {
   font-size: 0.9rem;
   color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 
@@ -650,6 +681,11 @@ header.scrolled {
   border-radius: 50%;
   background-color: var(--accent-color);
 }
+.lang-dot.javascript       { background-color: #f1e05a; }
+.lang-dot.html             { background-color: #e34f26; }
+.lang-dot.css              { background-color: #1572b6; }
+.lang-dot.python           { background-color: #3572a5; }
+.lang-dot.jupyter-notebook { background-color: #da5b0b; }
 
 /* API 상태 UI (로딩·에러·빈 상태 공통 래퍼)
    grid-column: 1 / -1 → Grid 컨테이너의 첫 열부터 마지막 열까지 전체 너비 차지 */

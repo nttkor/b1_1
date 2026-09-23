@@ -165,10 +165,16 @@ const renderProjects = () => {
     ? projects  // 'all'이면 필터 없이 전체
     // .filter(): 조건이 true인 요소만 남긴 새 배열 반환 (원본 변경 없음)
     // .toLowerCase(): 대소문자 무시 비교 (JavaScript와 javascript 모두 매칭)
-    : projects.filter(repo =>
-        repo.language &&
-        repo.language.toLowerCase() === filterLanguage.toLowerCase()
-      );
+    : projects.filter(repo => {
+        if (!repo.language) return false;
+        const repoLang = repo.language.toLowerCase();
+        const targetLang = filterLanguage.toLowerCase();
+        // Python 필터 선택 시 Python 및 Jupyter Notebook(파이썬 기반 노트북) 함께 매칭
+        if (targetLang === 'python') {
+          return repoLang === 'python' || repoLang === 'jupyter notebook';
+        }
+        return repoLang === targetLang;
+      });
 
   /* ── 4. 빈 상태 (필터 결과 또는 저장소 없음) ─────────── */
   if (filtered.length === 0) {
@@ -196,6 +202,8 @@ const renderProjects = () => {
       day: 'numeric'
     });
 
+    const langClass = (language || 'default').toLowerCase().replace(/\s+/g, '-');
+
     // 카드 HTML을 템플릿 리터럴로 생성
     // || 연산자: 왼쪽 값이 falsy(null, undefined, '')이면 오른쪽 기본값 사용
     return `
@@ -214,7 +222,7 @@ const renderProjects = () => {
         </div>
         <div class="project-meta">
           <span class="project-lang">
-            <span class="lang-dot"></span>
+            <span class="lang-dot ${langClass}"></span>
             ${language || '기타'}
           </span>
           <span><i class="fa-regular fa-star"></i> ${stargazers_count}</span>
