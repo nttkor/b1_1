@@ -56,9 +56,9 @@
 - **접근성**: 스크린 리더가 "navigation" "main content" 등을 자동 안내
 - **선택 기준**: 독립 재사용 가능한 카드 → `<article>` / 관련 항목 묶음 → `<section>`
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png) | ![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png) |
+![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
+
+![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
 
 ### Q2. Flexbox와 Grid를 어떻게 나눠 썼나요?
 
@@ -76,9 +76,9 @@
 .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 ```
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png) | ![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png) |
+![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png)
+
+![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png)
 
 ### Q3. DOM 선택과 이벤트 연결을 어떻게 했나요?
 
@@ -97,9 +97,9 @@ elements.filterContainer.addEventListener('click', (e) => {
 });
 ```
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png) | ![querySelector Gemini](infographic/3_querySelector_Gemini.png) |
+![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png)
+
+![querySelector Gemini](infographic/3_querySelector_Gemini.png)
 
 ### Q4. ES6+ 문법을 어떻게 활용했나요?
 
@@ -117,9 +117,9 @@ const card = `<article class="project-card"><h3>${name}</h3></article>`;
 const cards = projects.filter(r => !r.fork).map(repo => `...`).join('');
 ```
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png) | ![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png) |
+![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png)
+
+![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png)
 
 ### Q5. 비동기 통신과 4가지 UI 상태를 어떻게 처리했나요?
 
@@ -144,9 +144,9 @@ const fetchGitHubProjects = async () => {
 };
 ```
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![fetch async await ChatGPT](infographic/5_fetch_async_await_ChatGPT.png) | ![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png) |
+![fetch async await ChatGPT](infographic/5_fetch_async_await_ChatGPT.png)
+
+![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png)
 
 ### Q6. 이벤트 → 상태 → 렌더링 흐름이 어떻게 연결되나요?
 
@@ -166,9 +166,9 @@ btn.addEventListener('click', () => {
 이 패턴은 **React의 `useState` + 리렌더링 흐름과 동일한 개념**입니다.  
 React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직접 구현합니다.
 
-| ChatGPT 버전 | Gemini 버전 |
-| :---: | :---: |
-| ![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png) | ![DOMTree Gemini](infographic/6_DOMTree_Gemini.png) |
+![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
+
+![DOMTree Gemini](infographic/6_DOMTree_Gemini.png)
 
 ---
 
