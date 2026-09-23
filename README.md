@@ -7,10 +7,10 @@
 
 ## 📌 1. 프로젝트 기본 정보
 
-- **개발자**: 김동조 (ntt65)
+- **개발자**: 김동조 (nttkor)
 - **학습 단계**: AI/SW 기초 (웹 기초와 프론트엔드)
-- **저장소 URL**: [https://github.com/ntt65/b4_1](https://github.com/ntt65/b4_1)
-- **배포 URL**: [https://ntt65.github.io/b4_1/](https://ntt65.github.io/b4_1/)
+- **저장소 URL**: [https://github.com/nttkor/b1_1](https://github.com/nttkor/b1_1)
+- **배포 URL**: [https://nttkor.github.io/b1_1/](https://nttkor.github.io/b1_1/)
 - **개발 환경**: VS Code + Live Server + Vanilla JS + Git/GitHub Pages
 
 ---
@@ -26,7 +26,7 @@
 
 * **[구현 1-1] 6개 시맨틱 섹션 구성**
   * **설명**: `div` 남용 없이 웹 접근성(Accessibility)과 SEO를 높이는 시맨틱 태그(`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)로 설계.
-  * **GitHub 코드 링크**: [`index.html (Line 24 ~ 190)`](https://github.com/ntt65/b4_1/blob/main/index.html#L24-L190) | 로컬 파일: [`index.html`](file:///Users/mpeg46551/b4_1/index.html)
+  * **GitHub 코드 링크**: [`index.html (Line 24 ~ 190)`](https://github.com/nttkor/b1_1/blob/main/index.html#L24-L190) | 로컬 파일: [`index.html`](file:///Users/mpeg46551/b1_1/index.html)
   * **주요 코드 주석**:
     ```html
     <!-- Hero 섹션: 인사말, 타자기/소개글, CTA 버튼 -->
@@ -47,7 +47,7 @@
 
 * **[구현 1-2] Flexbox & Grid 반응형 레이아웃 분리**
   * **설명**: 1차원 수평 정렬이 필요한 Navigation에는 **Flexbox**, 2차원 반응형 격자 배치가 필요한 Projects 카드에는 **Grid**(`repeat(auto-fit, minmax(280px, 1fr))`)를 선택하여 적용.
-  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L145 / Grid: L324)`](https://github.com/ntt65/b4_1/blob/main/css/style.css#L145) | 로컬 파일: [`css/style.css`](file:///Users/mpeg46551/b4_1/css/style.css)
+  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L145 / Grid: L324)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L145) | 로컬 파일: [`css/style.css`](file:///Users/mpeg46551/b1_1/css/style.css)
   * **주요 코드 주석**:
     ```css
     /* Navigation Bar: Flexbox 적용 (로고 왼쪽, 메뉴 오른쪽 수평 정렬) */
@@ -67,7 +67,7 @@
 
 * **[구현 1-3] 모바일 퍼스트 미디어 쿼리 (768px, 1024px)**
   * **설명**: 모바일 화면 스타일을 기본으로 작성하고, 768px(태블릿), 1024px(데스크톱) 미디어 쿼리로 점진적 확장.
-  * **GitHub 코드 링크**: [`css/style.css (Line 466 ~ 508)`](https://github.com/ntt65/b4_1/blob/main/css/style.css#L466-L508)
+  * **GitHub 코드 링크**: [`css/style.css (Line 466 ~ 508)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L466-L508)
 
 ---
 
@@ -76,7 +76,7 @@
 
 * **[구현 2-1] 모바일 햄버거 메뉴 토글**
   * **설명**: 768px 미만 모바일에서 햄버거 버튼 클릭 시 `state.isMenuOpen`을 반전시키고 `classList.toggle('active')`로 메뉴 개폐.
-  * **GitHub 코드 링크**: [`js/app.js (Line 49 & L215)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L49) | 로컬 파일: [`js/app.js`](file:///Users/mpeg46551/b4_1/js/app.js)
+  * **GitHub 코드 링크**: [`js/app.js (Line 49 & L215)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L49) | 로컬 파일: [`js/app.js`](file:///Users/mpeg46551/b1_1/js/app.js)
   * **주요 코드 주석**:
     ```javascript
     // 햄버거 메뉴 UI 렌더링 함수
@@ -89,11 +89,11 @@
 
 * **[구현 2-2] 스크롤 애니메이션 & 스크롤 탑 / 헤더 변경**
   * **설명**: `Intersection Observer` (threshold: 0.2)로 요소 진입 시 `.appear` 부여, 스크롤 60px 이상 시 헤더 스타일 변경(`.scrolled`), 300px 이상 시 스크롤탑 버튼 표시(`.visible`).
-  * **GitHub 코드 링크**: [`js/app.js (Line 230 ~ 285)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L230-L285)
+  * **GitHub 코드 링크**: [`js/app.js (Line 230 ~ 285)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L230-L285)
 
 * **[구현 2-3] Contact 폼 유효성 검사 (Form Validation & UX)**
   * **설명**: `e.preventDefault()`로 폼 기본 제출 동작을 막고, 이름/이메일(정규식)/메시지 필수값을 검증하여 에러 피드백 노출.
-  * **GitHub 코드 링크**: [`js/app.js (Line 150 ~ 200)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L150-L200)
+  * **GitHub 코드 링크**: [`js/app.js (Line 150 ~ 200)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L150-L200)
   * **주요 코드 주석**:
     ```javascript
     // 이메일 정규표현식 검증
@@ -111,14 +111,14 @@
 > **요구사항**: GitHub API에서 본인의 저장소 목록을 가져와 Projects 섹션에 동적으로 렌더링하며, 로딩/성공/에러/빈 상태가 UI로 표현되어야 한다.
 
 * **[구현 3-1] `fetch` 및 `async/await` 비동기 통신 + `try/catch` 에러 처리**
-  * **설명**: 엔드포인트 `https://api.github.com/users/ntt65/repos`를 비동기 호출하고, 403 Rate Limit 및 네트워크 오류를 예외 처리.
+  * **설명**: 엔드포인트 `https://api.github.com/users/nttkor/repos`를 비동기 호출하고, 403 Rate Limit 및 네트워크 오류를 예외 처리.
   * **에러 처리 정책**: `403` → "Rate Limit 초과" / 그 외 `!response.ok` → "코드: N" / 네트워크 단절 → "네트워크 오류". 모든 에러 상태에서 [다시 시도] 버튼을 제공해 사용자 주도의 수동 재호출을 지원.
   * **재시도 전략**: 자동 백오프(exponential backoff)는 미구현. 에러 발생 시 UI에 [다시 시도] 버튼을 제공하여 사용자 주도의 단일 재시도를 지원함.
-  * **GitHub 코드 링크**: [`js/app.js (Line 115 ~ 145)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L115-L145)
+  * **GitHub 코드 링크**: [`js/app.js (Line 115 ~ 145)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L115-L145)
 
 * **[구현 3-2] 4가지 UI 상태 표현 (Loading, Success, Error, Empty)**
   * **설명**: 단일 상태 `state.apiStatus`에 따라 조건부 렌더링 수행.
-  * **GitHub 코드 링크**: [`js/app.js (Line 57 ~ 110)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L57-L110)
+  * **GitHub 코드 링크**: [`js/app.js (Line 57 ~ 110)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L57-L110)
   * **상태별 렌더링 정리**:
     1. **로딩(loading)**: `<div class="spinner"></div>` 스피너 애니메이션 표시.
     2. **성공(success)**: `array.map()`과 템플릿 리터럴로 카드 동적 변환 후 `innerHTML` 반영.
@@ -127,7 +127,7 @@
 
 * **[구현 3-3] 보너스 과제: 언어별 프로젝트 필터링 (`array.filter()`)**
   * **설명**: 필터 버튼 클릭 시 `state.filterLanguage`를 변경하고 `projects.filter()`로 걸러진 프로젝트만 카드 출력.
-  * **GitHub 코드 링크**: [`js/app.js (Line 80 & L250)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L80)
+  * **GitHub 코드 링크**: [`js/app.js (Line 80 & L250)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L80)
 
 ---
 
@@ -137,7 +137,7 @@
 * **[구현 4-1] LocalStorage 연동 및 테마 스위칭**
   * **설명**: 초기 상태 로딩 시 `localStorage.getItem('theme') || 'light'`로 읽어오며, 토글 버튼 클릭 시 `setAttribute('data-theme', theme)` 및 `localStorage.setItem('theme', theme)` 수행.
   * **시스템 다크모드 감지**: `prefers-color-scheme` 미디어 쿼리를 통한 OS 다크모드 자동 감지는 **미구현** (선택 사항). 사용자가 직접 토글 버튼으로 테마를 선택하는 방식만 지원하며, 선택값은 localStorage에 영속 저장된다.
-  * **GitHub 코드 링크**: [`js/app.js (Line 13 & L38)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L13) | [`css/style.css (Line 38 ~ 59)`](https://github.com/ntt65/b4_1/blob/main/css/style.css#L38-L59)
+  * **GitHub 코드 링크**: [`js/app.js (Line 13 & L38)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L13) | [`css/style.css (Line 38 ~ 59)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L38-L59)
   * **주요 코드 주석**:
     ```javascript
     // 테마 변경 렌더러
@@ -154,7 +154,7 @@
 > **요구사항**: GitHub Pages로 배포되어 외부 접속이 가능해야 하며, README에 설명, 기술, 배포 URL이 포함되어야 한다.
 
 * **[구현 5-1] GitHub Pages 자동 배포 완료**
-  * **배포 URL**: **[https://ntt65.github.io/b4_1/](https://ntt65.github.io/b4_1/)**
+  * **배포 URL**: **[https://nttkor.github.io/b1_1/](https://nttkor.github.io/b1_1/)**
   * **상태**: `main` 브랜치 `/ (root)` 디렉터리 기준 정상 빌드 및 HTTPS 인포스 활성화 완료.
 
 ---
@@ -162,7 +162,7 @@
 ## 📁 3. 프로젝트 폴더 구조
 
 ```text
-b4_1/
+b1_1/
 ├── index.html          # 시맨틱 HTML5 구조 문서
 ├── css/
 │   └── style.css       # 메인 스타일시트 (CSS 변수, Flexbox/Grid, 모바일 퍼스트 반응형)

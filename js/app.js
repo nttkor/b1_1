@@ -18,7 +18,7 @@
    ========================================================================== */
 
 // const: 재할당 불가 상수. 변경되지 않는 값에 사용 (let보다 안전)
-const GITHUB_USERNAME = 'ntt65'; // GitHub API 요청 시 사용할 사용자 아이디
+const GITHUB_USERNAME = 'nttkor'; // GitHub API 요청 시 사용할 사용자 아이디
 
 /**
  * state: 앱 전체의 현재 상태를 한 객체에 집중 관리 (Single Source of Truth)
