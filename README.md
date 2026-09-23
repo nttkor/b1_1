@@ -27,7 +27,126 @@
 
 ---
 
-## 🎯 3. 최종 결과물 및 요구조건 달성 현황 (상세 주석 & GitHub 코드 링크)
+## 🛠 3. 사용 기술
+
+| 분류 | 기술 | 적용 위치 |
+| :--- | :--- | :--- |
+| 구조 | HTML5 (시맨틱 태그) | `index.html` — header/nav/main/section/article/footer |
+| 스타일 | CSS3 (변수, Flexbox, Grid, 미디어 쿼리) | `css/style.css` |
+| 동작 | JavaScript ES6+ (async/await, 구조분해, 배열 메서드) | `js/app.js` |
+| API | GitHub REST API | `fetch` → `api.github.com/users/nttkor/repos` |
+| 저장소 | localStorage | 다크모드 설정 새로고침 유지 |
+| 배포 | GitHub Pages | `nttkor.github.io/b1_1/` |
+| 폰트·아이콘 | Google Fonts, Font Awesome | CDN (외부 라이브러리 미사용 원칙 준수) |
+
+---
+
+## 🎓 4. 과제 목표 — 6가지 핵심 개념 설명
+
+> 미션 §3 "학습자는 아래를 스스로 설명할 수 있어야 한다" 에 대한 답변입니다.
+
+### Q1. 시맨틱 태그를 왜 사용했나요?
+
+`<div>`만 쓰면 브라우저·검색엔진·스크린 리더가 각 영역의 역할을 알 수 없습니다.  
+`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>` 를 사용해 **구역의 의미를 코드에 명시**했습니다.
+
+- **SEO**: 검색엔진이 `<main>` 안의 콘텐츠를 핵심으로 인식
+- **접근성**: 스크린 리더가 "navigation" "main content" 등을 자동 안내
+- **선택 기준**: 독립 재사용 가능한 카드 → `<article>` / 관련 항목 묶음 → `<section>`
+
+### Q2. Flexbox와 Grid를 어떻게 나눠 썼나요?
+
+| | Flexbox | Grid |
+| :--- | :--- | :--- |
+| 방향 | 1차원 (가로 **또는** 세로) | 2차원 (가로 **AND** 세로) |
+| 적용 위치 | `.nav-container` (로고↔메뉴 수평 배치) | `.projects-grid` (카드 격자 배치) |
+| 이유 | 단순 수평 정렬은 Flexbox가 직관적 | `auto-fit + minmax`로 미디어 쿼리 없이 반응형 |
+
+```css
+/* Flexbox: 1차원 수평 정렬 */
+.nav-container { display: flex; justify-content: space-between; }
+
+/* Grid: 2차원 자동 반응형 격자 */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+```
+
+### Q3. DOM 선택과 이벤트 연결을 어떻게 했나요?
+
+**찾기 → 모으기 → 등록** 세 단계로 구성했습니다.
+
+```javascript
+// 1. 찾기: 페이지 로드 시 한 번만 선택해 elements 객체에 보관
+const elements = { hamburgerBtn: document.getElementById('hamburger-btn'), ... };
+
+// 2. 등록: HTML onclick 대신 addEventListener (관심사 분리)
+elements.hamburgerBtn.addEventListener('click', () => { ... });
+
+// 3. 동적 요소는 이벤트 위임: 부모에 리스너 하나로 자식 클릭 처리
+elements.filterContainer.addEventListener('click', (e) => {
+  if (e.target.classList.contains('filter-btn')) { ... }
+});
+```
+
+### Q4. ES6+ 문법을 어떻게 활용했나요?
+
+```javascript
+// 화살표 함수: 콜백을 간결하게
+const renderTheme = () => { ... };
+
+// 구조분해 할당: 필요한 값만 추출
+const { theme, isMenuOpen } = state;
+
+// 템플릿 리터럴: HTML 동적 생성
+const card = `<article class="project-card"><h3>${name}</h3></article>`;
+
+// map: 배열 → HTML 카드 변환 / filter: 언어별 필터링
+const cards = projects.filter(r => !r.fork).map(repo => `...`).join('');
+```
+
+### Q5. 비동기 통신과 4가지 UI 상태를 어떻게 처리했나요?
+
+`idle → loading → success | error` 흐름으로 상태를 관리합니다.
+
+```javascript
+const fetchGitHubProjects = async () => {
+  state.apiStatus = 'loading'; renderProjects(); // ① 로딩 스피너
+
+  try {
+    const res = await fetch(`https://api.github.com/users/nttkor/repos`);
+    if (!res.ok) throw new Error(`코드: ${res.status}`); // ② 수동 에러 처리
+    const data = await res.json();
+    state.projects = data.filter(r => !r.fork);
+    state.apiStatus = state.projects.length ? 'success' : 'empty'; // ③ 성공·빈 상태 구분
+
+  } catch (e) {
+    state.apiStatus = 'error'; state.errorMessage = e.message; // ④ 에러 상태
+  } finally {
+    renderProjects(); // 성공이든 실패든 항상 화면 갱신
+  }
+};
+```
+
+### Q6. 이벤트 → 상태 → 렌더링 흐름이 어떻게 연결되나요?
+
+이벤트 핸들러에서 DOM을 직접 바꾸지 않고, **상태만 변경 → render 함수가 상태를 보고 화면 결정**합니다.
+
+```javascript
+// ❌ 나쁜 예: 이벤트에서 직접 DOM 조작 → 현재 상태 추적 불가
+btn.addEventListener('click', () => { menu.style.left = '0'; });
+
+// ✅ 우리 방식: 상태 변경 → render 함수가 상태 기반으로 화면 결정
+btn.addEventListener('click', () => {
+  state.isMenuOpen = !state.isMenuOpen; // 1. 상태만 변경
+  renderMenu();                          // 2. render가 state를 보고 DOM 갱신
+});
+```
+
+이 패턴은 **React의 `useState` + 리렌더링 흐름과 동일한 개념**입니다.  
+React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직접 구현합니다.
+
+---
+
+## 🎯 5. 최종 결과물 및 요구조건 달성 현황 (상세 주석 & GitHub 코드 링크)
 
 미션 명세서(`mission.md`) 및 평가 질문지(`Eval.pdf`)의 **최종 결과물 5대 필수 조건**과 세부 기능 요구사항을 모두 충족하였으며, 각 조건별 실제 구현 코드 위치와 라인별 주석 설명을 아래와 같이 연결합니다.
 
@@ -171,7 +290,7 @@
 
 ---
 
-## 📁 4. 프로젝트 폴더 구조
+## 📁 6. 프로젝트 폴더 구조
 
 ```text
 b1_1/
@@ -192,14 +311,14 @@ b1_1/
 
 ---
 
-## 📚 5. 평가 인터뷰 대비 및 추가 가이드 문서
+## 📚 7. 평가 인터뷰 대비 및 추가 가이드 문서
 
 - 📄 **[doc/plan.md](doc/plan.md)**: 평가 15개 문항에 대한 핵심 인터뷰 답변집
 - 📖 **[doc/code_review.md](doc/code_review.md)**: 전체 코드 구조 및 라인별 종합 분석 보고서
 
 ---
 
-## 🔤 6. 용어 & 기술 상세 설명 (초보자용)
+## 🔤 8. 용어 & 기술 상세 설명 (초보자용)
 
 > 발표 및 평가 준비를 위한 용어 설명 모음입니다. 각 링크를 클릭하면 상세 내용을 볼 수 있습니다.
 
