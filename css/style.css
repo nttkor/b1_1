@@ -1,68 +1,109 @@
 /* ==========================================================================
-   1. CSS 변수 및 리셋 (Design System)
+   1. CSS 변수 & 디자인 시스템 (Design Tokens)
+   :root = 문서 최상위 요소(<html>)에 변수를 선언 → 페이지 전체에서 var()로 참조
+   변수를 쓰는 이유: 색상을 한 곳에서만 바꾸면 모든 요소에 자동 반영
    ========================================================================== */
 
 :root {
-  /* Color Palette - Light Theme */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-card: #ffffff;
-  --bg-nav: rgba(255, 255, 255, 0.85);
+  /* ── 배경색 ─────────────────────────────────────────── */
+  --bg-primary:   #ffffff;              /* 페이지 기본 배경 (흰색) */
+  --bg-secondary: #f8fafc;             /* 섹션 구분·카드 배경용 연한 회색 */
+  --bg-card:      #ffffff;             /* 프로젝트·스킬 카드 배경 */
+  --bg-nav:       rgba(255,255,255,0.85); /* 헤더 반투명 배경 (backdrop-filter와 함께 유리 효과) */
 
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  /* ── 글자색 ─────────────────────────────────────────── */
+  --text-primary:   #0f172a;           /* 제목·본문 주 텍스트 (거의 검정) */
+  --text-secondary: #475569;           /* 설명·부제목 등 보조 텍스트 (회색) */
+  --text-muted:     #94a3b8;           /* 날짜·태그 등 희미한 텍스트 */
 
-  --accent-color: #6366f1;
-  --accent-hover: #4f46e5;
-  --accent-light: #e0e7ff;
+  /* ── 포인트(강조)색 ──────────────────────────────────── */
+  --accent-color: #6366f1;             /* 메인 보라색 (버튼·링크·강조) */
+  --accent-hover: #4f46e5;             /* 포인트색 hover 시 어두운 버전 */
+  --accent-light: #e0e7ff;             /* 포인트색 연한 배경 (배지·포커스 링) */
 
-  --border-color: #e2e8f0;
-  --error-color: #ef4444;
-  --success-color: #10b981;
+  /* ── 보조 색상 ───────────────────────────────────────── */
+  --border-color:  #e2e8f0;            /* 카드·입력창 테두리 */
+  --error-color:   #ef4444;            /* 폼 에러 메시지·테두리 (빨간색) */
+  --success-color: #10b981;            /* 폼 성공 메시지 (초록색) */
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* ── 그림자 ─────────────────────────────────────────── */
+  /* box-shadow 값이 길어 변수로 관리 — sm/md/lg 순서로 진해짐 */
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 
-  /* Typography & Layout */
-  --font-main: 'Noto Sans KR', sans-serif;
-  --font-heading: 'Outfit', sans-serif;
+  /* ── 폰트 ───────────────────────────────────────────── */
+  --font-main:    'Noto Sans KR', sans-serif; /* 한글 본문용 */
+  --font-heading: 'Outfit', sans-serif;       /* 제목·로고용 영문 폰트 */
 
-  --border-radius: 12px;
+  /* ── 공통 스타일 값 ──────────────────────────────────── */
+  --border-radius: 12px;               /* 카드·버튼 등 모서리 둥글기 기본값 */
+  /* cubic-bezier: 가속-감속 곡선을 수동 지정해 자연스러운 이징(easing) 구현 */
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark Theme Variables */
+/* ==========================================================================
+   다크 테마 변수 재정의
+   [data-theme="dark"]: JS가 <html data-theme="dark"> 를 세팅하는 순간
+   이 블록의 변수들이 :root 변수를 덮어씌워 전체 색상이 한 번에 전환됨
+   ========================================================================== */
 [data-theme="dark"] {
-  --bg-primary: #0f172a;
+  --bg-primary:   #0f172a;             /* 짙은 네이비 (다크 배경) */
   --bg-secondary: #1e293b;
-  --bg-card: #1e293b;
-  --bg-nav: rgba(15, 23, 42, 0.85);
+  --bg-card:      #1e293b;
+  --bg-nav:       rgba(15,23,42,0.85);
 
-  --text-primary: #f8fafc;
+  --text-primary:   #f8fafc;           /* 거의 흰색 글자 */
   --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
+  --text-muted:     #64748b;
 
-  --accent-color: #818cf8;
+  --accent-color: #818cf8;             /* 다크모드에서 밝은 보라색 */
   --accent-hover: #6366f1;
-  --accent-light: rgba(99, 102, 241, 0.15);
+  --accent-light: rgba(99,102,241,0.15); /* 다크 배경 위 포인트 연한 배경 */
 
-  --border-color: #334155;
+  --border-color: #334155;             /* 다크 테두리 */
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  /* 다크 배경이 어두우므로 그림자 불투명도를 높여 가시성 확보 */
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.5);
 }
 
-/* Global Reset */
+/* ==========================================================================
+   스킵 링크 (Skip Link) — 키보드/스크린리더 접근성
+   평소에는 top: -100% 로 화면 위쪽 밖에 숨겨두고,
+   Tab 키로 포커스를 받으면 top: 1rem 으로 내려와 화면에 나타남
+   ========================================================================== */
+.skip-link {
+  position: absolute;  /* 일반 레이아웃 흐름에서 분리, 좌표로 위치 지정 */
+  top: -100%;          /* 화면 위 밖으로 완전히 숨김 */
+  left: 1rem;
+  z-index: 9999;       /* 다른 모든 요소보다 앞에 표시 */
+  padding: 0.6rem 1.2rem;
+  background-color: var(--accent-color);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;           /* Tab 포커스 받으면 화면 안으로 내려옴 */
+}
+
+/* ==========================================================================
+   전역 초기화 (CSS Reset)
+   브라우저마다 기본 margin/padding/box-sizing이 달라 통일시킴
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
+  /* box-sizing: border-box → width에 padding·border 포함 (직관적 크기 계산) */
   box-sizing: border-box;
 }
 
 html {
+  /* scroll-behavior: smooth → href="#섹션" 클릭 시 부드럽게 스크롤 이동 */
   scroll-behavior: smooth;
 }
 
@@ -70,38 +111,52 @@ body {
   font-family: var(--font-main);
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.6;       /* 줄 간격: 폰트 크기의 1.6배 → 가독성 향상 */
+  /* 테마 전환 시 배경·글자색이 부드럽게 바뀌도록 트랜지션 적용 */
   transition: background-color 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
+  overflow-x: hidden;     /* 가로 스크롤바 방지 */
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  color: inherit;          /* 부모 요소의 글자색 상속 (파란 링크 기본색 제거) */
+  text-decoration: none;   /* 밑줄 제거 */
 }
 
 ul {
-  list-style: none;
+  list-style: none;        /* 기본 글머리 기호(•) 제거 */
 }
 
 button, input, textarea {
-  font-family: inherit;
+  font-family: inherit;    /* 기본 폼 요소는 폰트를 상속하지 않아 명시 필요 */
   font-size: inherit;
   border: none;
-  outline: none;
+  outline: none;           /* 기본 포커스 윤곽선 제거 → 아래 :focus-visible로 대체 */
+}
+
+/* :focus-visible: 마우스 클릭 시에는 윤곽선 숨기고, Tab 키 탐색 시에만 표시
+   일반 :focus 는 마우스 클릭에도 나타나 디자인이 깨질 수 있어 :focus-visible 사용 */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;     /* 요소와 윤곽선 사이 간격 */
+  border-radius: 4px;
 }
 
 button {
-  cursor: pointer;
+  cursor: pointer;         /* 버튼에 마우스 올리면 손가락 커서 */
 }
 
-/* Common Container & Section */
+/* ==========================================================================
+   공통 레이아웃 유틸리티
+   ========================================================================== */
+
+/* .container: 콘텐츠 최대 너비를 1100px로 제한하고 좌우 자동 여백으로 중앙 정렬 */
 .container {
-  width: 90%;
-  max-width: 1100px;
-  margin: 0 auto;
+  width: 90%;              /* 화면 너비의 90% 사용 → 좌우 5%씩 여백 */
+  max-width: 1100px;       /* 큰 화면에서도 1100px 이상 넓어지지 않음 */
+  margin: 0 auto;          /* 좌우 auto → 자동 중앙 정렬 */
 }
 
+/* .section: 각 섹션의 상하 여백 (데스크톱에서는 미디어 쿼리로 100px로 확장) */
 .section {
   padding: 80px 0;
 }
@@ -121,40 +176,45 @@ button {
   margin-bottom: 2.5rem;
 }
 
-/* Buttons */
+/* ==========================================================================
+   공통 버튼 스타일
+   ========================================================================== */
+
+/* .btn: 모든 버튼의 공통 기반 — inline-flex로 아이콘과 텍스트 수평 정렬 */
 .btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.5rem;             /* 텍스트와 아이콘 사이 간격 */
   padding: 0.8rem 1.6rem;
   border-radius: var(--border-radius);
   font-weight: 600;
   transition: var(--transition);
 }
 
+/* .btn-primary: 채워진 주 버튼 (강조) */
 .btn-primary {
   background-color: var(--accent-color);
   color: #ffffff;
 }
-
 .btn-primary:hover {
   background-color: var(--accent-hover);
-  transform: translateY(-2px);
+  transform: translateY(-2px);  /* hover 시 살짝 위로 이동 → 반응감 부여 */
   box-shadow: var(--shadow-md);
 }
 
+/* .btn-outline: 테두리만 있는 보조 버튼 */
 .btn-outline {
   background-color: transparent;
   color: var(--text-primary);
   border: 2px solid var(--border-color);
 }
-
 .btn-outline:hover {
   border-color: var(--accent-color);
   color: var(--accent-color);
   transform: translateY(-2px);
 }
 
+/* .btn-block: 부모 너비를 꽉 채우는 버튼 (폼 제출 버튼) */
 .btn-block {
   width: 100%;
   justify-content: center;
@@ -162,30 +222,35 @@ button {
 
 
 /* ==========================================================================
-   2. Navigation Header (Flexbox 사용)
+   2. Navigation Header
+   Flexbox 선택 이유: 로고(좌)와 메뉴(우) 사이를 space-between으로 1차원 수평 정렬.
+   Grid가 아닌 Flexbox를 쓴 이유는 행 단위 단순 배치이므로 Flexbox가 더 직관적.
    ========================================================================== */
 
 header {
-  position: fixed;
+  position: fixed;         /* 스크롤해도 상단에 고정 */
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1000;           /* 다른 요소보다 앞에 표시 (숫자가 클수록 앞) */
   background-color: var(--bg-nav);
+  /* backdrop-filter: blur → 헤더 뒤 콘텐츠를 흐리게 해 유리(frosted glass) 효과 */
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid transparent; /* 초기 투명 → 스크롤 시 .scrolled 에서 색상 추가 */
   transition: var(--transition);
 }
 
+/* .scrolled: JS가 스크롤 60px 초과 시 추가하는 클래스 → 테두리·그림자 표시 */
 header.scrolled {
   border-color: var(--border-color);
   box-shadow: var(--shadow-sm);
 }
 
+/* nav-container: Flexbox로 [로고] ——————————— [메뉴 + 버튼] 수평 배치 */
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-between; /* 양 끝으로 분산 배치 */
+  align-items: center;            /* 세로 가운데 정렬 */
   height: 70px;
   width: 90%;
   max-width: 1100px;
@@ -198,27 +263,31 @@ header.scrolled {
   font-weight: 800;
   color: var(--text-primary);
 }
-
 .nav-logo span {
-  color: var(--accent-color);
+  color: var(--accent-color); /* ".dev" 부분만 보라색 강조 */
 }
 
-/* Mobile Nav Menu (Default) */
+/* ── 모바일 기본 메뉴 스타일 ────────────────────────────────────
+   left: -100% 트릭: 메뉴 전체를 화면 왼쪽 밖으로 밀어 완전히 숨김
+   .active 클래스가 붙으면 left: 0 → 슬라이드 인 애니메이션 발생
+   (transition: var(--transition) 이 있어 부드럽게 움직임)
+   ─────────────────────────────────────────────────────────────── */
 .nav-menu {
-  position: fixed;
-  top: 70px;
-  left: -100%;
+  position: fixed;         /* 뷰포트 기준으로 고정 위치 */
+  top: 70px;               /* 헤더 높이(70px) 아래부터 시작 */
+  left: -100%;             /* 화면 왼쪽 바깥으로 완전히 숨김 */
   width: 100%;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 70px); /* calc(): CSS 수식. 뷰포트 전체 높이 - 헤더 높이 */
   background-color: var(--bg-primary);
   display: flex;
-  flex-direction: column;
+  flex-direction: column;  /* 모바일: 메뉴 항목 세로 나열 */
   align-items: center;
   justify-content: center;
   gap: 2rem;
   transition: var(--transition);
 }
 
+/* JS가 state.isMenuOpen = true 시 이 클래스 추가 → 메뉴 화면에 등장 */
 .nav-menu.active {
   left: 0;
 }
@@ -229,40 +298,42 @@ header.scrolled {
   color: var(--text-secondary);
   transition: var(--transition);
 }
-
 .nav-link:hover {
   color: var(--accent-color);
 }
 
+/* 테마 토글·햄버거 버튼을 감싸는 컨테이너 */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
+/* 테마 토글 버튼: 원형 아이콘 버튼 */
 .icon-btn {
   background: var(--bg-secondary);
   color: var(--text-primary);
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 50%;      /* 원형 */
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
   transition: var(--transition);
 }
-
 .icon-btn:hover {
   background-color: var(--accent-light);
   color: var(--accent-color);
 }
 
-/* 햄버거 버튼 */
+/* ── 햄버거 버튼 ────────────────────────────────────────────────
+   span 3개를 flex column으로 쌓아 ☰ 모양 구현
+   ─────────────────────────────────────────────────────────────── */
 .hamburger-btn {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; /* 3개 막대 사이 간격 균등 */
   width: 26px;
   height: 18px;
   background: transparent;
@@ -276,29 +347,26 @@ header.scrolled {
   transition: var(--transition);
 }
 
-.hamburger-btn.active span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.hamburger-btn.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-btn.active span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
+/* .active 시 X자 변환:
+   1번 막대: 아래로 8px 이동 후 45도 회전
+   2번 막대: 투명하게 사라짐
+   3번 막대: 위로 8px 이동 후 -45도 회전 → 두 막대가 X자 */
+.hamburger-btn.active span:nth-child(1) { transform: translateY(8px)  rotate(45deg); }
+.hamburger-btn.active span:nth-child(2) { opacity: 0; }
+.hamburger-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
 
 /* ==========================================================================
-   3. Hero Section
+   3. Hero Section — 첫 화면
    ========================================================================== */
 
 .hero-section {
-  min-height: 100vh;
+  min-height: 100vh;       /* vw/vh: 뷰포트 너비/높이의 1%. 100vh = 화면 전체 높이 */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 100px;
+  padding-top: 100px;      /* 고정 헤더(70px) 아래로 콘텐츠 밀어냄 */
+  /* radial-gradient: 원형 그라디언트. 중앙 상단(50% 30%)에서 포인트색 → 투명으로 */
   background: radial-gradient(circle at 50% 30%, var(--accent-light) 0%, transparent 60%);
 }
 
@@ -308,6 +376,7 @@ header.scrolled {
   padding: 0 1rem;
 }
 
+/* 배지 형태 소개 문구 */
 .hero-subtitle {
   display: inline-block;
   font-size: 0.95rem;
@@ -315,13 +384,13 @@ header.scrolled {
   color: var(--accent-color);
   background-color: var(--accent-light);
   padding: 0.4rem 1rem;
-  border-radius: 20px;
+  border-radius: 20px;     /* 크게 둥글게 → 알약(pill) 형태 */
   margin-bottom: 1.5rem;
 }
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 2.5rem;
+  font-size: 2.5rem;       /* 모바일 기본 크기 → 미디어 쿼리로 3.2rem, 3.8rem 확대 */
   font-weight: 800;
   line-height: 1.3;
   margin-bottom: 1.5rem;
@@ -337,6 +406,7 @@ header.scrolled {
   margin-bottom: 2.5rem;
 }
 
+/* CTA 버튼 영역: flex-wrap으로 화면 좁을 때 버튼 자동 줄바꿈 */
 .hero-cta {
   display: flex;
   justify-content: center;
@@ -349,9 +419,11 @@ header.scrolled {
    4. About Section
    ========================================================================== */
 
+/* about-grid: 모바일 1열 → 768px 이상에서 [250px 사진 | 나머지 텍스트] 2열로 변환
+   (변환은 미디어 쿼리 섹션에서 처리) */
 .about-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* 모바일 기본: 1열 */
   gap: 2.5rem;
   align-items: center;
   margin-top: 2rem;
@@ -364,8 +436,8 @@ header.scrolled {
 .about-image {
   width: 250px;
   height: 250px;
-  object-fit: cover;
-  border-radius: 50%;
+  object-fit: cover;       /* 이미지 비율 유지하며 영역 꽉 채움 (잘릴 수 있음) */
+  border-radius: 50%;      /* 정사각형 → 원형 */
   border: 4px solid var(--accent-color);
   box-shadow: var(--shadow-lg);
 }
@@ -384,12 +456,14 @@ header.scrolled {
   margin-bottom: 1.5rem;
 }
 
+/* about-info: 정보 카드 Grid (모바일 1열 → 768px 이상 2열) */
 .about-info {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
 }
 
+/* 아이콘 + 텍스트 수평 정렬 카드 */
 .info-item {
   display: flex;
   align-items: center;
@@ -399,7 +473,6 @@ header.scrolled {
   border-radius: var(--border-radius);
   border: 1px solid var(--border-color);
 }
-
 .info-item i {
   font-size: 1.5rem;
   color: var(--accent-color);
@@ -410,6 +483,10 @@ header.scrolled {
    5. Skills Section
    ========================================================================== */
 
+/* repeat(auto-fit, minmax(220px, 1fr)):
+   - auto-fit: 가용 공간에 맞게 열 개수 자동 결정
+   - minmax(220px, 1fr): 열 최소 220px, 남는 공간은 균등 분배
+   → 미디어 쿼리 없이 화면 크기에 따라 1~4열로 자동 반응형 */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -427,6 +504,7 @@ header.scrolled {
   box-shadow: var(--shadow-sm);
 }
 
+/* hover 인터랙션: 위로 5px 이동 + 그림자 강조 + 테두리 포인트색 */
 .skill-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-md);
@@ -438,16 +516,16 @@ header.scrolled {
   margin-bottom: 1rem;
 }
 
-.skill-icon.html { color: #e34f26; }
-.skill-icon.css { color: #1572b6; }
-.skill-icon.js { color: #f7df1e; }
-.skill-icon.github { color: var(--text-primary); }
+/* 각 기술 브랜드 공식 색상 */
+.skill-icon.html   { color: #e34f26; } /* HTML5 주황 */
+.skill-icon.css    { color: #1572b6; } /* CSS3 파랑 */
+.skill-icon.js     { color: #f7df1e; } /* JS 노랑 */
+.skill-icon.github { color: var(--text-primary); } /* GitHub: 테마에 따라 흑/백 */
 
 .skill-card h3 {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
 }
-
 .skill-card p {
   font-size: 0.9rem;
   color: var(--text-secondary);
@@ -455,9 +533,12 @@ header.scrolled {
 
 
 /* ==========================================================================
-   6. Projects Section (Grid 사용 - auto-fit, minmax)
+   6. Projects Section
+   Grid 선택 이유: 카드가 2차원 격자 배치이므로 Grid의 auto-fit + minmax 조합으로
+   미디어쿼리 없이 열 개수를 뷰포트에 맞게 자동 조절. Flexbox로는 동일 효과를 내기 어려움.
    ========================================================================== */
 
+/* 필터 버튼 가로 나열 (flex-wrap으로 좁은 화면에서 줄바꿈) */
 .filter-container {
   display: flex;
   justify-content: center;
@@ -468,7 +549,7 @@ header.scrolled {
 
 .filter-btn {
   padding: 0.5rem 1.2rem;
-  border-radius: 20px;
+  border-radius: 20px;     /* 알약(pill) 모양 */
   background-color: var(--bg-secondary);
   color: var(--text-secondary);
   font-weight: 500;
@@ -476,20 +557,24 @@ header.scrolled {
   border: 1px solid var(--border-color);
 }
 
-.filter-btn:hover, .filter-btn.active {
+/* hover 또는 .active(선택됨): 포인트색 배경으로 강조 */
+.filter-btn:hover,
+.filter-btn.active {
   background-color: var(--accent-color);
   color: #ffffff;
   border-color: var(--accent-color);
 }
 
-/* Grid layout required by mission */
+/* Projects 카드 Grid 컨테이너
+   repeat(auto-fit, minmax(280px, 1fr)): 카드 최소 280px, 화면에 따라 열 수 자동 조정 */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  min-height: 250px;
+  min-height: 250px;       /* API 로딩 중에도 영역 높이 확보 */
 }
 
+/* 개별 프로젝트 카드 */
 .project-card {
   background-color: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -497,11 +582,10 @@ header.scrolled {
   padding: 1.8rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-between; /* 카드 위: 제목·설명 / 아래: 메타정보 분리 */
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
 }
-
 .project-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
@@ -514,7 +598,6 @@ header.scrolled {
   align-items: flex-start;
   margin-bottom: 1rem;
 }
-
 .project-header i {
   font-size: 1.8rem;
   color: var(--accent-color);
@@ -524,8 +607,7 @@ header.scrolled {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-
-  /* 글자 수 넘어갈 때 말줄임 */
+  /* 이름이 길면 한 줄로 자르고 '...' 표시 */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -535,15 +617,15 @@ header.scrolled {
   font-size: 0.92rem;
   color: var(--text-secondary);
   margin-bottom: 1.5rem;
-  flex-grow: 1;
-
-  /* 3줄 이상 말줄임 */
+  flex-grow: 1;            /* 남은 공간을 차지해 메타 정보를 카드 하단에 고정 */
+  /* webkit-box: 3줄 초과 시 '...' 줄임 (구형 Webkit 속성이지만 현재도 표준처럼 사용) */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* 카드 하단: 언어·스타·날짜 정보 */
 .project-meta {
   display: flex;
   align-items: center;
@@ -561,6 +643,7 @@ header.scrolled {
   font-weight: 600;
 }
 
+/* 언어 색상 표시 원형 점 */
 .lang-dot {
   width: 10px;
   height: 10px;
@@ -568,28 +651,34 @@ header.scrolled {
   background-color: var(--accent-color);
 }
 
-/* API State UI (Loading, Error, Empty) */
+/* API 상태 UI (로딩·에러·빈 상태 공통 래퍼)
+   grid-column: 1 / -1 → Grid 컨테이너의 첫 열부터 마지막 열까지 전체 너비 차지 */
 .state-container {
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem 1rem;
   background-color: var(--bg-secondary);
   border-radius: var(--border-radius);
-  border: 1px dashed var(--border-color);
+  border: 1px dashed var(--border-color); /* 점선 테두리 */
 }
 
+/* 로딩 스피너: CSS 애니메이션으로 구현
+   border-top 만 포인트색 → 나머지는 회색 테두리 → 돌아가는 효과 */
 .spinner {
   width: 40px;
   height: 40px;
   border: 4px solid var(--border-color);
-  border-top: 4px solid var(--accent-color);
+  border-top: 4px solid var(--accent-color); /* 한 부분만 강조색 */
   border-radius: 50%;
+  /* animation: spin 1s linear infinite → 1초에 한 바퀴, 등속, 무한 반복 */
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem auto;
 }
 
+/* @keyframes: 애니메이션의 시작(0%)과 끝(100%) 상태 정의
+   rotate(0deg) → rotate(360deg) : 한 바퀴 시계 방향 회전 */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
+  0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
@@ -604,6 +693,7 @@ header.scrolled {
    7. Contact Section
    ========================================================================== */
 
+/* 폼 카드: 최대 너비 600px, 중앙 정렬 */
 .contact-wrapper {
   max-width: 600px;
   margin: 0 auto;
@@ -619,15 +709,16 @@ header.scrolled {
 }
 
 .form-group label {
-  display: block;
+  display: block;          /* 라벨을 블록으로 → input 위에 독립적으로 배치 */
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .required {
-  color: var(--error-color);
+  color: var(--error-color); /* 필수 항목 '*' 빨간색 */
 }
 
+/* 공통 입력 필드 스타일 (input, textarea 모두 적용) */
 .form-input {
   width: 100%;
   padding: 0.8rem 1rem;
@@ -638,16 +729,20 @@ header.scrolled {
   transition: var(--transition);
 }
 
+/* 포커스(클릭 또는 Tab)되면: 포인트색 테두리 + 파란 글로우 효과 */
 .form-input:focus {
   border-color: var(--accent-color);
   background-color: var(--bg-primary);
+  /* 0 0 0 3px: x-offset, y-offset, blur, spread → 테두리 주변에 3px 퍼짐 */
   box-shadow: 0 0 0 3px var(--accent-light);
 }
 
+/* JS가 유효성 검사 실패 시 추가하는 클래스 → 빨간 테두리 */
 .form-input.invalid {
   border-color: var(--error-color);
 }
 
+/* 에러 메시지: role="alert" 과 함께 접근성 대응 */
 .error-msg {
   display: block;
   color: var(--error-color);
@@ -655,9 +750,11 @@ header.scrolled {
   margin-top: 0.4rem;
 }
 
+/* 폼 제출 성공 메시지: 초록색 배경 박스 */
 .form-success-msg {
   margin-top: 1rem;
   padding: 1rem;
+  /* rgba(): 색상에 투명도 추가. 0.15 = 15% 불투명 */
   background-color: rgba(16, 185, 129, 0.15);
   color: var(--success-color);
   border-radius: var(--border-radius);
@@ -676,6 +773,7 @@ header.scrolled {
   padding: 2rem 0;
 }
 
+/* 모바일: 세로 나열 / 768px 이상: 가로 양 끝 배치 (미디어 쿼리에서 변경) */
 .footer-container {
   display: flex;
   flex-direction: column;
@@ -689,16 +787,17 @@ header.scrolled {
   gap: 1.5rem;
   font-size: 1.4rem;
 }
-
 .social-links a {
   color: var(--text-secondary);
   transition: var(--transition);
 }
-
 .social-links a:hover {
   color: var(--accent-color);
 }
 
+/* 맨 위로 버튼: 화면 우하단 고정
+   기본: opacity: 0 + visibility: hidden → 화면에 없는 것처럼 처리
+   .visible 클래스가 붙으면 opacity: 1 → 부드럽게 나타남 */
 .scroll-top-btn {
   position: fixed;
   bottom: 30px;
@@ -710,29 +809,31 @@ header.scrolled {
   color: #ffffff;
   font-size: 1.2rem;
   box-shadow: var(--shadow-lg);
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0;              /* 투명 상태 */
+  visibility: hidden;      /* 클릭·탭 불가 (opacity만으로는 탭 가능) */
   transition: var(--transition);
   z-index: 900;
 }
-
 .scroll-top-btn.visible {
   opacity: 1;
   visibility: visible;
 }
-
 .scroll-top-btn:hover {
   background-color: var(--accent-hover);
   transform: translateY(-4px);
 }
 
-/* Intersection Observer Scroll Fade-In Animation */
+/* ==========================================================================
+   Intersection Observer 스크롤 등장 애니메이션
+   초기: 투명(opacity:0) + 아래 30px 이동(translateY(30px))
+   .appear 클래스 추가 시: 보임(opacity:1) + 원위치(translateY(0))
+   transition이 있어 0.8초 동안 부드럽게 변함
+   ========================================================================== */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
 .fade-in.appear {
   opacity: 1;
   transform: translateY(0);
@@ -740,53 +841,46 @@ header.scrolled {
 
 
 /* ==========================================================================
-   9. Responsive Design (Media Queries)
+   9. 반응형 디자인 — 미디어 쿼리 (모바일 퍼스트 방식)
+   min-width: "이 너비 이상일 때 아래 스타일 추가 적용"
+   모바일 기본 스타일을 먼저 쓰고, 화면이 커질 때 덮어씌우는 방식
    ========================================================================== */
 
-/* Tablet & Up (min-width: 768px) */
+/* ── 태블릿 이상 (768px~) ────────────────────────────────────── */
 @media (min-width: 768px) {
-  .hero-title {
-    font-size: 3.2rem;
-  }
 
-  .hamburger-btn {
-    display: none; /* 태블릿 이상에서는 햄버거 메뉴 숨김 */
-  }
+  /* 제목 크기 확대 */
+  .hero-title { font-size: 3.2rem; }
 
+  /* 햄버거 버튼 숨김: 넓은 화면에서는 풀 메뉴를 상단에 표시 */
+  .hamburger-btn { display: none; }
+
+  /* 모바일용 오버레이 메뉴 → 상단 인라인 메뉴로 전환 */
   .nav-menu {
-    position: static;
+    position: static;        /* 고정 위치 해제 → 일반 흐름으로 복귀 */
     height: auto;
     width: auto;
     background-color: transparent;
-    flex-direction: row;
+    flex-direction: row;     /* 세로 나열 → 가로 나열 */
     gap: 2rem;
   }
 
-  .nav-link {
-    font-size: 1rem;
-  }
+  .nav-link { font-size: 1rem; }
 
-  .about-grid {
-    grid-template-columns: 250px 1fr;
-  }
+  /* About 그리드: 1열 → [사진 250px | 텍스트 나머지] 2열 */
+  .about-grid  { grid-template-columns: 250px 1fr; }
+  .about-info  { grid-template-columns: 1fr 1fr; }
 
-  .about-info {
-    grid-template-columns: 1fr 1fr;
-  }
-
+  /* 푸터: 세로 → 가로 양 끝 배치 */
   .footer-container {
     flex-direction: row;
     justify-content: space-between;
   }
 }
 
-/* Desktop & Up (min-width: 1024px) */
+/* ── 데스크톱 이상 (1024px~) ─────────────────────────────────── */
 @media (min-width: 1024px) {
-  .section {
-    padding: 100px 0;
-  }
-
-  .hero-title {
-    font-size: 3.8rem;
-  }
+  /* 섹션 상하 여백 추가 확보 */
+  .section { padding: 100px 0; }
+  .hero-title { font-size: 3.8rem; }
 }

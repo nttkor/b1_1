@@ -1,49 +1,91 @@
 <!DOCTYPE html>
+<!-- DOCTYPE: "이 문서는 HTML5 표준으로 작성됐습니다"라고 브라우저에게 선언 -->
+<!-- lang="ko": 스크린 리더가 한국어로 읽도록 지정 (접근성) -->
+<!-- data-theme="light": JS에서 다크/라이트 모드를 구분하는 사용자 정의 속성 -->
 <html lang="ko" data-theme="light">
 <head>
+  <!-- charset="UTF-8": 한글·이모지 등 모든 문자를 깨지지 않게 표시 -->
   <meta charset="UTF-8">
+
+  <!-- viewport: 모바일에서 화면 너비를 기기 실제 너비에 맞추고 초기 배율을 1.0(100%)으로 설정
+       이 태그가 없으면 모바일에서 PC 화면처럼 축소되어 보임 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- description: 구글 등 검색엔진 결과 페이지(SEO)에 표시되는 페이지 설명 -->
   <meta name="description" content="순수 HTML, CSS, JavaScript로 만든 반응형 포트폴리오 웹사이트">
+
+  <!-- title: 브라우저 탭에 표시되는 페이지 제목 -->
   <title>김동조 | 개발자 포트폴리오</title>
 
-  <!-- 웹 폰트 (Google Fonts - Outfit & Noto Sans KR) -->
+  <!-- preconnect: 폰트 서버에 미리 연결해 로딩 속도 향상
+       crossorigin: CORS(다른 출처 자원 허용) 설정 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Google Fonts: Noto Sans KR(한글 본문), Outfit(제목 영문) 두 폰트를 CDN에서 불러옴
+       display=swap: 폰트 로딩 전 시스템 폰트를 먼저 보여줘 깜빡임 최소화 -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 
-  <!-- 아이콘 (Font Awesome) -->
+  <!-- Font Awesome: fa-solid, fa-brands 등 아이콘 클래스를 제공하는 아이콘 라이브러리 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- 메인 스타일시트 -->
+  <!-- 메인 스타일시트: 모든 색상·레이아웃·애니메이션 스타일 정의 -->
   <link rel="stylesheet" href="css/style.css">
 
-  <!-- 메인 스크립트 (defer) -->
+  <!-- defer: HTML 파싱이 완전히 끝난 후 JS를 실행
+       defer 없이 <head>에 스크립트를 놓으면 DOM이 준비되기 전에 실행돼 에러 발생 -->
   <script src="js/app.js" defer></script>
 </head>
 <body>
 
-  <!-- 헤더 & 네비게이션 (Flexbox 사용) -->
+  <!-- =====================================================================
+       스킵 링크 (Skip Link) — 웹 접근성
+       Tab 키로 탐색하는 키보드/스크린 리더 사용자가
+       헤더 메뉴를 모두 거치지 않고 바로 본문으로 이동 가능
+       평소에는 화면 밖에 숨겨져 있다가 Tab을 처음 누르면 나타남
+       ===================================================================== -->
+  <a href="#main-content" class="skip-link">본문 바로가기</a>
+
+  <!-- =====================================================================
+       HEADER — 고정 네비게이션 바 (position: fixed)
+       스크롤해도 화면 상단에 항상 고정. JS에서 scrollY > 60px 시 .scrolled 클래스 추가
+       ===================================================================== -->
   <header id="header">
+    <!-- nav-container: Flexbox로 로고(좌)와 메뉴(우)를 수평 배치 -->
     <nav class="nav-container">
+
+      <!-- 로고: 클릭하면 #hero 섹션으로 앵커 이동 -->
       <a href="#hero" class="nav-logo">Dongjo<span>.dev</span></a>
 
-      <!-- 데스크톱 & 모바일 메뉴 -->
+      <!-- nav-menu: 모바일에서는 left: -100% 로 숨겨두고,
+           JS에서 .active 클래스를 붙이면 left: 0으로 슬라이드-인
+           id="nav-menu": hamburger-btn의 aria-controls와 연결 (접근성) -->
       <ul class="nav-menu" id="nav-menu">
-        <li><a href="#hero" class="nav-link">Home</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#skills" class="nav-link">Skills</a></li>
+        <!-- 각 li > a: href="#섹션id" 로 클릭 시 해당 섹션으로 부드럽게 스크롤
+             (CSS html { scroll-behavior: smooth; } 덕분) -->
+        <li><a href="#hero"     class="nav-link">Home</a></li>
+        <li><a href="#about"    class="nav-link">About</a></li>
+        <li><a href="#skills"   class="nav-link">Skills</a></li>
         <li><a href="#projects" class="nav-link">Projects</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#contact"  class="nav-link">Contact</a></li>
       </ul>
 
       <div class="nav-actions">
-        <!-- 테마 토글 버튼 -->
+        <!-- 테마 토글 버튼
+             aria-label: 아이콘만 있는 버튼이므로 스크린 리더 설명용 텍스트
+             JS에서 클릭 시 state.theme을 토글하고 renderTheme() 호출 -->
         <button id="theme-toggle" class="icon-btn" aria-label="테마 전환">
+          <!-- fa-moon: 라이트 모드일 때 달 아이콘 표시 / JS에서 테마에 따라 교체 -->
           <i class="fa-solid fa-moon" id="theme-icon"></i>
         </button>
 
-        <!-- 햄버거 메뉴 버튼 (모바일) -->
-        <button id="hamburger-btn" class="hamburger-btn" aria-label="메뉴 열기">
+        <!-- 햄버거 버튼 (모바일 전용, 768px 이상에서 CSS로 숨김)
+             aria-expanded="false": 메뉴가 닫혀있음을 스크린 리더에 알림 (JS에서 동적 갱신)
+             aria-controls="nav-menu": 이 버튼이 nav-menu 요소를 제어함을 명시 -->
+        <button id="hamburger-btn" class="hamburger-btn"
+                aria-label="메뉴 열기" aria-expanded="false" aria-controls="nav-menu">
+          <!-- span 3개: CSS로 ☰ 모양 막대 3개 구현
+               .active 클래스가 붙으면 1번·3번이 X자로 회전, 2번은 사라짐 -->
           <span></span>
           <span></span>
           <span></span>
@@ -52,39 +94,74 @@
     </nav>
   </header>
 
-  <main>
-    <!-- 1. Hero 섹션 -->
+  <!-- id="main-content": 스킵 링크의 href="#main-content" 목적지 -->
+  <main id="main-content">
+
+    <!-- =================================================================
+         1. HERO 섹션 — 첫 화면 (min-height: 100vh = 뷰포트 전체 높이)
+         fade-in: Intersection Observer가 감지하면 .appear 클래스를 붙여 등장 애니메이션
+         ================================================================= -->
     <section id="hero" class="section hero-section">
       <div class="hero-content fade-in">
+        <!-- hero-subtitle: 배지 형태의 소개 문구 -->
         <span class="hero-subtitle">👋 안녕하세요! 만반의 준비를 하는 주니어 개발자</span>
-        <h1 class="hero-title">이벤트와 상태로 동작하는<br><span class="highlight">웹의 원리를 탐구합니다.</span></h1>
+
+        <!-- h1: 페이지에서 가장 중요한 제목 (SEO·접근성 모두 h1 하나 권장)
+             highlight 클래스: accent-color(보라색)로 강조 -->
+        <h1 class="hero-title">
+          이벤트와 상태로 동작하는<br>
+          <span class="highlight">웹의 원리를 탐구합니다.</span>
+        </h1>
+
         <p class="hero-description">
           순수 HTML, CSS, JavaScript만으로 구축된 반응형 포트폴리오입니다.<br>
           사용자 상호작용과 데이터 흐름을 직관적으로 시각화하고 설계합니다.
         </p>
+
+        <!-- CTA (Call To Action) 버튼: 사용자 행동을 유도하는 핵심 버튼 -->
         <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary">프로젝트 구경하기 <i class="fa-solid fa-arrow-down"></i></a>
+          <!-- btn-primary: 채워진 보라색 버튼 (주 행동) -->
+          <a href="#projects" class="btn btn-primary">
+            프로젝트 구경하기 <i class="fa-solid fa-arrow-down"></i>
+          </a>
+          <!-- btn-outline: 테두리만 있는 버튼 (보조 행동) -->
           <a href="#contact" class="btn btn-outline">문의하기</a>
         </div>
       </div>
     </section>
 
-    <!-- 2. About 섹션 -->
+    <!-- =================================================================
+         2. ABOUT 섹션 — 자기소개
+         container: width 90%, max-width 1100px 의 중앙 정렬 래퍼
+         about-grid: 모바일 1열, 태블릿 이상 [사진 | 텍스트] 2열 Grid
+         ================================================================= -->
     <section id="about" class="section about-section">
       <div class="container">
+        <!-- section-title + fade-in: 스크롤 등장 애니메이션 대상 -->
         <h2 class="section-title fade-in">About Me</h2>
+
         <div class="about-grid fade-in">
+          <!-- 프로필 이미지 (원형)
+               alt: 이미지 로딩 실패 시 또는 스크린 리더가 읽는 대체 텍스트 -->
           <div class="about-image-wrapper">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="김동조 프로필 사진" class="about-image">
+            <img
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"
+              alt="김동조 프로필 사진"
+              class="about-image">
           </div>
+
           <div class="about-text">
             <h3>성장하는 프론트엔드 개발자 <span class="text-gradient">김동조</span>입니다.</h3>
             <p>
               기본기를 탄탄히 다지며 "왜 이 코드가 동작하는가?"를 끊임없이 고민합니다.
-              프레임워크의 편리함 뒤에 숨겨진 브라우저의 동작 원리와 DOM 조작, 비동기 데이터 처리를 직접 구현하며 웹 기초 체력을 기르고 있습니다.
+              프레임워크의 편리함 뒤에 숨겨진 브라우저의 동작 원리와 DOM 조작,
+              비동기 데이터 처리를 직접 구현하며 웹 기초 체력을 기르고 있습니다.
             </p>
+
+            <!-- info-item: 아이콘 + 텍스트 가로 배치 (Flexbox) -->
             <div class="about-info">
               <div class="info-item">
+                <!-- Font Awesome 아이콘 클래스: fa-solid = 채워진 스타일, fa-graduation-cap = 졸업모자 -->
                 <i class="fa-solid fa-graduation-cap"></i>
                 <div>
                   <strong>학습 단계</strong>
@@ -104,12 +181,19 @@
       </div>
     </section>
 
-    <!-- 3. Skills 섹션 -->
+    <!-- =================================================================
+         3. SKILLS 섹션 — 기술 스택 카드
+         skills-grid: Grid(auto-fit, minmax(220px, 1fr)) — 화면 너비에 따라 열 자동 조정
+         article: 독립적으로 재사용 가능한 콘텐츠 단위에 사용하는 시맨틱 태그
+         ================================================================= -->
     <section id="skills" class="section skills-section">
       <div class="container">
         <h2 class="section-title fade-in">Tech Skills</h2>
+
         <div class="skills-grid fade-in">
+          <!-- 각 skill-card: 호버 시 위로 5px 이동하는 인터랙션 효과 (CSS transform) -->
           <article class="skill-card">
+            <!-- fa-brands: 브랜드 로고 아이콘 스타일 / html 클래스로 주황색 적용 -->
             <i class="fa-brands fa-html5 skill-icon html"></i>
             <h3>HTML5</h3>
             <p>시맨틱 마크업을 준수하여 웹 접근성 및 SEO를 고려한 구조를 설계합니다.</p>
@@ -133,14 +217,21 @@
       </div>
     </section>
 
-    <!-- 4. Projects 섹션 (GitHub API 연동 & Grid 레이아웃) -->
+    <!-- =================================================================
+         4. PROJECTS 섹션 — GitHub API 연동
+         이 섹션의 카드 목록은 HTML에 직접 적지 않고,
+         JS의 fetchGitHubProjects() → renderProjects()가 동적으로 생성
+         ================================================================= -->
     <section id="projects" class="section projects-section">
       <div class="container">
         <h2 class="section-title fade-in">Projects (GitHub Repos)</h2>
         <p class="section-subtitle fade-in">GitHub API에서 저장소 데이터를 동적으로 불러옵니다.</p>
 
-        <!-- 필터링 버튼 (보너스 기능) -->
+        <!-- 언어 필터 버튼 (보너스 기능)
+             data-lang: 버튼마다 언어 값을 저장하는 사용자 정의 데이터 속성
+             JS에서 e.target.getAttribute('data-lang')으로 값을 읽어 필터링 -->
         <div class="filter-container fade-in" id="filter-container">
+          <!-- active 클래스: 현재 선택된 필터 버튼 강조 (기본: 전체) -->
           <button class="filter-btn active" data-lang="all">전체</button>
           <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
           <button class="filter-btn" data-lang="HTML">HTML</button>
@@ -148,39 +239,70 @@
           <button class="filter-btn" data-lang="Python">Python</button>
         </div>
 
-        <!-- 프로젝트 카드 Grid 영역 (로딩/성공/에러/빈 상태 표시) -->
+        <!-- projects-container: JS가 상태(loading/success/error/empty)에 따라
+             innerHTML을 통해 카드 또는 상태 메시지를 동적으로 삽입하는 영역 -->
         <div id="projects-container" class="projects-grid fade-in">
-          <!-- JS에서 동적으로 상태별 UI가 렌더링됩니다. -->
+          <!-- 이 주석 위치에 JS가 카드 HTML을 자동으로 주입합니다 -->
         </div>
       </div>
     </section>
 
-    <!-- 5. Contact 섹션 -->
+    <!-- =================================================================
+         5. CONTACT 섹션 — 문의 폼
+         novalidate: 브라우저 기본 유효성 검사 비활성화 → JS로 직접 제어
+         label for + input id 1:1 매칭: 라벨 클릭 시 input에 포커스 (접근성)
+         ================================================================= -->
     <section id="contact" class="section contact-section">
       <div class="container">
         <h2 class="section-title fade-in">Contact Me</h2>
         <div class="contact-wrapper fade-in">
+
+          <!-- novalidate: 브라우저 기본 검증 팝업 끄고 JS validateForm()으로 대체 -->
           <form id="contact-form" class="contact-form" novalidate>
+
+            <!-- 이름 필드 -->
             <div class="form-group">
+              <!-- for="user-name": id="user-name"인 input과 연결 → 라벨 클릭 시 input 포커스 -->
               <label for="user-name">이름 <span class="required">*</span></label>
-              <input type="text" id="user-name" name="name" placeholder="홍길동" class="form-input">
-              <span class="error-msg" id="name-error"></span>
+              <input type="text" id="user-name" name="name"
+                     placeholder="홍길동" class="form-input">
+              <!-- role="alert" + aria-live="assertive":
+                   JS가 이 span에 에러 텍스트를 넣으면 스크린 리더가 즉시 읽어줌 -->
+              <span class="error-msg" id="name-error"
+                    role="alert" aria-live="assertive"></span>
             </div>
 
+            <!-- 이메일 필드 -->
             <div class="form-group">
               <label for="user-email">이메일 <span class="required">*</span></label>
-              <input type="email" id="user-email" name="email" placeholder="example@email.com" class="form-input">
-              <span class="error-msg" id="email-error"></span>
+              <!-- type="email": 모바일에서 이메일용 키보드 자동 표시 -->
+              <input type="email" id="user-email" name="email"
+                     placeholder="example@email.com" class="form-input">
+              <span class="error-msg" id="email-error"
+                    role="alert" aria-live="assertive"></span>
             </div>
 
+            <!-- 메시지 필드 -->
             <div class="form-group">
               <label for="user-message">메시지 <span class="required">*</span></label>
-              <textarea id="user-message" name="message" rows="5" placeholder="궁금한 점이나 의견을 남겨주세요." class="form-input"></textarea>
-              <span class="error-msg" id="message-error"></span>
+              <!-- textarea: 여러 줄 입력창 / rows="5": 기본 5행 높이 -->
+              <textarea id="user-message" name="message" rows="5"
+                        placeholder="궁금한 점이나 의견을 남겨주세요."
+                        class="form-input"></textarea>
+              <span class="error-msg" id="message-error"
+                    role="alert" aria-live="assertive"></span>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block">메시지 보내기 <i class="fa-solid fa-paper-plane"></i></button>
-            <div id="form-success-msg" class="form-success-msg" style="display: none;">
+            <!-- type="submit": 클릭 시 form의 submit 이벤트 발생
+                 JS에서 e.preventDefault()로 기본 새로고침을 막고 validateForm() 실행 -->
+            <button type="submit" class="btn btn-primary btn-block">
+              메시지 보내기 <i class="fa-solid fa-paper-plane"></i>
+            </button>
+
+            <!-- 폼 제출 성공 메시지 (기본 숨김, JS에서 style.display = 'block' 으로 표시)
+                 role="status" + aria-live="polite": 스크린 리더가 여유있게 읽어줌 -->
+            <div id="form-success-msg" class="form-success-msg"
+                 role="status" aria-live="polite" style="display: none;">
               <i class="fa-solid fa-circle-check"></i> 메시지가 성공적으로 전송되었습니다!
             </div>
           </form>
@@ -189,18 +311,33 @@
     </section>
   </main>
 
-  <!-- 푸터 -->
+  <!-- =================================================================
+       FOOTER — 저작권 정보 & 소셜 링크
+       ================================================================= -->
   <footer class="footer">
     <div class="container footer-container">
+      <!-- &copy;: HTML 특수문자 엔티티. © 기호로 렌더링됨 -->
       <p>&copy; 2026 Dongjo Kim. All rights reserved.</p>
+
       <div class="social-links">
-        <a href="https://github.com/ntt65" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
-        <a href="mailto:mpeg46551@c6r4s3.codyssey.kr" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+        <!-- target="_blank": 새 탭에서 열기
+             rel="noopener noreferrer": 새 탭에서 열 때 보안 취약점 방지
+             aria-label: 아이콘만 있으므로 스크린 리더용 설명 추가 -->
+        <a href="https://github.com/ntt65"
+           target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="mailto:mpeg46551@c6r4s3.codyssey.kr" aria-label="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
       </div>
     </div>
   </footer>
 
-  <!-- 맨 위로 이동 버튼 -->
+  <!-- =================================================================
+       맨 위로 이동 버튼
+       기본 opacity: 0 (보이지 않음), 스크롤 300px 이상 시 JS가 .visible 추가
+       ================================================================= -->
   <button id="scroll-top-btn" class="scroll-top-btn" aria-label="맨 위로 이동">
     <i class="fa-solid fa-arrow-up"></i>
   </button>

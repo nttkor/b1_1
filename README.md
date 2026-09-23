@@ -112,6 +112,8 @@
 
 * **[구현 3-1] `fetch` 및 `async/await` 비동기 통신 + `try/catch` 에러 처리**
   * **설명**: 엔드포인트 `https://api.github.com/users/ntt65/repos`를 비동기 호출하고, 403 Rate Limit 및 네트워크 오류를 예외 처리.
+  * **에러 처리 정책**: `403` → "Rate Limit 초과" / 그 외 `!response.ok` → "코드: N" / 네트워크 단절 → "네트워크 오류". 모든 에러 상태에서 [다시 시도] 버튼을 제공해 사용자 주도의 수동 재호출을 지원.
+  * **재시도 전략**: 자동 백오프(exponential backoff)는 미구현. 에러 발생 시 UI에 [다시 시도] 버튼을 제공하여 사용자 주도의 단일 재시도를 지원함.
   * **GitHub 코드 링크**: [`js/app.js (Line 115 ~ 145)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L115-L145)
 
 * **[구현 3-2] 4가지 UI 상태 표현 (Loading, Success, Error, Empty)**
@@ -134,6 +136,7 @@
 
 * **[구현 4-1] LocalStorage 연동 및 테마 스위칭**
   * **설명**: 초기 상태 로딩 시 `localStorage.getItem('theme') || 'light'`로 읽어오며, 토글 버튼 클릭 시 `setAttribute('data-theme', theme)` 및 `localStorage.setItem('theme', theme)` 수행.
+  * **시스템 다크모드 감지**: `prefers-color-scheme` 미디어 쿼리를 통한 OS 다크모드 자동 감지는 **미구현** (선택 사항). 사용자가 직접 토글 버튼으로 테마를 선택하는 방식만 지원하며, 선택값은 localStorage에 영속 저장된다.
   * **GitHub 코드 링크**: [`js/app.js (Line 13 & L38)`](https://github.com/ntt65/b4_1/blob/main/js/app.js#L13) | [`css/style.css (Line 38 ~ 59)`](https://github.com/ntt65/b4_1/blob/main/css/style.css#L38-L59)
   * **주요 코드 주석**:
     ```javascript
@@ -173,9 +176,63 @@ b4_1/
 └── README.md           # [본 문서] 최종 결과물 요구조건 달성 보고서
 ```
 
+> **이미지 참고**: About 섹션의 프로필 이미지는 로컬 파일이 아닌 외부 URL(Unsplash CDN)을 사용합니다. 별도 `images/` 폴더는 존재하지 않으며, 실제 프로필 사진으로 교체 시 `index.html`의 `<img src>` 경로를 수정하면 됩니다.
+
 ---
 
 ## 📚 4. 평가 인터뷰 대비 및 추가 가이드 문서
 
 - 📄 **[doc/plan.md](doc/plan.md)**: 평가 15개 문항에 대한 핵심 인터뷰 답변집
 - 📖 **[doc/code_review.md](doc/code_review.md)**: 전체 코드 구조 및 라인별 종합 분석 보고서
+
+---
+
+## 🔤 5. 용어 & 기술 상세 설명 (초보자용)
+
+> 발표 및 평가 준비를 위한 용어 설명 모음입니다. 각 링크를 클릭하면 상세 내용을 볼 수 있습니다.
+
+### 🌐 웹 기초
+
+| 용어 | 한 줄 요약 | 상세 설명 |
+| :--- | :--- | :--- |
+| **HTML / CSS / JavaScript** | 웹의 뼈대·인테리어·전기 시스템 | [📖 설명 보기](doc/study.md#html-css-javascript) |
+| **시맨틱 태그** | 의미 있는 HTML 태그(`<header>`, `<nav>` 등) | [📖 설명 보기](doc/study.md) |
+| **반응형 웹 & 모바일 퍼스트** | 화면 크기에 따라 자동 적응, 모바일 기준 우선 설계 | [📖 설명 보기](doc/study.md#responsive) |
+| **미디어 쿼리** | 화면 너비 조건별 CSS 적용 (`@media`) | [📖 설명 보기](doc/study.md#responsive) |
+
+### 🎨 CSS 레이아웃
+
+| 용어 | 한 줄 요약 | 상세 설명 |
+| :--- | :--- | :--- |
+| **Flexbox** | 1차원(한 방향) 요소 정렬 — 네비게이션, 버튼 그룹 | [📖 설명 보기](doc/study.md#layout) |
+| **Grid** | 2차원(행×열) 요소 배치 — 카드 목록, 갤러리 | [📖 설명 보기](doc/study.md#layout) |
+| **CSS 변수 (Custom Properties)** | `:root`에 색상 등 값을 변수로 선언하고 재사용 | [📖 설명 보기](doc/study.md#css-variables) |
+
+### ⚡ JavaScript 핵심 패턴
+
+| 용어 | 한 줄 요약 | 상세 설명 |
+| :--- | :--- | :--- |
+| **이벤트 → 상태 → 렌더링** | 모던 프론트엔드의 핵심 흐름 | [📖 설명 보기](doc/study.md#event-state-render) |
+| **Single Source of Truth** | 앱 상태를 `state` 객체 하나에 집중 관리 | [📖 설명 보기](doc/study.md#single-source) |
+| **다크 모드 전환** | CSS 변수 + localStorage + 이벤트-상태-렌더 흐름 종합 | [📖 설명 보기](doc/study.md#다크-모드-전환-기능) |
+| **햄버거 메뉴** | classList.toggle + aria-expanded + 미디어 쿼리 | [📖 설명 보기](doc/study.md#햄버거메뉴) |
+
+### 🌍 비동기 & API
+
+| 용어 | 한 줄 요약 | 상세 설명 |
+| :--- | :--- | :--- |
+| **fetch / async-await / try-catch** | 서버에 데이터 요청하고 오류 처리하는 비동기 코드 | [📖 설명 보기](doc/study.md#async) |
+| **GitHub REST API** | URL 기반으로 GitHub 저장소 데이터를 가져오는 인터페이스 | [📖 설명 보기](doc/study.md#github-api) |
+| **localStorage** | 새로고침 후에도 유지되는 브라우저 내장 저장소 | [📖 설명 보기](doc/study.md#localstorage) |
+| **Intersection Observer** | 요소가 화면에 진입했을 때를 감지하는 브라우저 API | [📖 설명 보기](doc/study.md#intersection-observer) |
+
+### ♿ 웹 접근성 (ARIA)
+
+| 용어 | 한 줄 요약 | 상세 설명 |
+| :--- | :--- | :--- |
+| **폼 유효성 검사** | 입력값 형식을 서버 전송 전 브라우저에서 검증 | [📖 설명 보기](doc/study.md#form-validation) |
+| **aria-label** | 아이콘 버튼에 스크린 리더용 설명 텍스트 추가 | [📖 설명 보기](doc/study.md#aria) |
+| **aria-expanded** | 메뉴 열림/닫힘 상태를 스크린 리더에게 알림 | [📖 설명 보기](doc/study.md#aria) |
+| **role="alert" / aria-live** | 동적으로 나타나는 에러 메시지를 스크린 리더가 즉시 읽게 함 | [📖 설명 보기](doc/study.md#aria) |
+| **스킵 링크 (Skip Link)** | 키보드 사용자가 본문으로 바로 이동하는 링크 | [📖 설명 보기](doc/study.md#aria) |
+| **:focus-visible** | 키보드 탐색 시에만 포커스 윤곽선 표시 | [📖 설명 보기](doc/study.md#aria) |

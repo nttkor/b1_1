@@ -481,3 +481,627 @@ hamburgerBtn.addEventListener('click', () => {
 3. **화면 업데이트**: `classList.toggle('active')`가 실행되면서 메뉴 슬라이드 열림 및 버튼의 'X'자 변형 애니메이션이 적용.
 
 💡 포트폴리오 웹사이트에 들어가는 다른 반응형 인터랙션(예: GitHub API 연동이나 스크롤 탑 버튼) 구현 방식도 궁금하신가요?
+
+---
+
+## 반응형 웹 & 모바일 퍼스트 & 미디어 쿼리 {#responsive}
+
+### 반응형 웹(Responsive Web)이란?
+
+하나의 웹사이트가 모바일, 태블릿, 데스크톱 등 **다양한 화면 크기에서 자동으로 레이아웃이 조정**되는 방식입니다.  
+예전에는 "모바일용 사이트"와 "PC용 사이트"를 따로 만들었지만, 지금은 CSS 하나로 모든 기기를 대응합니다.
+
+> **비유**: 물을 담는 용기처럼, 어떤 크기의 그릇(화면)에 담아도 그 모양에 맞게 흘러 채워지는 디자인입니다.
+
+---
+
+### 모바일 퍼스트(Mobile First)란?
+
+CSS를 작성할 때 **가장 작은 화면(모바일)을 기본 스타일로 먼저 작성**하고, 화면이 커질수록 스타일을 추가로 덮어씌우는 설계 방식입니다.
+
+**왜 모바일 퍼스트인가?**
+
+- 전 세계 인터넷 트래픽의 60% 이상이 모바일에서 발생합니다.
+- 작은 화면 → 큰 화면 순으로 레이아웃을 확장하는 것이 반대 방향보다 훨씬 자연스럽습니다.
+- 모바일은 필수 요소만 남기는 과정이라, 우선순위 설계를 강제합니다.
+
+```css
+/* ✅ 모바일 퍼스트: 조건 없이 모바일 기본 스타일 먼저 */
+.hero-title {
+  font-size: 2.5rem; /* 모바일 기본 */
+}
+
+/* 768px 이상(태블릿)일 때 추가 적용 */
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.2rem;
+  }
+}
+
+/* 1024px 이상(데스크톱)일 때 추가 적용 */
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 3.8rem;
+  }
+}
+```
+
+---
+
+### 미디어 쿼리(Media Query)란?
+
+CSS에서 **"화면이 이 조건을 만족할 때만 이 스타일을 적용해라"** 라고 지정하는 문법입니다.
+
+```css
+/* 문법: @media (조건) { ... } */
+@media (min-width: 768px) {
+  /* 화면 너비가 768px 이상일 때만 이 블록이 실행됨 */
+  .hamburger-btn {
+    display: none; /* 태블릿 이상에서 햄버거 버튼 숨김 */
+  }
+}
+```
+
+`min-width` = "최소 이 너비 이상이면" → 모바일 퍼스트에서 사용  
+`max-width` = "최대 이 너비 이하이면" → 데스크톱 퍼스트에서 사용 (모바일 퍼스트의 반대)
+
+---
+
+## Flexbox vs Grid — 언제 무엇을 쓰나 {#layout}
+
+### Flexbox — 1차원 레이아웃
+
+**한 방향(가로 또는 세로) 으로 요소를 정렬**할 때 사용합니다.
+
+> **비유**: 지하철 좌석처럼 한 줄로 나란히 앉히되, 간격과 정렬을 자유롭게 조정하는 방식.
+
+```css
+/* Navigation Bar: 로고(왼쪽) + 메뉴(오른쪽) 1차원 수평 정렬 */
+.nav-container {
+  display: flex;                  /* Flexbox 활성화 */
+  justify-content: space-between; /* 양 끝으로 배치 */
+  align-items: center;            /* 세로 가운데 정렬 */
+}
+```
+
+**Flexbox를 선택하는 상황**: 네비게이션 바, 버튼 그룹, 카드 안 내부 정렬처럼 한 줄 배치
+
+---
+
+### Grid — 2차원 레이아웃
+
+**가로(열)와 세로(행)를 동시에 제어**하는 격자 배치입니다.
+
+> **비유**: 바둑판처럼 행과 열이 교차하는 격자 칸에 요소를 배치하는 방식.
+
+```css
+/* Projects 카드: 행 × 열 2차원 격자 배치 */
+.projects-grid {
+  display: grid;
+  /* auto-fit: 열 개수를 자동으로 조정 */
+  /* minmax(280px, 1fr): 최소 280px, 남는 공간은 균등 분배 */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+```
+
+`repeat(auto-fit, minmax(280px, 1fr))`의 의미:
+- 카드 하나의 최소 너비는 280px
+- 화면이 넓으면 한 줄에 여러 카드 배치, 좁으면 1열로 줄어듦
+- 미디어 쿼리 없이도 자동 반응형
+
+**Grid를 선택하는 상황**: 카드 목록, 갤러리, 복잡한 페이지 레이아웃처럼 행·열 2차원 배치
+
+| | Flexbox | Grid |
+| :--- | :--- | :--- |
+| 방향 | 1차원 (행 OR 열) | 2차원 (행 AND 열) |
+| 사용 상황 | 네비게이션, 버튼 그룹 | 카드 목록, 갤러리 |
+| 자동 반응형 | 수동 설정 필요 | `auto-fit` + `minmax`로 자동 |
+
+---
+
+## CSS 변수 (Custom Properties) — 다크모드의 핵심 {#css-variables}
+
+### CSS 변수란?
+
+CSS에서 자주 쓰는 색상, 폰트, 크기 등의 값을 **변수로 정의해두고 재사용**하는 기능입니다.  
+값을 한 곳에서만 바꾸면 그 변수를 사용하는 모든 곳이 한 번에 바뀝니다.
+
+```css
+/* 1. :root 에 변수 선언 (전체 페이지에서 사용 가능) */
+:root {
+  --accent-color: #6366f1; /* 보라색 포인트 */
+  --bg-primary: #ffffff;   /* 배경색 흰색 */
+  --text-primary: #0f172a; /* 글자색 검정 */
+}
+
+/* 2. var() 함수로 변수 값 사용 */
+.btn-primary {
+  background-color: var(--accent-color); /* #6366f1 이 들어감 */
+}
+```
+
+### 다크모드에 CSS 변수를 활용하는 이유
+
+`[data-theme="dark"]` 속성이 `<html>` 태그에 붙으면, `:root` 변수값만 덮어씌웁니다.  
+각 요소의 스타일 코드를 건드리지 않고도 테마 전환이 됩니다.
+
+```css
+/* 라이트 모드 기본값 */
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #0f172a;
+}
+
+/* 다크 모드: 변수값만 교체 */
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --text-primary: #f8fafc;
+}
+
+/* body 스타일은 그대로 — 변수가 알아서 바뀜 */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+```
+
+> **비유**: 엑셀에서 특정 셀의 숫자 하나를 바꾸면 그 셀을 참조하는 모든 수식이 자동으로 업데이트되는 것과 같습니다.
+
+---
+
+## 이벤트 → 상태 → 렌더링 패턴 {#event-state-render}
+
+### 이 패턴이 무엇인가?
+
+모던 프론트엔드 개발의 가장 핵심적인 사고방식입니다.
+
+```
+사용자 행동(클릭/스크롤/입력)
+    ↓ 이벤트(Event) 감지
+상태 객체(state) 값 변경
+    ↓ 상태(State) 변경
+변경된 상태를 바탕으로 화면 다시 그리기
+    ↓ 렌더링(Render / DOM 조작)
+사용자에게 변경된 화면 표시
+```
+
+### 왜 이 패턴을 쓰나?
+
+**나쁜 예 (직접 DOM 조작)**:
+
+```javascript
+// ❌ 클릭할 때마다 직접 DOM을 바꿈
+document.getElementById('hamburger-btn').addEventListener('click', () => {
+  document.getElementById('nav-menu').style.left = '0';
+  document.getElementById('hamburger-btn').classList.add('active');
+  // 상태가 어딘가에 기록되지 않음 → 나중에 "지금 메뉴가 열려있나 닫혀있나?" 모름
+});
+```
+
+**좋은 예 (상태 → 렌더 분리)**:
+
+```javascript
+// ✅ 상태를 먼저 바꾸고, 렌더 함수가 상태를 보고 화면을 그림
+const state = { isMenuOpen: false };
+
+const renderMenu = () => {
+  // 상태만 보고 화면 결정 → "지금 상태"가 항상 명확
+  elements.hamburgerBtn.classList.toggle('active', state.isMenuOpen);
+  elements.navMenu.classList.toggle('active', state.isMenuOpen);
+};
+
+elements.hamburgerBtn.addEventListener('click', () => {
+  state.isMenuOpen = !state.isMenuOpen; // 1단계: 상태 변경
+  renderMenu();                          // 2단계: 화면 반영
+});
+```
+
+이 패턴의 장점:
+- 현재 앱 상태가 `state` 객체 하나에 모두 모여 있음 → 버그 추적이 쉬움
+- React, Vue 같은 프레임워크들도 내부적으로 이 패턴으로 동작
+
+---
+
+## Single Source of Truth — 중앙 상태 관리 {#single-source}
+
+### 개념
+
+"**진실의 단일 출처**"라는 뜻으로, 앱의 모든 상태를 **한 곳(state 객체)에서만 관리**하는 원칙입니다.
+
+```javascript
+// 앱의 모든 상태가 이 객체 하나에 집중
+const state = {
+  theme: localStorage.getItem('theme') || 'light', // 테마
+  isMenuOpen: false,                               // 메뉴 열림 여부
+  projects: [],                                    // 프로젝트 목록
+  filterLanguage: 'all',                           // 선택된 필터
+  apiStatus: 'loading',                            // API 상태
+  errorMessage: ''                                 // 에러 메시지
+};
+```
+
+**왜 이렇게 하나?**
+
+상태가 여러 변수에 흩어져 있으면 "지금 앱이 어떤 상태인지"를 파악하려면 모든 변수를 찾아봐야 합니다.  
+한 객체에 모으면 `console.log(state)` 한 번으로 앱 전체 상태를 즉시 확인할 수 있습니다.
+
+---
+
+## 비동기 통신 — fetch / async-await / try-catch {#async}
+
+### 동기 vs 비동기
+
+**동기(Synchronous)**: 작업이 순서대로 처리됨. 앞 작업이 끝날 때까지 다음 작업은 대기.  
+**비동기(Asynchronous)**: 오래 걸리는 작업(네트워크 요청 등)을 기다리는 동안 다른 작업을 먼저 처리.
+
+> **비유**: 카페에서 음료를 주문하고 진동벨을 받은 뒤 자리에 앉아 핸드폰을 보다가, 벨이 울리면 가져오는 것이 비동기입니다. 반대로 카운터 앞에 서서 음료가 나올 때까지 무조건 기다리는 것이 동기입니다.
+
+### fetch — 네트워크 요청 함수
+
+```javascript
+// fetch(URL)는 서버에 요청을 보내고, 응답을 기다리는 Promise를 반환합니다.
+const response = await fetch('https://api.github.com/users/ntt65/repos');
+```
+
+### async / await — 비동기를 동기처럼 읽기 쉽게
+
+`async`를 함수 앞에 붙이면 그 함수 안에서 `await`를 쓸 수 있습니다.  
+`await`는 "이 작업이 끝날 때까지 여기서 기다려라" 라는 의미입니다.
+
+```javascript
+// async 키워드: "이 함수는 비동기 작업을 포함합니다"
+const fetchGitHubProjects = async () => {
+  
+  // await: "fetch가 응답을 줄 때까지 기다렸다가 response에 담아라"
+  const response = await fetch(`https://api.github.com/users/ntt65/repos`);
+  
+  // await: "JSON 파싱이 끝날 때까지 기다렸다가 data에 담아라"
+  const data = await response.json();
+  
+  state.projects = data;
+};
+```
+
+### try-catch — 에러 처리
+
+네트워크 요청은 실패할 수 있습니다(인터넷 끊김, 서버 오류 등).  
+`try` 블록에서 오류가 발생하면 `catch` 블록이 대신 실행됩니다.
+
+```javascript
+const fetchGitHubProjects = async () => {
+  try {
+    // 여기 안에서 오류가 생기면 catch로 이동
+    const response = await fetch('https://api.github.com/users/ntt65/repos');
+    
+    if (!response.ok) {
+      // 200이 아닌 응답(403, 404 등)은 직접 에러로 처리
+      throw new Error(`오류 코드: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    state.projects = data;
+    state.apiStatus = 'success';
+
+  } catch (error) {
+    // try 블록에서 throw된 에러 또는 네트워크 단절 시 실행
+    state.apiStatus = 'error';
+    state.errorMessage = error.message;
+
+  } finally {
+    // 성공이든 실패든 항상 실행 (화면 업데이트)
+    renderProjects();
+  }
+};
+```
+
+### HTTP 상태 코드
+
+| 코드 | 의미 |
+| :--- | :--- |
+| 200 | 성공 (OK) |
+| 403 | 접근 금지 (GitHub API Rate Limit 초과 시) |
+| 404 | 찾을 수 없음 (존재하지 않는 URL) |
+| 500 | 서버 내부 오류 |
+
+---
+
+## GitHub REST API 연동 {#github-api}
+
+### API란?
+
+**Application Programming Interface** — 두 프로그램이 서로 대화하는 창구입니다.
+
+> **비유**: 음식점에서 손님(브라우저)이 주문서(요청)를 웨이터(API)에게 건네면, 주방(서버)에서 요리(데이터)를 만들어 웨이터가 다시 가져다주는 구조입니다.
+
+### REST API란?
+
+**HTTP 주소(URL) + 방식(GET/POST 등)** 으로 데이터를 주고받는 약속입니다.  
+이 프로젝트에서는 GitHub가 공개한 REST API를 통해 저장소 목록을 가져옵니다.
+
+```javascript
+// GitHub API 요청 예시
+// GET https://api.github.com/users/{유저이름}/repos
+const response = await fetch(
+  `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`
+);
+// ?sort=updated  → 최근 업데이트 순 정렬
+// &per_page=12   → 최대 12개만 가져오기
+```
+
+응답 데이터(JSON)에는 저장소마다 이런 정보가 담겨 있습니다:
+
+```json
+{
+  "name": "b4_1",
+  "description": "포트폴리오 웹사이트",
+  "html_url": "https://github.com/ntt65/b4_1",
+  "language": "JavaScript",
+  "stargazers_count": 0,
+  "updated_at": "2026-09-01T12:00:00Z"
+}
+```
+
+### Rate Limit (속도 제한)
+
+GitHub API는 로그인하지 않은 상태에서 **1시간에 최대 60번** 요청이 가능합니다.  
+초과하면 `403 Forbidden` 응답이 오고, 이때 에러 UI를 보여주도록 처리합니다.
+
+---
+
+## localStorage — 브라우저 저장소 {#localstorage}
+
+### localStorage란?
+
+브라우저가 제공하는 **열쇠-값 쌍 저장소**입니다. 페이지를 닫거나 새로고침해도 데이터가 사라지지 않습니다.  
+서버에 저장되는 것이 아니라 **사용자 컴퓨터의 브라우저 내부**에 저장됩니다.
+
+```javascript
+// 저장
+localStorage.setItem('theme', 'dark');
+
+// 읽기
+const savedTheme = localStorage.getItem('theme'); // 'dark'
+
+// 삭제
+localStorage.removeItem('theme');
+```
+
+### 다크모드에 적용된 방식
+
+```javascript
+const state = {
+  // 앱 시작 시 저장된 값 읽기. 저장값 없으면 기본값 'light'
+  theme: localStorage.getItem('theme') || 'light'
+};
+
+const renderTheme = () => {
+  // 테마 적용 후 바로 저장 → 새로고침해도 유지
+  localStorage.setItem('theme', state.theme);
+  document.documentElement.setAttribute('data-theme', state.theme);
+};
+```
+
+> **비유**: 인터넷 없이도 쓸 수 있는 **브라우저 내장 메모장**. 여기에 설정을 적어두면 다음에 열 때도 그대로 남아 있습니다.
+
+---
+
+## Intersection Observer — 스크롤 애니메이션 {#intersection-observer}
+
+### Intersection Observer란?
+
+특정 HTML 요소가 **화면(뷰포트)에 들어오거나 나갈 때를 감지**하는 브라우저 내장 기능입니다.  
+스크롤 이벤트로 위치를 직접 계산하는 것보다 훨씬 성능이 좋습니다.
+
+### 작동 원리
+
+```javascript
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // 요소가 화면에 20% 이상 보이면 실행
+        entry.target.classList.add('appear'); // fade-in 애니메이션 클래스 추가
+        observer.unobserve(entry.target);     // 한 번 실행 후 감시 중단
+      }
+    });
+  },
+  { threshold: 0.2 } // 요소가 20% 이상 보일 때 콜백 실행
+);
+
+// .fade-in 클래스를 가진 모든 요소를 관찰 대상으로 등록
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+```
+
+```css
+/* 초기 상태: 투명하고 아래에 위치 */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* appear 클래스가 붙으면: 보이고 원래 위치로 이동 */
+.fade-in.appear {
+  opacity: 1;
+  transform: translateY(0);
+}
+```
+
+> **비유**: 무대의 스포트라이트처럼, 배우(요소)가 무대(화면)에 등장하는 순간을 포착해 조명(애니메이션)을 켜는 방식입니다.
+
+---
+
+## 폼 유효성 검사 (Form Validation) {#form-validation}
+
+### 폼 유효성 검사란?
+
+사용자가 입력한 값이 올바른 형식인지 **서버로 전송하기 전에 브라우저에서 먼저 확인**하는 과정입니다.
+
+### 이 프로젝트의 검증 로직
+
+```javascript
+const validateForm = () => {
+  let isValid = true;
+
+  // 1. 이름: 빈값 체크
+  const nameVal = elements.userNameInput.value.trim(); // 앞뒤 공백 제거
+  if (!nameVal) {
+    elements.nameError.textContent = '이름을 입력해 주세요.';
+    elements.userNameInput.classList.add('invalid'); // 빨간 테두리 표시
+    isValid = false;
+  }
+
+  // 2. 이메일: 빈값 체크 + 정규표현식 형식 체크
+  const emailVal = elements.userEmailInput.value.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // 정규표현식 풀이:
+  // ^[^\s@]+ → 시작: 공백·@가 아닌 문자 1개 이상 (아이디 부분)
+  // @         → @ 기호 1개
+  // [^\s@]+   → 공백·@가 아닌 문자 1개 이상 (도메인 이름)
+  // \.        → 점(.) 1개
+  // [^\s@]+$  → 공백·@가 아닌 문자 1개 이상으로 끝 (com, kr 등)
+
+  if (!emailVal) {
+    elements.emailError.textContent = '이메일을 입력해 주세요.';
+    isValid = false;
+  } else if (!emailRegex.test(emailVal)) {
+    elements.emailError.textContent = '올바른 이메일 형식이 아닙니다.';
+    isValid = false;
+  }
+
+  return isValid;
+};
+
+// 폼 제출 시 검증 실행
+elements.contactForm.addEventListener('submit', (e) => {
+  e.preventDefault(); // 기본 동작(페이지 새로고침) 방지
+  if (validateForm()) {
+    // 검증 통과 시만 다음 동작
+    elements.formSuccessMsg.style.display = 'block';
+  }
+});
+```
+
+### 정규표현식(Regex)이란?
+
+문자열의 패턴을 검사하는 특수 문법입니다. `/패턴/` 형식으로 사용합니다.
+
+| 패턴 | 의미 | 예시 |
+| :--- | :--- | :--- |
+| `^` | 문자열 시작 | `^A` → A로 시작 |
+| `$` | 문자열 끝 | `z$` → z로 끝 |
+| `+` | 1개 이상 | `a+` → a, aa, aaa |
+| `[^...]` | 괄호 안 문자 제외 | `[^\s@]` → 공백·@ 제외한 문자 |
+| `\.` | 점(.) 그 자체 | `\.com` → .com |
+
+---
+
+## 웹 접근성 (ARIA) — 보조 기기를 위한 속성 {#aria}
+
+### 웹 접근성이란?
+
+시각 장애인, 운동 장애인 등 **보조 기기를 사용하는 사람도 웹을 사용**할 수 있게 만드는 것입니다.  
+스크린 리더(화면을 소리로 읽어주는 프로그램)가 대표적인 보조 기기입니다.
+
+---
+
+### aria-label — 시각적 텍스트가 없는 요소에 설명 추가
+
+아이콘만 있는 버튼은 스크린 리더가 무슨 버튼인지 알 수 없습니다.
+
+```html
+<!-- ❌ 스크린 리더: "버튼" 이라고만 읽음 -->
+<button id="theme-toggle">
+  <i class="fa-solid fa-moon"></i>
+</button>
+
+<!-- ✅ 스크린 리더: "테마 전환, 버튼" 이라고 읽음 -->
+<button id="theme-toggle" aria-label="테마 전환">
+  <i class="fa-solid fa-moon"></i>
+</button>
+```
+
+---
+
+### aria-expanded — 열림/닫힘 상태 알림
+
+햄버거 메뉴처럼 열렸다 닫히는 요소의 현재 상태를 스크린 리더에게 알려줍니다.
+
+```html
+<!-- HTML에서 초기값 설정 -->
+<button id="hamburger-btn" aria-expanded="false" aria-controls="nav-menu">
+```
+
+```javascript
+// JS에서 상태가 바뀔 때마다 값 업데이트
+const renderMenu = () => {
+  const { isMenuOpen } = state;
+  elements.hamburgerBtn.setAttribute('aria-expanded', isMenuOpen);
+  // isMenuOpen이 true면 "true", false면 "false" 가 됨
+};
+```
+
+스크린 리더 사용자가 듣는 내용:
+- 닫혀있을 때: "메뉴 열기, 접혀 있음, 버튼"
+- 열렸을 때: "메뉴 열기, 펼쳐져 있음, 버튼"
+
+---
+
+### role="alert" & aria-live — 동적으로 추가된 메시지 알림
+
+처음부터 화면에 없다가 나중에 나타나는 에러 메시지는 스크린 리더가 자동으로 감지하지 못합니다.  
+`role="alert"` 또는 `aria-live="assertive"`를 붙이면 내용이 생길 때 즉시 읽어줍니다.
+
+```html
+<!-- 에러 메시지: 내용이 생기면 스크린 리더가 즉시 읽어줌 -->
+<span class="error-msg" id="email-error" role="alert" aria-live="assertive"></span>
+
+<!-- 성공 메시지: 방해하지 않게 자연스럽게 읽어줌 -->
+<div id="form-success-msg" role="status" aria-live="polite"></div>
+```
+
+`assertive` = 지금 하는 일을 멈추고 즉시 읽음 (에러처럼 중요한 것)  
+`polite` = 현재 읽는 것이 끝난 뒤 읽음 (성공 메시지처럼 덜 급한 것)
+
+---
+
+### 스킵 링크 (Skip Link) — 키보드 사용자를 위한 단축키
+
+키보드로만 웹을 탐색하는 사용자는 Tab 키로 링크/버튼을 하나씩 이동합니다.  
+헤더의 모든 메뉴를 Tab으로 지나쳐야 본문에 도달하는 불편함을 없애주는 것이 스킵 링크입니다.
+
+```html
+<!-- body 맨 위에 배치, 평소에는 화면 밖에 숨겨두다가 Tab을 처음 누르면 나타남 -->
+<a href="#main-content" class="skip-link">본문 바로가기</a>
+
+<main id="main-content">
+  <!-- 본문 내용 -->
+</main>
+```
+
+```css
+.skip-link {
+  position: absolute;
+  top: -100%;   /* 평소에는 화면 위 밖으로 숨김 */
+}
+
+.skip-link:focus {
+  top: 1rem;    /* Tab 키로 포커스 받으면 화면에 나타남 */
+}
+```
+
+---
+
+### :focus-visible — 키보드 포커스 스타일
+
+마우스 클릭 시에는 focus 윤곽선이 필요 없지만, 키보드 Tab 탐색 시에는 어디에 포커스가 있는지 보여야 합니다.  
+`:focus-visible`은 **키보드 탐색 시에만** 포커스 스타일을 보여줍니다.
+
+```css
+/* outline: none 으로 전체 제거 후, 키보드 포커스에만 다시 적용 */
+:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+```
