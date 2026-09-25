@@ -47,53 +47,105 @@
 
 ![웹 개발 기초 가이드](infographic/0_web_guide.png)
 
-### Q1. 시맨틱 태그를 왜 사용했나요?
+### Q1. HTML 시맨틱 태그의 사용 이유와 본인만의 구조 설계 기준
 
-`<div>`만 쓰면 브라우저·검색엔진·스크린 리더가 각 영역의 역할을 알 수 없습니다.  
-`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>` 를 사용해 **구역의 의미를 코드에 명시**했습니다.
+- **시맨틱 태그(Semantic Tag)를 사용하는 이유**:
+  - `<div>`와 `<span>` 같은 무의미한(Non-semantic) 태그만 사용하면 브라우저, 검색엔진, 스크린 리더가 각 영역의 기능과 위계를 파악할 수 없습니다.
+  - **검색엔진 최적화(SEO)**: 검색엔진 로봇이 `<header>`, `<main>`, `<article>` 등의 구조를 바탕으로 핵심 콘텐츠의 우선순위를 정확히 색인합니다.
+  - **웹 접근성(A11y)**: 스크린 리더 사용자가 랜드마크(Header, Nav, Main, Footer) 간을 단축키로 빠르게 건너뛰며 웹페이지를 탐색할 수 있습니다.
+  - **유지보수성 및 가독성**: 코드만 보고도 해당 구역이 네비게이션인지, 본문인지, 독립 기사인지 직관적으로 이해할 수 있습니다.
 
-- **SEO**: 검색엔진이 `<main>` 안의 콘텐츠를 핵심으로 인식
-- **접근성**: 스크린 리더가 "navigation" "main content" 등을 자동 안내
-- **선택 기준**: 독립 재사용 가능한 카드 → `<article>` / 관련 항목 묶음 → `<section>`
+- **본 프로젝트의 시맨틱 구조 설계 기준**:
+  1. `<header>` & `<nav>`: 사이트 최상단 고정 영역으로, 브랜드 로고와 5대 섹션 이동 링크를 담아 네비게이션 역할을 명확히 규정.
+  2. `<main>`: 문서 전체에서 고유하며 반복되지 않는 핵심 주제 콘텐츠 영역 전체를 포괄.
+  3. `<section>`: 연관된 주제별 독립 블록 단위(`Hero`, `About`, `Skills`, `Projects`, `Contact`)를 논리적으로 구분. 각 섹션은 고유한 `id`와 제목(`<h2>`)을 포함.
+  4. `<article>`: `Skills` 섹션의 각 기술 스택 카드 및 `Projects` 섹션의 GitHub 저장소 카드는 그 자체로 독립적으로 배포되거나 재사용 가능한 단위이므로 `<article>`로 구조화.
+  5. `<footer>`: 페이지 최하단 영역으로, 저작권 표기 및 외부 프로필(GitHub, LinkedIn) 링크를 배치.
 
 ![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
 
 ![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
 
-### Q2. Flexbox와 Grid를 어떻게 나눠 썼나요?
+### Q2. CSS Flexbox와 Grid의 차이점 및 상황별 선택 기준
 
-| | Flexbox | Grid |
+- **Flexbox vs Grid 핵심 차이점 비교**:
+
+| 비교 항목 | Flexbox (1차원) | Grid (2차원) |
 | :--- | :--- | :--- |
-| 방향 | 1차원 (가로 **또는** 세로) | 2차원 (가로 **AND** 세로) |
-| 적용 위치 | `.nav-container` (로고↔메뉴 수평 배치) | `.projects-grid` (카드 격자 배치) |
-| 이유 | 단순 수평 정렬은 Flexbox가 직관적 | `auto-fit + minmax`로 미디어 쿼리 없이 반응형 |
+| **차원** | **1차원** (가로(row) 또는 세로(column) 단일 축) | **2차원** (가로행(row)과 세로열(column) 동시 통제) |
+| **설계 철학** | 콘텐츠 중심 (Content-first): 내부 아이템 크기와 정렬 | 레이아웃 중심 (Layout-first): 전체 격자 틀을 먼저 정의 |
+| **적용 영역** | 헤더 네비게이션, 버튼 그룹, 카드 내부 인라인 정렬 | 포트폴리오 카드 그리드, 대시보드 레이아웃 |
+| **핵심 속성** | `display: flex; justify-content; align-items;` | `display: grid; grid-template-columns; gap;` |
+
+- **상황별 선택 기준 및 실제 적용**:
+  - **Flexbox 선택 (`.nav-container`)**:
+    - 로고는 왼쪽, 메뉴 링크는 오른쪽으로 1차원 수평 정렬하고 수직 중앙을 맞출 때(`justify-content: space-between; align-items: center;`) 가장 직관적이고 유연하므로 Navigation에 채택했습니다.
+  - **Grid 선택 (`.projects-grid`)**:
+    - GitHub 저장소 카드들을 2차원 격자 형태로 배치할 때, `grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));`를 사용하여 미디어 쿼리를 일일이 쓰지 않고도 화면 너비에 따라 열 수가 자동으로 늘어나거나 줄어드는 유연한 반응형 레이아웃을 구현하기 위해 Grid를 채택했습니다.
 
 ```css
-/* Flexbox: 1차원 수평 정렬 */
-.nav-container { display: flex; justify-content: space-between; }
+/* Flexbox: 1차원 수평 정렬 (로고 왼쪽 ↔ 메뉴 오른쪽) */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-/* Grid: 2차원 자동 반응형 격자 */
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+/* Grid: 2차원 자동 반응형 격자 (카드가 화면에 맞춰 자동 배치) */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
 ```
 
 ![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png)
 
 ![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png)
 
-### Q3. DOM 선택과 이벤트 연결을 어떻게 했나요?
+### Q3. querySelector로 DOM을 선택하고, addEventListener로 이벤트를 연결하는 흐름
 
 **찾기 → 모으기 → 등록** 세 단계로 구성했습니다.
 
+1. **찾기 (Select)**: `querySelector`와 `querySelectorAll`을 활용해 CSS 선택자(ID `#`, 클래스 `.`)로 DOM 요소를 정확하게 탐색합니다.
+2. **모으기 (Collect & Cache)**: 탐색한 요소를 `elements` 객체에 한 번만 모아 캐싱함으로써, 반복적인 DOM 탐색 비용을 방지하고 성능을 최적화합니다.
+3. **등록 (Register & Bind)**: HTML 인라인 `onclick` 대신 `addEventListener`를 사용하여 관심사(HTML 구조와 JS 동작)를 분리하고, 단일 등록·NodeList 순회 등록·부모 요소를 활용한 **이벤트 위임(Event Delegation)** 패턴으로 효율적으로 연결합니다.
+
 ```javascript
-// 1. 찾기: 페이지 로드 시 한 번만 선택해 elements 객체에 보관
-const elements = { hamburgerBtn: document.getElementById('hamburger-btn'), ... };
+// 1 & 2. 찾기 및 모으기: querySelector/querySelectorAll로 DOM을 선택하고 elements 객체에 보관
+const elements = {
+  // querySelector: CSS 선택자(#id, .class 등)로 단일 DOM 요소 선택
+  hamburgerBtn: document.querySelector('#hamburger-btn'),
+  navMenu: document.querySelector('#nav-menu'),
+  filterContainer: document.querySelector('#filter-container'),
 
-// 2. 등록: HTML onclick 대신 addEventListener (관심사 분리)
-elements.hamburgerBtn.addEventListener('click', () => { ... });
+  // querySelectorAll: 일치하는 모든 요소를 NodeList(유사 배열)로 반환
+  navLinks: document.querySelectorAll('.nav-link')
+};
 
-// 3. 동적 요소는 이벤트 위임: 부모에 리스너 하나로 자식 클릭 처리
+// 3. 등록: HTML onclick 대신 addEventListener 사용 (관심사 분리)
+
+// ① 단일 요소 이벤트 등록 (햄버거 메뉴 토글)
+elements.hamburgerBtn.addEventListener('click', () => {
+  const isOpen = elements.hamburgerBtn.classList.toggle('active');
+  elements.navMenu.classList.toggle('active', isOpen);
+});
+
+// ② 다중 요소 이벤트 등록 (querySelectorAll로 얻은 NodeList 순회)
+elements.navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    elements.hamburgerBtn.classList.remove('active');
+    elements.navMenu.classList.remove('active');
+  });
+});
+
+// ③ 동적/다중 요소는 이벤트 위임(Event Delegation): 부모에 리스너 1개만 등록
 elements.filterContainer.addEventListener('click', (e) => {
-  if (e.target.classList.contains('filter-btn')) { ... }
+  if (e.target.classList.contains('filter-btn')) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    e.target.classList.add('active');
+    console.log(`선택된 언어 필터: ${e.target.getAttribute('data-lang')}`);
+  }
 });
 ```
 
@@ -101,45 +153,99 @@ elements.filterContainer.addEventListener('click', (e) => {
 
 ![querySelector Gemini](infographic/3_querySelector_Gemini.png)
 
-### Q4. ES6+ 문법을 어떻게 활용했나요?
+### Q4. 화살표 함수, 구조분해 할당, 배열 메서드(map/filter)의 필요성과 활용
+
+- **1. 화살표 함수 (Arrow Function)**:
+  - **필요성**: 기존 `function` 키워드 대비 문법이 간결하며, 자신만의 `this`를 바인딩하지 않고 상위 렉시컬 스코프의 `this`를 유지하여 콜백 함수나 이벤트 핸들러 작성 시 `bind`나 임시 변수(`const self = this;`)를 쓸 필요가 없습니다.
+  - **활용**: 테마 전환(`renderTheme`), 메뉴 렌더링(`renderMenu`), 이벤트 콜백 함수 작성에 전면 활용.
+- **2. 구조분해 할당 (Destructuring Assignment)**:
+  - **필요성**: `state.theme`, `repo.name`, `repo.html_url` 등 객체 프로퍼티를 매번 점 표기법으로 반복 작성하는 중복을 줄이고, 필요한 데이터만 한 줄로 직관적으로 추출합니다.
+  - **활용**: `const { theme, isMenuOpen } = state;`, `const { name, description, html_url, language } = repo;`
+- **3. 템플릿 리터럴 (Template Literals)**:
+  - **필요성**: `+` 연산자로 문자열과 변수를 복잡하게 이어붙일 필요 없이, 백틱(`` ` ``)과 `${}` 표현식을 이용해 줄바꿈이 포함된 복합 HTML 구조를 가독성 높게 동적 생성합니다.
+- **4. 배열 메서드 (`map`, `filter`, `forEach`)**:
+  - **필요성**: 명령형 `for` 반복문 없이 선언적 코드로 불변성(Immutability)을 유지하며 데이터를 안전하게 가공합니다.
+  - **`filter`**: 포크된 저장소를 제외(`!repo.fork`)하거나 특정 언어(`repo.language === targetLang`)만 선별하여 새 배열 생성.
+  - **`map`**: 필터링된 저장소 객체 배열을 순회하며 개별 `<article class="project-card">` HTML 문자열 배열로 1:1 변환.
+  - **`forEach`**: `navLinks`, `filter-btn` 등 NodeList를 순회하며 개별 요소에 이벤트 리스너를 일괄 바인딩.
 
 ```javascript
-// 화살표 함수: 콜백을 간결하게
-const renderTheme = () => { ... };
+// ① 구조분해 할당 & 화살표 함수로 필요한 상태값 추출
+const renderHeaderState = () => {
+  const { isMenuOpen, theme } = state;
+  console.log(`현재 테마: ${theme}, 메뉴 열림: ${isMenuOpen}`);
+};
 
-// 구조분해 할당: 필요한 값만 추출
-const { theme, isMenuOpen } = state;
-
-// 템플릿 리터럴: HTML 동적 생성
-const card = `<article class="project-card"><h3>${name}</h3></article>`;
-
-// map: 배열 → HTML 카드 변환 / filter: 언어별 필터링
-const cards = projects.filter(r => !r.fork).map(repo => `...`).join('');
+// ② filter + map + 템플릿 리터럴을 결합한 카드 UI 동적 생성 (완전한 실행 코드)
+const generateCards = (repositories, targetLanguage) => {
+  return repositories
+    // filter: 포크 저장소 제외 및 선택 언어 필터링
+    .filter(repo => !repo.fork && (targetLanguage === 'all' || repo.language === targetLanguage))
+    // map: 각 저장소 데이터를 HTML 카드 문자열로 변환 (구조분해 할당 활용)
+    .map(({ name, description, html_url, language, stargazers_count }) => `
+      <article class="project-card">
+        <div class="card-header">
+          <h3>${name}</h3>
+          <span class="badge">${language || '기타'}</span>
+        </div>
+        <p>${description || '설명이 없습니다.'}</p>
+        <div class="card-footer">
+          <span>⭐ ${stargazers_count}</span>
+          <a href="${html_url}" target="_blank" rel="noopener noreferrer">GitHub 방문</a>
+        </div>
+      </article>
+    `)
+    .join(''); // 배열을 하나의 HTML 문자열로 결합
+};
 ```
 
 ![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png)
 
 ![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png)
 
-### Q5. 비동기 통신과 4가지 UI 상태를 어떻게 처리했나요?
+### Q5. fetch와 async/await 비동기 데이터 호출 및 4가지 UI 상태 표현
 
-`idle → loading → success | error` 흐름으로 상태를 관리합니다.
+`idle → loading → success | error | empty` 상태 기반 렌더링으로 사용자 경험(UX)을 완결했습니다.
+
+- **비동기 처리 방식**:
+  - `fetch` API와 `async/await`를 사용하여 Promise 체이닝(`.then()`) 대비 동기식 코드처럼 읽기 쉽고 직관적인 비동기 흐름을 구축했습니다.
+  - `try / catch / finally` 블록을 구성하여 네트워크 장애나 HTTP 오류(`!response.ok`), GitHub API Rate Limit(403) 초과 상황을 안전하게 예외 처리하고, 결과에 관계없이 `finally`에서 항상 최종 UI를 갱신합니다.
+- **4가지 UI 상태 표현**:
+  1. **로딩(loading)**: API 호출 직후 스피너 애니메이션과 `"GitHub 프로젝트를 불러오는 중입니다..."` 안내 문구 표시.
+  2. **성공(success)**: 정상 응답 데이터를 받아 `map()`을 거쳐 생성된 프로젝트 카드 그리드를 화면에 렌더링.
+  3. **에러(error)**: API 제한(403)이나 네트워크 오류 시 `"프로젝트를 불러올 수 없습니다"` 에러 메시지와 함께 수동 재시도 가능한 **`[다시 시도]`** 버튼 노출.
+  4. **빈 상태(empty)**: 필터 결과가 없거나 저장소가 0개일 때 `"표시할 프로젝트가 없습니다."` 안내 문구 렌더링.
 
 ```javascript
+// GitHub API 비동기 호출 및 상태 기반 분기 처리 함수
 const fetchGitHubProjects = async () => {
-  state.apiStatus = 'loading'; renderProjects(); // ① 로딩 스피너
+  // 1. 로딩 상태 시작: 스피너 표시
+  state.apiStatus = 'loading';
+  renderProjects();
 
   try {
-    const res = await fetch(`https://api.github.com/users/nttkor/repos`);
-    if (!res.ok) throw new Error(`코드: ${res.status}`); // ② 수동 에러 처리
-    const data = await res.json();
-    state.projects = data.filter(r => !r.fork);
-    state.apiStatus = state.projects.length ? 'success' : 'empty'; // ③ 성공·빈 상태 구분
+    const res = await fetch(`https://api.github.com/users/nttkor/repos?sort=updated&per_page=12`);
+    
+    // HTTP 응답 검증 (403 Rate Limit 및 서버 에러 수동 분기)
+    if (!res.ok) {
+      if (res.status === 403) {
+        throw new Error('API 호출 제한(Rate Limit)을 초과했습니다. 잠시 후 다시 시도해주세요.');
+      }
+      throw new Error(`데이터를 불러오지 못했습니다. (코드: ${res.status})`);
+    }
 
-  } catch (e) {
-    state.apiStatus = 'error'; state.errorMessage = e.message; // ④ 에러 상태
+    const data = await res.json();
+    state.projects = data.filter(repo => !repo.fork);
+    // 2. 성공 또는 빈 상태 판별
+    state.apiStatus = state.projects.length === 0 ? 'empty' : 'success';
+
+  } catch (error) {
+    // 3. 에러 상태 전이: 에러 메시지 보관
+    state.apiStatus = 'error';
+    state.errorMessage = error.message || '네트워크 통신 중 오류가 발생했습니다.';
   } finally {
-    renderProjects(); // 성공이든 실패든 항상 화면 갱신
+    // 4. 최종 화면 갱신: 로딩 종료 후 해당 상태에 맞춰 렌더링
+    renderProjects();
   }
 };
 ```
@@ -148,23 +254,42 @@ const fetchGitHubProjects = async () => {
 
 ![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png)
 
-### Q6. 이벤트 → 상태 → 렌더링 흐름이 어떻게 연결되나요?
+### Q6. "하나의 기능"을 만들기 위한 이벤트 → 상태 변경 → DOM 업데이트 흐름
 
-이벤트 핸들러에서 DOM을 직접 바꾸지 않고, **상태만 변경 → render 함수가 상태를 보고 화면 결정**합니다.
+이벤트 핸들러에서 DOM을 직접 변경하지 않고, **"이벤트(Event) → 상태(State) 변경 → UI 렌더링(Render)"**의 단방향 데이터 흐름을 철저히 준수했습니다.
+
+- **직접 DOM 조작의 문제점**:
+  - `btn.addEventListener('click', () => { menu.style.left = '0'; })`처럼 이벤트 리스너에서 직접 스타일이나 클래스를 바꾸면, 애플리케이션의 현재 상태를 추적할 수 없어 다른 기능과 충돌이 발생하고 유지보수가 불가능해집니다.
+- **상태 기반 단방향 흐름 3단계 (예: 모바일 햄버거 메뉴)**:
+  1. **사용자 이벤트 (Event)**: 햄버거 버튼 클릭 이벤트 감지.
+  2. **상태 변경 (State Change)**: `state.isMenuOpen = !state.isMenuOpen;`으로 단일 출처(Single Source of Truth) 객체의 상태값만 반전.
+  3. **화면 렌더링 (Render)**: `renderMenu()` 함수가 호출되어 `state.isMenuOpen` 값을 읽고, 해당 상태에 맞춰 `classList.toggle('active', isMenuOpen)` 및 `aria-expanded` 속성을 갱신.
 
 ```javascript
-// ❌ 나쁜 예: 이벤트에서 직접 DOM 조작 → 현재 상태 추적 불가
-btn.addEventListener('click', () => { menu.style.left = '0'; });
+// ❌ 안 좋은 방식: 이벤트 핸들러에서 직접 DOM 조작 (상태 추적 불가)
+// btn.addEventListener('click', () => { navMenu.style.left = '0'; });
 
-// ✅ 우리 방식: 상태 변경 → render 함수가 상태 기반으로 화면 결정
-btn.addEventListener('click', () => {
-  state.isMenuOpen = !state.isMenuOpen; // 1. 상태만 변경
-  renderMenu();                          // 2. render가 state를 보고 DOM 갱신
+// ✅ 우리 프로젝트 방식: 단방향 데이터 흐름 (Event → State → Render)
+// 1. 이벤트 등록
+elements.hamburgerBtn.addEventListener('click', () => {
+  // 2. 상태(State)만 변경 (Single Source of Truth)
+  state.isMenuOpen = !state.isMenuOpen;
+
+  // 3. 렌더러가 현재 상태를 읽어 선언적으로 DOM을 갱신
+  renderMenu();
 });
+
+// 렌더 함수: 오직 state에만 의존하여 화면을 결정
+const renderMenu = () => {
+  const { isMenuOpen } = state;
+  elements.hamburgerBtn.classList.toggle('active', isMenuOpen);
+  elements.hamburgerBtn.setAttribute('aria-expanded', isMenuOpen);
+  elements.navMenu.classList.toggle('active', isMenuOpen);
+};
 ```
 
-이 패턴은 **React의 `useState` + 리렌더링 흐름과 동일한 개념**입니다.  
-React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직접 구현합니다.
+> [!NOTE]
+> 이 패턴은 **React의 `useState` 훅 및 단방향 데이터 흐름(State-driven UI)**과 동일한 기본 동작 원리입니다. 바닐라 JavaScript에서 상태 객체와 렌더 함수를 명확히 분리함으로써 컴포넌트 기반 프레임워크 학습의 견고한 디딤돌을 마련했습니다.
 
 ![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
 
@@ -183,7 +308,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 1-1] 6개 시맨틱 섹션 구성**
   * **설명**: `div` 남용 없이 웹 접근성(Accessibility)과 SEO를 높이는 시맨틱 태그(`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)로 설계.
-  * **GitHub 코드 링크**: [`index.html (Line 24 ~ 190)`](https://github.com/nttkor/b1_1/blob/main/index.html#L24-L190) | 로컬 파일: [`index.html`](file:///Users/mpeg46551/b1_1/index.html)
+  * **GitHub 코드 링크**: [`index.html (Line 53 ~ 388)`](https://github.com/nttkor/b1_1/blob/main/index.html#L53-L388) | 로컬 파일: [`index.html`](file:///Users/mpeg46551/b1_1/index.html)
   * **주요 코드 주석**:
     ```html
     <!-- Hero 섹션: 인사말, 타자기/소개글, CTA 버튼 -->
@@ -204,7 +329,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 1-2] Flexbox & Grid 반응형 레이아웃 분리**
   * **설명**: 1차원 수평 정렬이 필요한 Navigation에는 **Flexbox**, 2차원 반응형 격자 배치가 필요한 Projects 카드에는 **Grid**(`repeat(auto-fit, minmax(280px, 1fr))`)를 선택하여 적용.
-  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L145 / Grid: L324)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L145) | 로컬 파일: [`css/style.css`](file:///Users/mpeg46551/b1_1/css/style.css)
+  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L250 / Grid: L601)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L250) | 로컬 파일: [`css/style.css`](file:///Users/mpeg46551/b1_1/css/style.css)
   * **주요 코드 주석**:
     ```css
     /* Navigation Bar: Flexbox 적용 (로고 왼쪽, 메뉴 오른쪽 수평 정렬) */
@@ -224,7 +349,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 1-3] 모바일 퍼스트 미디어 쿼리 (768px, 1024px)**
   * **설명**: 모바일 화면 스타일을 기본으로 작성하고, 768px(태블릿), 1024px(데스크톱) 미디어 쿼리로 점진적 확장.
-  * **GitHub 코드 링크**: [`css/style.css (Line 466 ~ 508)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L466-L508)
+  * **GitHub 코드 링크**: [`css/style.css (Line 886 ~ 939)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L886-L939)
 
 ---
 
@@ -233,7 +358,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 2-1] 모바일 햄버거 메뉴 토글**
   * **설명**: 768px 미만 모바일에서 햄버거 버튼 클릭 시 `state.isMenuOpen`을 반전시키고 `classList.toggle('active')`로 메뉴 개폐.
-  * **GitHub 코드 링크**: [`js/app.js (Line 49 & L215)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L49) | 로컬 파일: [`js/app.js`](file:///Users/mpeg46551/b1_1/js/app.js)
+  * **GitHub 코드 링크**: [`js/app.js (Line 106 & L385)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L106) | 로컬 파일: [`js/app.js`](file:///Users/mpeg46551/b1_1/js/app.js)
   * **주요 코드 주석**:
     ```javascript
     // 햄버거 메뉴 UI 렌더링 함수
@@ -246,11 +371,11 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 2-2] 스크롤 애니메이션 & 스크롤 탑 / 헤더 변경**
   * **설명**: `Intersection Observer` (threshold: 0.2)로 요소 진입 시 `.appear` 부여, 스크롤 60px 이상 시 헤더 스타일 변경(`.scrolled`), 300px 이상 시 스크롤탑 버튼 표시(`.visible`).
-  * **GitHub 코드 링크**: [`js/app.js (Line 230 ~ 285)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L230-L285)
+  * **GitHub 코드 링크**: [`js/app.js (Line 404 ~ 428 & L492 ~ 505)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L404)
 
 * **[구현 2-3] Contact 폼 유효성 검사 (Form Validation & UX)**
   * **설명**: `e.preventDefault()`로 폼 기본 제출 동작을 막고, 이름/이메일(정규식)/메시지 필수값을 검증하여 에러 피드백 노출.
-  * **GitHub 코드 링크**: [`js/app.js (Line 150 ~ 200)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L150-L200)
+  * **GitHub 코드 링크**: [`js/app.js (Line 304 ~ 368 & L450 ~ 473)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L304)
   * **주요 코드 주석**:
     ```javascript
     // 이메일 정규표현식 검증
@@ -270,12 +395,12 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 * **[구현 3-1] `fetch` 및 `async/await` 비동기 통신 + `try/catch` 에러 처리**
   * **설명**: 엔드포인트 `https://api.github.com/users/nttkor/repos`를 비동기 호출하고, 403 Rate Limit 및 네트워크 오류를 예외 처리.
   * **에러 처리 정책**: `403` → "Rate Limit 초과" / 그 외 `!response.ok` → "코드: N" / 네트워크 단절 → "네트워크 오류". 모든 에러 상태에서 [다시 시도] 버튼을 제공해 사용자 주도의 수동 재호출을 지원.
-  * **재시도 전략**: 자동 백오프(exponential backoff)는 미구현. 에러 발생 시 UI에 [다시 시도] 버튼을 제공하여 사용자 주도의 단일 재시도를 지원함.
-  * **GitHub 코드 링크**: [`js/app.js (Line 115 ~ 145)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L115-L145)
+  * **재시도 전략**: 에러 발생 시 UI에 [다시 시도] 버튼을 제공하여 사용자 주도의 수동 재호출(`fetchGitHubProjects`)을 지원함.
+  * **GitHub 코드 링크**: [`js/app.js (Line 250 ~ 293)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L250-L293)
 
 * **[구현 3-2] 4가지 UI 상태 표현 (Loading, Success, Error, Empty)**
   * **설명**: 단일 상태 `state.apiStatus`에 따라 조건부 렌더링 수행.
-  * **GitHub 코드 링크**: [`js/app.js (Line 57 ~ 110)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L57-L110)
+  * **GitHub 코드 링크**: [`js/app.js (Line 126 ~ 243)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L126-L243)
   * **상태별 렌더링 정리**:
     1. **로딩(loading)**: `<div class="spinner"></div>` 스피너 애니메이션 표시.
     2. **성공(success)**: `array.map()`과 템플릿 리터럴로 카드 동적 변환 후 `innerHTML` 반영.
@@ -284,7 +409,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 
 * **[구현 3-3] 보너스 과제: 언어별 프로젝트 필터링 (`array.filter()`)**
   * **설명**: 필터 버튼 클릭 시 `state.filterLanguage`를 변경하고 `projects.filter()`로 걸러진 프로젝트만 카드 출력.
-  * **GitHub 코드 링크**: [`js/app.js (Line 80 & L250)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L80)
+  * **GitHub 코드 링크**: [`js/app.js (Line 162 ~ 178 & L434 ~ 447)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L162)
 
 ---
 
@@ -294,7 +419,7 @@ React는 이 과정을 자동화한 것이고, 이 미션은 그 원리를 직�
 * **[구현 4-1] LocalStorage 연동 및 테마 스위칭**
   * **설명**: 초기 상태 로딩 시 `localStorage.getItem('theme') || 'light'`로 읽어오며, 토글 버튼 클릭 시 `setAttribute('data-theme', theme)` 및 `localStorage.setItem('theme', theme)` 수행.
   * **시스템 다크모드 감지**: `prefers-color-scheme` 미디어 쿼리를 통한 OS 다크모드 자동 감지는 **미구현** (선택 사항). 사용자가 직접 토글 버튼으로 테마를 선택하는 방식만 지원하며, 선택값은 localStorage에 영속 저장된다.
-  * **GitHub 코드 링크**: [`js/app.js (Line 13 & L38)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L13) | [`css/style.css (Line 38 ~ 59)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L38-L59)
+  * **GitHub 코드 링크**: [`js/app.js (Line 30, L81 ~ 100 & L378 ~ 382)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L81) | [`css/style.css (Line 7 ~ 85)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L7-L85)
   * **주요 코드 주석**:
     ```javascript
     // 테마 변경 렌더러
@@ -325,6 +450,8 @@ b1_1/
 │   └── style.css       # 메인 스타일시트 (CSS 변수, Flexbox/Grid, 모바일 퍼스트 반응형)
 ├── js/
 │   └── app.js          # JavaScript (중앙 State 관리, API 통신, DOM 조작, 이벤트)
+├── images/             # 로컬 이미지 에셋 폴더 (미션 4-1 필수 요구 규격 준수)
+│   └── profile.jpg     # About 섹션 프로필 이미지
 ├── infographic/        # 과제 목표 6가지 핵심 개념 인포그래픽 (ChatGPT/Gemini 각 2종)
 │   ├── 0_web_guide.png
 │   ├── 1_시맨틱태그_ChatGPT.png / Gemini.png
@@ -342,7 +469,7 @@ b1_1/
 └── README.md           # [본 문서] 최종 결과물 요구조건 달성 보고서
 ```
 
-> **이미지 참고**: About 섹션의 프로필 이미지는 로컬 파일이 아닌 외부 URL(Unsplash CDN)을 사용합니다. 별도 `images/` 폴더는 존재하지 않으며, 실제 프로필 사진으로 교체 시 `index.html`의 `<img src>` 경로를 수정하면 됩니다.
+> **이미지 에셋 명세**: About 섹션의 프로필 이미지는 `images/profile.jpg` 로컬 경로를 사용하며, 이미지 로딩 실패나 스크린 리더 지원을 위해 구체적인 `alt="김동조 프로필 사진"` 속성이 지정되어 있습니다.
 
 ---
 
