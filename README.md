@@ -254,6 +254,10 @@ const generateCards = (repositories, targetLanguage) => {
 ### 4. `.then()` vs `await` 상세 비교
 
 두 방식 모두 `Promise`의 결과 데이터를 꺼내 쓰는 방법이지만, **작성 스타일과 제어 방식**에서 큰 차이가 있습니다.
+#### 차이점 한눈에 보기
+
+  - .then(): "데이터 오면 이 함수 실행해 줘" (알림 예약)
+  - await: "데이터 올 때까지 잠시 멈췄다가 이 변수에 바로 담아줘" (직접 대기)
 
 #### ① `.then()` 방식 (Promise Chaining)
 
