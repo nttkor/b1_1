@@ -107,46 +107,22 @@
 
 **찾기 → 모으기 → 등록** 세 단계로 구성했습니다.
 
-1. **찾기 (Select)**: `querySelector`와 `querySelectorAll`을 활용해 CSS 선택자(ID `#`, 클래스 `.`)로 DOM 요소를 정확하게 탐색합니다.
-2. **모으기 (Collect & Cache)**: 탐색한 요소를 `elements` 객체에 한 번만 모아 캐싱함으로써, 반복적인 DOM 탐색 비용을 방지하고 성능을 최적화합니다.
-3. **등록 (Register & Bind)**: HTML 인라인 `onclick` 대신 `addEventListener`를 사용하여 관심사(HTML 구조와 JS 동작)를 분리하고, 단일 등록·NodeList 순회 등록·부모 요소를 활용한 **이벤트 위임(Event Delegation)** 패턴으로 효율적으로 연결합니다.
+1. **찾기 (Select)**: `querySelector`를 사용해 CSS 선택자(ID `#`, 클래스 `.`)로 원하는 DOM 요소를 탐색합니다.
+2. **모으기 (Collect & Cache)**: 탐색한 요소를 `elements` 객체에 한 번만 모아 캐싱함으로써, 불필요한 반복 탐색(DOM Re-querying)을 방지합니다.
+3. **등록 (Register & Bind)**: HTML `onclick` 대신 `addEventListener`를 사용하여 관심사(구조와 로직)를 분리하고, 요소 존재 여부를 확인(`if`)하여 안전하게 이벤트를 연결합니다.
 
 ```javascript
-// 1 & 2. 찾기 및 모으기: querySelector/querySelectorAll로 DOM을 선택하고 elements 객체에 보관
+// 1. 찾기 & 2. 모으기: querySelector로 DOM 요소를 선택해 elements 객체에 보관
 const elements = {
-  // querySelector: CSS 선택자(#id, .class 등)로 단일 DOM 요소 선택
-  hamburgerBtn: document.querySelector('#hamburger-btn'),
-  navMenu: document.querySelector('#nav-menu'),
-  filterContainer: document.querySelector('#filter-container'),
-
-  // querySelectorAll: 일치하는 모든 요소를 NodeList(유사 배열)로 반환
-  navLinks: document.querySelectorAll('.nav-link')
+  hamburgerBtn: document.querySelector('#hamburger-btn')
 };
 
-// 3. 등록: HTML onclick 대신 addEventListener 사용 (관심사 분리)
-
-// ① 단일 요소 이벤트 등록 (햄버거 메뉴 토글)
-elements.hamburgerBtn.addEventListener('click', () => {
-  const isOpen = elements.hamburgerBtn.classList.toggle('active');
-  elements.navMenu.classList.toggle('active', isOpen);
-});
-
-// ② 다중 요소 이벤트 등록 (querySelectorAll로 얻은 NodeList 순회)
-elements.navLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    elements.hamburgerBtn.classList.remove('active');
-    elements.navMenu.classList.remove('active');
+// 3. 등록: 요소가 존재할 때만 안전하게 addEventListener 연결 (null 에러 방지)
+if (elements.hamburgerBtn) {
+  elements.hamburgerBtn.addEventListener('click', () => {
+    elements.hamburgerBtn.classList.toggle('active');
   });
-});
-
-// ③ 동적/다중 요소는 이벤트 위임(Event Delegation): 부모에 리스너 1개만 등록
-elements.filterContainer.addEventListener('click', (e) => {
-  if (e.target.classList.contains('filter-btn')) {
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    e.target.classList.add('active');
-    console.log(`선택된 언어 필터: ${e.target.getAttribute('data-lang')}`);
-  }
-});
+}
 ```
 
 ![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png)
