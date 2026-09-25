@@ -113,14 +113,16 @@
 
 ```javascript
 {
-  // 1. 찾기 & 2. 모으기: querySelector로 DOM 요소를 선택해 elements 객체에 보관
+  // 1. 찾기 & 2. 모으기: querySelectorAll로 페이지의 모든 버튼 선택
   const elements = {
-    hamburgerBtn: document.querySelector('#hamburger-btn')
+    buttons: document.querySelectorAll('button')
   };
 
-  // 3. 등록: addEventListener로 클릭 이벤트 연결 (옵셔널 체이닝으로 null 안전성 확보)
-  elements.hamburgerBtn?.addEventListener('click', () => {
-    elements.hamburgerBtn.classList.toggle('active');
+  // 3. 등록: 어떤 버튼을 누르든 해당 버튼의 ID 이름 표시
+  elements.buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      console.log(`클릭된 버튼 ID: ${btn.id || '(ID 없음)'}`);
+    });
   });
 }
 ```
