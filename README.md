@@ -112,14 +112,14 @@
 3. **등록 (Register & Bind)**: HTML `onclick` 대신 `addEventListener`를 사용하여 관심사(구조와 로직)를 분리하고, 요소 존재 여부를 확인(`if`)하여 안전하게 이벤트를 연결합니다.
 
 ```javascript
-// 1. 찾기 & 2. 모으기: querySelector로 DOM 요소를 선택해 elements 객체에 보관
-const elements = {
-  hamburgerBtn: document.querySelector('#hamburger-btn')
-};
+{
+  // 1. 찾기 & 2. 모으기: querySelector로 DOM 요소를 선택해 elements 객체에 보관
+  const elements = {
+    hamburgerBtn: document.querySelector('#hamburger-btn')
+  };
 
-// 3. 등록: 요소가 존재할 때만 안전하게 addEventListener 연결 (null 에러 방지)
-if (elements.hamburgerBtn) {
-  elements.hamburgerBtn.addEventListener('click', () => {
+  // 3. 등록: addEventListener로 클릭 이벤트 연결 (옵셔널 체이닝으로 null 안전성 확보)
+  elements.hamburgerBtn?.addEventListener('click', () => {
     elements.hamburgerBtn.classList.toggle('active');
   });
 }
