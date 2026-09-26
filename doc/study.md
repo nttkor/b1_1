@@ -1,5 +1,7 @@
 
 
+<a id="html-css-javascript"></a>
+
 예전처럼 HTML 하나로 화면과 스타일을 모두 다루던 방식에서 발전하여, 현대 웹 개발에서는 **HTML, CSS, JavaScript**라는 3가지 핵심 기술로 역할을 명확히 나누어 개발합니다. 이 세 가지는 브라우저가 직접 이해하는 유일한 기초 언어들입니다.
 
 이 3가지의 관계는 **'집을 짓는 과정'**에 비유하면 직관적으로 이해할 수 있습니다.
@@ -11,7 +13,9 @@
 * **집 짓기 비유**: 건물의 기둥을 세우고 방, 거실, 현관의 위치를 잡는 뼈대 공사와 같습니다.
 * **핵심 특징**: 과거에는 구역을 나누기 위해 `<div>` 태그를 남용하는 경우가 많았으나, 현대 웹 개발에서는 `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`와 같은 **시맨틱(Semantic) 태그**를 사용합니다. 이를 통해 검색 엔진이 웹페이지 구조를 잘 파악할 수 있고(**검색 엔진 최적화, SEO**), 시각 장애인용 스크린 리더 등에서도 웹을 정확히 읽을 수 있게 돕습니다(**웹 접근성**).
 
-**시맨틱 태그(Semantic Tag)**란 태그 자체에 **의미(Semantics)**를 부여하여 웹페이지의 **구조와 역할(Semantic Structure)**을 명확하게 표현하는 HTML 태그를 의미합니다. {#semantic}
+<a id="semantic"></a>
+
+**시맨틱 태그(Semantic Tag)**란 태그 자체에 **의미(Semantics)**를 부여하여 웹페이지의 **구조와 역할(Semantic Structure)**을 명확하게 표현하는 HTML 태그를 의미합니다.
 
 화면 구역을 구분할 때 의미 없는 `<div>` 태그를 무분별하게 남용하는 대신, 해당 영역이 어떤 역할을 하는지 브라우저와 개발자가 한눈에 알 수 있는 태그를 사용하는 마크업 방식입니다.
 
@@ -67,7 +71,9 @@
 4. **현대 프론트엔드의 기반**: 최근 자주 쓰이는 React, Vue, Angular 같은 프레임워크들도 결국 내부적으로는 이 HTML, CSS, JavaScript 세 가지로 변환되어 동작합니다.
 
 ---
-## html 문법 {#html-css-javascript}
+<a id="html-css-javascript"></a>
+
+## html 문법
 **네, HTML의 `class` 속성과 Python의 `class`는 이름만 같을 뿐 완전히 다른 개념입니다!** 
 
 이전 질문에서 보셨던 `<button class="hamburger-btn">`의 **HTML `class`**와 Python의 **객체지향 `class`**가 어떻게 다른지 직관적으로 비교해 드리겠습니다.
@@ -112,7 +118,9 @@
 
 💡 HTML의 또 다른 식별자인 **`id`와 `class`는 각각 언제 나누어 쓰는지** 차이점도 알아볼까요?
 ---
-## 다크 모드 전환 기능 {#다크-모드-전환}
+<a id="다크-모드-전환"></a>
+
+## 다크 모드 전환 기능
 현대 웹 개발에서 다크 모드 전환 기능은 **HTML, CSS, JavaScript**가 어떻게 역할을 나누어 **"이벤트 → 상태 변경 → 화면 업데이트"** 흐름으로 동작하는지 보여주는 대표적인 예시입니다.
 
 ---
@@ -282,7 +290,9 @@ renderTheme();
 2. **상태 변경 (State Change)**: `state.theme` 값이 `'light'`에서 `'dark'`로 변경.
 3. **화면 업데이트 (Render)**: `setAttribute('data-theme', 'dark')`가 실행되면서 CSS 변수의 색상이 일괄 전환되고, `localStorage`에 저장.
 
-## 햄버거메뉴 {#햄버거메뉴}
+<a id="햄버거메뉴"></a>
+
+## 햄버거메뉴
 모바일처럼 화면 폭이 좁은 환경에서는 네비게이션 메뉴를 숨겨 두었다가, ☰ 모양의 **햄버거 버튼**을 클릭하면 메뉴가 나타나도록 처리합니다.
 
 햄버거 메뉴 역시 **HTML(구조) → CSS(스타일 & 미디어 쿼리) → JavaScript(이벤트 및 상태 변경)** 3단계 흐름으로 구현합니다.
@@ -483,7 +493,9 @@ hamburgerBtn.addEventListener('click', () => {
 
 ---
 
-## 반응형 웹 & 모바일 퍼스트 & 미디어 쿼리 {#responsive}
+<a id="responsive"></a>
+
+## 반응형 웹 & 모바일 퍼스트 & 미디어 쿼리
 
 ### 반응형 웹(Responsive Web)이란?
 
@@ -546,7 +558,9 @@ CSS에서 **"화면이 이 조건을 만족할 때만 이 스타일을 적용해
 
 ---
 
-## Flexbox vs Grid — 언제 무엇을 쓰나 {#layout}
+<a id="layout"></a>
+
+## Flexbox vs Grid — 언제 무엇을 쓰나
 
 ### Flexbox — 1차원 레이아웃
 
@@ -599,7 +613,9 @@ CSS에서 **"화면이 이 조건을 만족할 때만 이 스타일을 적용해
 
 ---
 
-## CSS 변수 (Custom Properties) — 다크모드의 핵심 {#css-variables}
+<a id="css-variables"></a>
+
+## CSS 변수 (Custom Properties) — 다크모드의 핵심
 
 ### CSS 변수란?
 
@@ -649,7 +665,9 @@ body {
 
 ---
 
-## 이벤트 → 상태 → 렌더링 패턴 {#event-state-render}
+<a id="event-state-render"></a>
+
+## 이벤트 → 상태 → 렌더링 패턴
 
 ### 이 패턴이 무엇인가?
 
@@ -702,7 +720,9 @@ elements.hamburgerBtn.addEventListener('click', () => {
 
 ---
 
-## Single Source of Truth — 중앙 상태 관리 {#single-source}
+<a id="single-source"></a>
+
+## Single Source of Truth — 중앙 상태 관리
 
 ### 개념
 
@@ -727,7 +747,9 @@ const state = {
 
 ---
 
-## 비동기 통신 — fetch / async-await / try-catch {#async}
+<a id="async"></a>
+
+## 비동기 통신 — fetch / async-await / try-catch
 
 ### 동기 vs 비동기
 
@@ -805,7 +827,9 @@ const fetchGitHubProjects = async () => {
 
 ---
 
-## GitHub REST API 연동 {#github-api}
+<a id="github-api"></a>
+
+## GitHub REST API 연동
 
 ### API란?
 
@@ -848,7 +872,9 @@ GitHub API는 로그인하지 않은 상태에서 **1시간에 최대 60번** �
 
 ---
 
-## localStorage — 브라우저 저장소 {#localstorage}
+<a id="localstorage"></a>
+
+## localStorage — 브라우저 저장소
 
 ### localStorage란?
 
@@ -885,7 +911,9 @@ const renderTheme = () => {
 
 ---
 
-## Intersection Observer — 스크롤 애니메이션 {#intersection-observer}
+<a id="intersection-observer"></a>
+
+## Intersection Observer — 스크롤 애니메이션
 
 ### Intersection Observer란?
 
@@ -931,7 +959,9 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 ---
 
-## 폼 유효성 검사 (Form Validation) {#form-validation}
+<a id="form-validation"></a>
+
+## 폼 유효성 검사 (Form Validation)
 
 ### 폼 유효성 검사란?
 
@@ -996,7 +1026,9 @@ elements.contactForm.addEventListener('submit', (e) => {
 
 ---
 
-## 웹 접근성 (ARIA) — 보조 기기를 위한 속성 {#aria}
+<a id="aria"></a>
+
+## 웹 접근성 (ARIA) — 보조 기기를 위한 속성
 
 ### 웹 접근성이란?
 
