@@ -545,7 +545,7 @@ const renderMenu = () => {
 | # | 보너스 과제 | 구현 상태 | 비고 |
 | :--- | :--- | :---: | :--- |
 | 1 | **언어별 프로젝트 필터링** (`array.filter()` 활용) | ✅ **완료** | 이벤트 위임 패턴 포함 |
-| 2 | **타이핑 효과** — Hero 섹션 한 글자씩 등장 | ❌ 미구현 | — |
+| 2 | **타이핑 효과** — Hero 섹션 한 글자씩 등장 | ✅ **완료** | 순환 무한 루프 + 커서 깜빡임 애니메이션 |
 | 3 | **폼 실제 전송** — Formspree / EmailJS 연동 | ❌ 미구현 | — |
 | 4 | **시스템 다크모드 감지** — `prefers-color-scheme` | ❌ 미구현 | localStorage 수동 토글로 대체 |
 
@@ -582,10 +582,63 @@ const renderMenu = () => {
 
 - **GitHub 코드 링크**: [`js/app.js L162~178 (필터링 로직)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L162) | [`js/app.js L430~447 (이벤트 위임)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L430)
 
-#### ❌ [보너스 2] 타이핑 효과 — 미구현
+#### ✅ [보너스 2] 타이핑 효과 — 완전 구현
 
-- Hero 섹션에 `setInterval`을 이용한 타자기 효과는 구현하지 않았습니다.
-- 현재 Hero 섹션의 소개 문구는 정적 HTML로 표시됩니다.
+- **동작 방식**:
+  1. Hero 섹션의 주요 소개 문구를 `words` 배열로 관리하며, `setTimeout` 재귀 호출을 통해 부드러운 타이핑 루프 실행
+  2. **타이핑 모드**: 90ms 간격으로 글자를 한 글자씩 추가 (`substring(0, charIndex)`)
+  3. **완성 대기**: 문장이 완성되면 1.8초간 대기하여 사용자가 내용을 편안하게 읽을 수 있도록 처리
+  4. **삭제 모드**: 40ms 간격으로 빠르게 한 글자씩 삭제
+  5. **순환 전환**: 문장이 전부 지워지면 다음 문구 인덱스로 전환(`(wordIndex + 1) % words.length`) 후 0.4초 뒤 다시 타이핑 시작
+  6. CSS 키프레임(`blink`) 애니메이션으로 타자기 커서(`|`)가 깜빡이는 디테일 연출
+
+  ```javascript
+  const setupTypingAnimation = () => {
+    const typingElement = elements.typingText;
+    if (!typingElement) return;
+
+    const words = [
+      '웹의 원리를 탐구합니다.',
+      '사용자 중심의 UI를 만듭니다.',
+      '새로운 기술을 즐겁게 학습합니다.',
+      '문제를 끝까지 파고듭니다.'
+    ];
+
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    const type = () => {
+      const currentWord = words[wordIndex];
+
+      if (isDeleting) {
+        charIndex--;
+        typingElement.textContent = currentWord.substring(0, charIndex);
+      } else {
+        charIndex++;
+        typingElement.textContent = currentWord.substring(0, charIndex);
+      }
+
+      let delay = isDeleting ? 40 : 90;
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        delay = 1800; // 문장 완성 후 대기
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        delay = 400; // 삭제 완료 후 대기
+      }
+
+      setTimeout(type, delay);
+    };
+
+    typingElement.textContent = '';
+    setTimeout(type, 500);
+  };
+  ```
+
+- **GitHub 코드 링크**: [`js/app.js L509~560 (타이핑 애니메이션 로직)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L509) | [`css/style.css L403~418 (커서 깜빡임 애니메이션)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L403)
 
 #### ❌ [보너스 3] 폼 실제 전송 (Formspree / EmailJS) — 미구현
 
