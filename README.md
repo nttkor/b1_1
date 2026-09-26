@@ -362,7 +362,7 @@ const fetchGitHubProjects = async () => {
 
 > 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L370~430`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L370-L430) | 상세 설명: [doc/study.md#event-state-render](doc/study.md#event-state-render)
 
-![DOMTree Gemini](pic/rendering_pipe_line.png)
+![DOMTree Gemini](pic/WebRenderingEventHandle.png)
 
 ![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
 
