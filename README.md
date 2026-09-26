@@ -31,9 +31,9 @@
 
 | 분류 | 기술 | 적용 위치 |
 | :--- | :--- | :--- |
-| 구조 | HTML5 (시맨틱 태그) | `index.html` — header/nav/main/section/article/footer |
-| 스타일 | CSS3 (변수, Flexbox, Grid, 미디어 쿼리) | `css/style.css` |
-| 동작 | JavaScript ES6+ (async/await, 구조분해, 배열 메서드) | `js/app.js` |
+| 구조 | HTML5 (시맨틱 태그) | [index.html](index.html) — header/nav/main/section/article/footer |
+| 스타일 | CSS3 (변수, Flexbox, Grid, 미디어 쿼리) | [css/style.css](css/style.css) |
+| 동작 | JavaScript ES6+ (async/await, 구조분해, 배열 메서드) | [js/app.js](js/app.js) |
 | API | GitHub REST API | `fetch` → `api.github.com/users/nttkor/repos` |
 | 저장소 | localStorage | 다크모드 설정 새로고침 유지 |
 | 배포 | GitHub Pages | `nttkor.github.io/b1_1/` |
@@ -48,6 +48,9 @@
 ![웹 개발 기초 가이드](infographic/0_web_guide.png)
 
 ### Q1. HTML 시맨틱 태그의 사용 이유와 본인만의 구조 설계 기준
+
+> 편 소스: [index.html](index.html) | GitHub: [`index.html`](https://github.com/nttkor/b1_1/blob/main/index.html) | 상세 설명: [doc/study.md#semantic](doc/study.md#semantic)
+
 ![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
 
 ![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
@@ -66,6 +69,9 @@
   5. `<footer>`: 페이지 최하단 영역으로, 저작권 표기 및 외부 프로필(GitHub, LinkedIn) 링크를 배치.
 
 ### Q2. CSS Flexbox와 Grid의 차이점 및 상황별 선택 기준
+
+> 편 소스: [css/style.css](css/style.css) | GitHub: [`css/style.css`](https://github.com/nttkor/b1_1/blob/main/css/style.css) | 상세 설명: [doc/study.md#layout](doc/study.md#layout)
+
 ![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png)
 
 ![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png)
@@ -102,6 +108,9 @@
 ```
 
 ### Q3. querySelector로 DOM을 선택하고, addEventListener로 이벤트를 연결하는 흐름
+
+> 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L1~70`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L1-L70) | 상세 설명: [doc/study.md#event-state-render](doc/study.md#event-state-render)
+
 ![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png)
 
 ![querySelector Gemini](infographic/3_querySelector_Gemini.png)
@@ -129,6 +138,9 @@
 ```
 
 ### Q4. 화살표 함수, 구조분해 할당, 배열 메서드(map/filter)의 필요성과 활용
+
+> 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L126~243`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L126-L243) | 상세 설명: [doc/study.md#single-source](doc/study.md#single-source)
+
 ![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png)
 
 ![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png)
@@ -194,6 +206,9 @@ const generateCards = (repositories, targetLanguage) => {
 
 
 ### Q5. fetch와 async/await 비동기 데이터 호출 및 4가지 UI 상태 표현
+
+> 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L250~293`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L250-L293) | 상세 설명: [doc/study.md#async](doc/study.md#async)
+
 ![fetch async await ChatGPT](infographic/5_fetch_async_await_ChatGPT.png)
 
 ![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png)
@@ -350,6 +365,9 @@ const fetchGitHubProjects = async () => {
 ```
 
 ### Q6. "하나의 기능"을 만들기 위한 이벤트 → 상태 변경 → DOM 업데이트 흐름
+
+> 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L370~430`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L370-L430) | 상세 설명: [doc/study.md#event-state-render](doc/study.md#event-state-render)
+
 ![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
 
 ![DOMTree Gemini](infographic/6_DOMTree_Gemini.png)
@@ -394,7 +412,7 @@ const renderMenu = () => {
 
 ## 🎯 5. 최종 결과물 및 요구조건 달성 현황 (상세 주석 & GitHub 코드 링크)
 
-미션 명세서(`mission.md`) 및 평가 질문지(`Eval.pdf`)의 **최종 결과물 5대 필수 조건**과 세부 기능 요구사항을 모두 충족하였으며, 각 조건별 실제 구현 코드 위치와 라인별 주석 설명을 아래와 같이 연결합니다.
+미션 명세서([doc/mission.md](doc/mission.md)) 및 평가 질문지([doc/Eval.pdf](doc/Eval.pdf))의 **최종 결과물 5대 필수 조건**과 세부 기능 요구사항을 모두 충족하였으며, 각 조건별 실제 구현 코드 위치와 라인별 주석 설명을 아래와 같이 연결합니다.
 
 ---
 
@@ -403,7 +421,7 @@ const renderMenu = () => {
 
 * **[구현 1-1] 6개 시맨틱 섹션 구성**
   * **설명**: `div` 남용 없이 웹 접근성(Accessibility)과 SEO를 높이는 시맨틱 태그(`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`)로 설계.
-  * **GitHub 코드 링크**: [`index.html (Line 53 ~ 388)`](https://github.com/nttkor/b1_1/blob/main/index.html#L53-L388) | 로컬 파일: [`index.html`](file:///Users/mpeg46551/b1_1/index.html)
+  * **GitHub 코드 링크**: [`index.html (Line 53 ~ 388)`](https://github.com/nttkor/b1_1/blob/main/index.html#L53-L388) | 로컬 파일: [index.html](index.html)
   * **주요 코드 주석**:
     ```html
     <!-- Hero 섹션: 인사말, 타자기/소개글, CTA 버튼 -->
@@ -424,7 +442,7 @@ const renderMenu = () => {
 
 * **[구현 1-2] Flexbox & Grid 반응형 레이아웃 분리**
   * **설명**: 1차원 수평 정렬이 필요한 Navigation에는 **Flexbox**, 2차원 반응형 격자 배치가 필요한 Projects 카드에는 **Grid**(`repeat(auto-fit, minmax(280px, 1fr))`)를 선택하여 적용.
-  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L250 / Grid: L601)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L250) | 로컬 파일: [`css/style.css`](file:///Users/mpeg46551/b1_1/css/style.css)
+  * **GitHub 코드 링크**: [`css/style.css (Flexbox: L250 / Grid: L601)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L250) | 로컬 파일: [css/style.css](css/style.css)
   * **주요 코드 주석**:
     ```css
     /* Navigation Bar: Flexbox 적용 (로고 왼쪽, 메뉴 오른쪽 수평 정렬) */
@@ -453,7 +471,7 @@ const renderMenu = () => {
 
 * **[구현 2-1] 모바일 햄버거 메뉴 토글**
   * **설명**: 768px 미만 모바일에서 햄버거 버튼 클릭 시 `state.isMenuOpen`을 반전시키고 `classList.toggle('active')`로 메뉴 개폐.
-  * **GitHub 코드 링크**: [`js/app.js (Line 106 & L385)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L106) | 로컬 파일: [`js/app.js`](file:///Users/mpeg46551/b1_1/js/app.js)
+  * **GitHub 코드 링크**: [`js/app.js (Line 106 & L385)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L106) | 로컬 파일: [js/app.js](js/app.js)
   * **주요 코드 주석**:
     ```javascript
     // 햄버거 메뉴 UI 렌더링 함수
@@ -557,10 +575,11 @@ b1_1/
 │   └── 6_DOMTree_ChatGPT.png / Gemini.png
 ├── pic/                # 스크린샷 (데스크톱/모바일 × 라이트/다크)
 ├── doc/
-│   ├── plan.md         # 미션 구현 계획서 & 평가 인터뷰 모범 Q&A 10선
-│   ├── code_review.md  # 라인별 상세 코드 리뷰 및 아키텍처 분석 문서
-│   ├── mission.md      # 미션 요구사항 원본
-│   └── Eval.pdf        # 평가 질문지 및 레퍼런스
+│   ├── [plan.md](doc/plan.md)         # 미션 구현 계획서 & 평가 인터뷰 모범 Q&A 10선
+│   ├── [code_review.md](doc/code_review.md)  # 라인별 상세 코드 리뷰 및 아키텍처 분석 문서
+│   ├── [study.md](doc/study.md)       # 용어 & 기술 상세 설명 (초보자용)
+│   ├── [mission.md](doc/mission.md)   # 미션 요구사항 원본
+│   └── [Eval.pdf](doc/Eval.pdf)       # 평가 질문지 및 레퍼런스
 └── README.md           # [본 문서] 최종 결과물 요구조건 달성 보고서
 ```
 
@@ -572,6 +591,7 @@ b1_1/
 
 - 📄 **[doc/plan.md](doc/plan.md)**: 평가 15개 문항에 대한 핵심 인터뷰 답변집
 - 📖 **[doc/code_review.md](doc/code_review.md)**: 전체 코드 구조 및 라인별 종합 분석 보고서
+- 📘 **[doc/study.md](doc/study.md)**: 용어 & 기술 상세 설명 (초보자용 개념 정리)
 
 ---
 
