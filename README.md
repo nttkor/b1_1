@@ -521,7 +521,7 @@ const renderMenu = () => {
     4. **빈 상태(empty)**: "표시할 프로젝트가 없습니다." 안내 문구 렌더링.
 
 * **[구현 3-3] 보너스 과제: 언어별 프로젝트 필터링 (`array.filter()`)**
-  * **설명**: 필터 버튼 클릭 시 `state.filterLanguage`를 변경하고 `projects.filter()`로 걸러진 프로젝트만 카드 출력.
+  * **설명**: 필터 버튼 클릭 시 `state.filterLanguage`를 변경하고 `projects.filter()`로 걸러진 프로젝트만 카드 출력. 이벤트 위임(Event Delegation) 패턴으로 부모 컨테이너에 클릭 리스너 하나만 등록해 처리.
   * **GitHub 코드 링크**: [`js/app.js (Line 162 ~ 178 & L434 ~ 447)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L162)
 
 ---
@@ -531,7 +531,6 @@ const renderMenu = () => {
 
 * **[구현 4-1] LocalStorage 연동 및 테마 스위칭**
   * **설명**: 초기 상태 로딩 시 `localStorage.getItem('theme') || 'light'`로 읽어오며, 토글 버튼 클릭 시 `setAttribute('data-theme', theme)` 및 `localStorage.setItem('theme', theme)` 수행.
-  * **시스템 다크모드 감지**: `prefers-color-scheme` 미디어 쿼리를 통한 OS 다크모드 자동 감지는 **미구현** (선택 사항). 사용자가 직접 토글 버튼으로 테마를 선택하는 방식만 지원하며, 선택값은 localStorage에 영속 저장된다.
   * **GitHub 코드 링크**: [`js/app.js (Line 30, L81 ~ 100 & L378 ~ 382)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L81) | [`css/style.css (Line 7 ~ 85)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L7-L85)
   * **주요 코드 주석**:
     ```javascript
@@ -542,6 +541,68 @@ const renderMenu = () => {
       localStorage.setItem('theme', theme); // 새로고침 후에도 상태 유지
     };
     ```
+
+---
+
+### 🏆 보너스 과제 달성 현황
+
+> 미션 명세서 §4 "보너스 과제" 4개 항목에 대한 구현 상태입니다.
+
+| # | 보너스 과제 | 구현 상태 | 비고 |
+| :--- | :--- | :---: | :--- |
+| 1 | **언어별 프로젝트 필터링** (`array.filter()` 활용) | ✅ **완료** | 이벤트 위임 패턴 포함 |
+| 2 | **타이핑 효과** — Hero 섹션 한 글자씩 등장 | ❌ 미구현 | — |
+| 3 | **폼 실제 전송** — Formspree / EmailJS 연동 | ❌ 미구현 | — |
+| 4 | **시스템 다크모드 감지** — `prefers-color-scheme` | ❌ 미구현 | localStorage 수동 토글로 대체 |
+
+#### ✅ [보너스 1] 언어별 프로젝트 필터링 — 완전 구현
+
+- **동작 방식**:
+  1. 필터 버튼 클릭 시 **이벤트 위임(Event Delegation)** 으로 부모(`#filter-container`)에서 `e.target`을 확인
+  2. `state.filterLanguage = e.target.getAttribute('data-lang')`으로 상태 변경
+  3. `renderProjects()` 호출 → `projects.filter()`로 해당 언어 저장소만 선별 후 카드 재렌더링
+  4. Python 필터는 `Jupyter Notebook`도 함께 매칭 (파이썬 기반 노트북 파일 포함)
+
+  ```javascript
+  // 이벤트 위임: 부모에 리스너 1개만 등록 (filter-btn마다 등록하지 않음)
+  elements.filterContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('filter-btn')) {
+      state.filterLanguage = e.target.getAttribute('data-lang'); // 상태 변경
+      renderProjects(); // 재렌더링
+    }
+  });
+
+  // renderProjects 내부 필터링 로직
+  const filtered = filterLanguage === 'all'
+    ? projects
+    : projects.filter(repo => {
+        if (!repo.language) return false;
+        const repoLang = repo.language.toLowerCase();
+        const targetLang = filterLanguage.toLowerCase();
+        if (targetLang === 'python') {
+          return repoLang === 'python' || repoLang === 'jupyter notebook';
+        }
+        return repoLang === targetLang;
+      });
+  ```
+
+- **GitHub 코드 링크**: [`js/app.js L162~178 (필터링 로직)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L162) | [`js/app.js L430~447 (이벤트 위임)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L430)
+
+#### ❌ [보너스 2] 타이핑 효과 — 미구현
+
+- Hero 섹션에 `setInterval`을 이용한 타자기 효과는 구현하지 않았습니다.
+- 현재 Hero 섹션의 소개 문구는 정적 HTML로 표시됩니다.
+
+#### ❌ [보너스 3] 폼 실제 전송 (Formspree / EmailJS) — 미구현
+
+- 현재 Contact 폼은 클라이언트 측 **유효성 검사만** 수행하며, 실제 이메일 전송 기능은 없습니다.
+- `e.preventDefault()`로 기본 제출 동작을 막고, 검증 통과 시 성공 메시지(`#form-success-msg`)를 4초간 표시합니다.
+- Formspree 또는 EmailJS 연동은 추후 구현 과제로 남겨둡니다.
+
+#### ❌ [보너스 4] 시스템 다크모드 감지 (`prefers-color-scheme`) — 미구현
+
+- OS/브라우저 설정의 다크모드를 자동 감지하는 `window.matchMedia('(prefers-color-scheme: dark)')` 연동은 구현하지 않았습니다.
+- **대신**: 사용자가 직접 토글 버튼으로 테마를 선택하고, `localStorage`에 영속 저장하는 방식으로 새로고침 후에도 설정이 유지됩니다.
 
 ---
 
