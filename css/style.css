@@ -400,6 +400,20 @@ header.scrolled {
   color: var(--accent-color);
 }
 
+/* 타이핑 효과 커서 및 깜빡임 애니메이션 */
+.typing-cursor {
+  display: inline-block;
+  margin-left: 3px;
+  color: var(--accent-color);
+  font-weight: 300;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .hero-description {
   font-size: 1.1rem;
   color: var(--text-secondary);
