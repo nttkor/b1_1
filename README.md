@@ -48,6 +48,9 @@
 ![웹 개발 기초 가이드](infographic/0_web_guide.png)
 
 ### Q1. HTML 시맨틱 태그의 사용 이유와 본인만의 구조 설계 기준
+![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
+
+![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
 
 - **시맨틱 태그(Semantic Tag)를 사용하는 이유**:
   - `<div>`와 `<span>` 같은 무의미한(Non-semantic) 태그만 사용하면 브라우저, 검색엔진, 스크린 리더가 각 영역의 기능과 위계를 파악할 수 없습니다.
@@ -62,11 +65,10 @@
   4. `<article>`: `Skills` 섹션의 각 기술 스택 카드 및 `Projects` 섹션의 GitHub 저장소 카드는 그 자체로 독립적으로 배포되거나 재사용 가능한 단위이므로 `<article>`로 구조화.
   5. `<footer>`: 페이지 최하단 영역으로, 저작권 표기 및 외부 프로필(GitHub, LinkedIn) 링크를 배치.
 
-![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
-
-![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
-
 ### Q2. CSS Flexbox와 Grid의 차이점 및 상황별 선택 기준
+![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png)
+
+![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png)
 
 - **Flexbox vs Grid 핵심 차이점 비교**:
 
@@ -99,11 +101,10 @@
 }
 ```
 
-![FlexboxGrid ChatGPT](infographic/2_FlexboxGrid_ChatGPT.png)
-
-![FlexboxGrid Gemini](infographic/2_FlexboxGrid_Gemini.png)
-
 ### Q3. querySelector로 DOM을 선택하고, addEventListener로 이벤트를 연결하는 흐름
+![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png)
+
+![querySelector Gemini](infographic/3_querySelector_Gemini.png)
 
 **찾기 → 모으기 → 등록** 세 단계로 구성했습니다.
 
@@ -127,11 +128,10 @@
 }
 ```
 
-![querySelector ChatGPT](infographic/3_querySelector_ChatGPT.png)
-
-![querySelector Gemini](infographic/3_querySelector_Gemini.png)
-
 ### Q4. 화살표 함수, 구조분해 할당, 배열 메서드(map/filter)의 필요성과 활용
+![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png)
+
+![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png)
 
 - **1. 화살표 함수 (Arrow Function)**:
   - **필요성**: 기존 `function` 키워드 대비 문법이 간결하며, 자신만의 `this`를 바인딩하지 않고 상위 렉시컬 스코프의 `this`를 유지하여 콜백 함수나 이벤트 핸들러 작성 시 `bind`나 임시 변수(`const self = this;`)를 쓸 필요가 없습니다.
@@ -192,11 +192,11 @@ const generateCards = (repositories, targetLanguage) => {
 };
 ```
 
-![화살표함수 ChatGPT](infographic/4_화살표함수_ChatGPT.png)
-
-![화살표함수 Gemini](infographic/4_화살표함수_Gemini.png)
 
 ### Q5. fetch와 async/await 비동기 데이터 호출 및 4가지 UI 상태 표현
+![fetch async await ChatGPT](infographic/5_fetch_async_await_ChatGPT.png)
+
+![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png)
 
 `idle → loading → success | error | empty` 상태 기반 렌더링으로 사용자 경험(UX)을 완결했습니다.
 
@@ -349,11 +349,10 @@ const fetchGitHubProjects = async () => {
 };
 ```
 
-![fetch async await ChatGPT](infographic/5_fetch_async_await_ChatGPT.png)
-
-![fetch async await Gemini](infographic/5_fetch_async_await_Gemini.png)
-
 ### Q6. "하나의 기능"을 만들기 위한 이벤트 → 상태 변경 → DOM 업데이트 흐름
+![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
+
+![DOMTree Gemini](infographic/6_DOMTree_Gemini.png)
 
 이벤트 핸들러에서 DOM을 직접 변경하지 않고, **"이벤트(Event) → 상태(State) 변경 → UI 렌더링(Render)"**의 단방향 데이터 흐름을 철저히 준수했습니다.
 
@@ -390,9 +389,6 @@ const renderMenu = () => {
 > [!NOTE]
 > 이 패턴은 **React의 `useState` 훅 및 단방향 데이터 흐름(State-driven UI)**과 동일한 기본 동작 원리입니다. 바닐라 JavaScript에서 상태 객체와 렌더 함수를 명확히 분리함으로써 컴포넌트 기반 프레임워크 학습의 견고한 디딤돌을 마련했습니다.
 
-![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
-
-![DOMTree Gemini](infographic/6_DOMTree_Gemini.png)
 
 ---
 
