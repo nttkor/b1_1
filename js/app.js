@@ -63,7 +63,8 @@ const elements = {
   nameError:        document.getElementById('name-error'),
   emailError:       document.getElementById('email-error'),
   messageError:     document.getElementById('message-error'),
-  formSuccessMsg:   document.getElementById('form-success-msg')
+  formSuccessMsg:   document.getElementById('form-success-msg'),
+  typingText:       document.getElementById('typing-text')
 };
 
 
@@ -505,13 +506,70 @@ const setupScrollAnimation = () => {
 
 
 /* ==========================================================================
-   8. 앱 초기화 (Initialization)
+   8. 타이핑 애니메이션 루프 (Typing Animation Loop)
+   Hero 섹션의 타이틀 문구를 한 글자씩 타이핑하고 지우며 무한 순환
+   ========================================================================== */
+const setupTypingAnimation = () => {
+  const typingElement = elements.typingText;
+  if (!typingElement) return;
+
+  // 순환하며 타이핑될 문구 목록
+  const words = [
+    '웹의 원리를 탐구합니다.',
+    '사용자 중심의 UI를 만듭니다.',
+    '새로운 기술을 즐겁게 학습합니다.',
+    '문제를 끝까지 파고듭니다.'
+  ];
+
+  let wordIndex = 0;      // 현재 출력 중인 문구의 인덱스
+  let charIndex = 0;      // 현재 문구에서 출력된 글자 수
+  let isDeleting = false; // 글자를 지우는 중인지 여부
+
+  const type = () => {
+    const currentWord = words[wordIndex];
+
+    if (isDeleting) {
+      // 삭제 모드: 한 글자씩 줄임
+      charIndex--;
+      typingElement.textContent = currentWord.substring(0, charIndex);
+    } else {
+      // 타이핑 모드: 한 글자씩 추가
+      charIndex++;
+      typingElement.textContent = currentWord.substring(0, charIndex);
+    }
+
+    // 기본 속도: 타이핑은 90ms, 지울 때는 40ms로 더 빠르게
+    let delay = isDeleting ? 40 : 90;
+
+    if (!isDeleting && charIndex === currentWord.length) {
+      // 문장이 완전히 완성되었을 때: 1.8초 동안 머물며 읽을 시간 제공 후 삭제 모드로 전환
+      delay = 1800;
+      isDeleting = true;
+    } else if (isDeleting && charIndex === 0) {
+      // 문장이 완전히 지워졌을 때: 다음 문구로 넘어가고 0.4초 후 타이핑 시작
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      delay = 400;
+    }
+
+    setTimeout(type, delay);
+  };
+
+  // 초기 렌더링 시 살짝 대기(500ms) 후 첫 글자부터 타이핑 시작
+  typingElement.textContent = '';
+  setTimeout(type, 500);
+};
+
+
+/* ==========================================================================
+   9. 앱 초기화 (Initialization)
    init(): 페이지 로드 시 가장 먼저 실행되는 진입점 함수
    ========================================================================== */
 const init = () => {
   renderTheme();          // 저장된 테마를 읽어 다크/라이트 적용
   setupEventListeners();  // 모든 이벤트 리스너 등록
   setupScrollAnimation(); // Intersection Observer로 스크롤 애니메이션 준비
+  setupTypingAnimation(); // 타이핑 애니메이션 루프 실행
   fetchGitHubProjects();  // GitHub API 호출 시작
 };
 
