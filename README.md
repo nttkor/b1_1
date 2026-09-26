@@ -51,9 +51,11 @@
 
 > 편 소스: [index.html](index.html) | GitHub: [`index.html`](https://github.com/nttkor/b1_1/blob/main/index.html) | 상세 설명: [doc/study.md#semantic](doc/study.md#semantic)
 
+![시맨틱태그 Gemini](pic/semantictag.png)
+
 ![시맨틱태그 ChatGPT](infographic/1_시맨틱태그_ChatGPT.png)
 
-![시맨틱태그 Gemini](infographic/1_시맨틱태그_Gemini.png)
+
 
 - **시맨틱 태그(Semantic Tag)를 사용하는 이유**:
   - `<div>`와 `<span>` 같은 무의미한(Non-semantic) 태그만 사용하면 브라우저, 검색엔진, 스크린 리더가 각 영역의 기능과 위계를 파악할 수 없습니다.

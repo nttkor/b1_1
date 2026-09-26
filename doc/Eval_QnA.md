@@ -7,6 +7,7 @@
 ---
 
 ### ❓ Q1. HTML, CSS, JavaScript를 분리한 이유와 각 파일의 역할은 무엇인가요?
+
 - **답변**: 
   - **관심사의 분리(Separation of Concerns)** 원칙을 따르기 위함입니다. 
   - **HTML (`index.html`)**: 웹페이지의 구조와 의미(Semantic Structure)를 담당합니다.
