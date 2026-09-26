@@ -362,6 +362,8 @@ const fetchGitHubProjects = async () => {
 
 > 편 소스: [js/app.js](js/app.js) | GitHub: [`js/app.js L370~430`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L370-L430) | 상세 설명: [doc/study.md#event-state-render](doc/study.md#event-state-render)
 
+![DOMTree Gemini](pic/rendering_pipe_line.png)
+
 ![DOMTree ChatGPT](infographic/6_DOMTree_ChatGPT.png)
 
 이벤트 핸들러에서 DOM을 직접 변경하지 않고, **"이벤트(Event) → 상태(State) 변경 → UI 렌더링(Render)"**의 단방향 데이터 흐름을 철저히 준수했습니다.
