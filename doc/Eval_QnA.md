@@ -59,11 +59,15 @@
 ---
 
 ### ❓ Q5. "이벤트 → 상태 변경 → 화면 업데이트" 흐름이 코드에서 어떻게 동작하는지 설명해보세요.
-- **답변 (예: 다크 모드 토글)**:
+**답변 (예: 다크 모드 토글)**:
 ![DOMTree Gemini](../pic/Event_flow.png)
-  1. **이벤트(Event)**: 사용자가 테마 토글 버튼을 클릭합니다 (`button.addEventListener('click', ...)`)
-  2. **상태 변경(State Change)**: `state.theme = state.theme === 'light' ? 'dark' : 'light'` 코드가 실행되어 `state` 객체의 값이 갱신됩니다.
-  3. **화면 업데이트(Render)**: 갱신된 `state.theme` 값을 바탕으로 `document.documentElement.setAttribute('data-theme', state.theme)`를 수행하여 화면 스타일이 즉시 바뀝니다.
+
+1. **이벤트 발생 (Event)**: 사용자가 테마 토글 버튼을 클릭합니다 (`button.addEventListener('click', ...)`).
+2. **상태 변경 (State Mutation)**: `state.theme = state.theme === 'light' ? 'dark' : 'light'` 코드가 실행되어 중앙 상태 관리용 `state` 객체의 값이 갱신됩니다.
+3. **렌더 함수 호출 (Render)**: 상태가 변경된 직후, UI를 최신 상태와 동기화하기 위해 `renderTheme()` 함수가 호출됩니다.
+4. **DOM 조작 (DOM Update)**: `renderTheme()` 함수 내부에서 갱신된 `state.theme` 값을 읽어와 `document.documentElement.setAttribute('data-theme', state.theme)`를 실행하여 DOM 노드의 속성을 변경합니다.
+5. **화면 갱신 (Visual Update)**: 브라우저 렌더링 엔진이 DOM의 속성 변화(`data-theme`)를 감지하고 새로운 CSS 스타일을 적용하여 최종적으로 화면 스타일이 즉시 바뀝니다.
+
 - 📖 이론: [study.md — 이벤트 → 상태 → 렌더링 패턴](study.md#event-state-render) | [study.md — 다크 모드 전환 기능](study.md#다크-모드-전환)
 - 💻 소스: [`app.js` — 테마 토글 이벤트 (L378-L382)](../js/app.js#L378-L382) | [`app.js` — renderTheme() (L81-L99)](../js/app.js#L81-L99)
 
