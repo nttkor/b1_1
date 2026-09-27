@@ -398,6 +398,7 @@ header.scrolled {
 
 .highlight {
   color: var(--accent-color);
+  word-break: keep-all;
 }
 
 /* 타이핑 효과 커서 및 깜빡임 애니메이션 */
