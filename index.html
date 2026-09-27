@@ -277,16 +277,20 @@
         <h2 class="section-title fade-in">Projects (GitHub Repos)</h2>
         <p class="section-subtitle fade-in">GitHub API에서 저장소 데이터를 동적으로 불러옵니다.</p>
 
-        <!-- 언어 필터 버튼 (보너스 기능)
-             data-lang: 버튼마다 언어 값을 저장하는 사용자 정의 데이터 속성
-             JS에서 e.target.getAttribute('data-lang')으로 값을 읽어 필터링 -->
-        <div class="filter-container fade-in" id="filter-container">
-          <!-- active 클래스: 현재 선택된 필터 버튼 강조 (기본: 전체) -->
-          <button class="filter-btn active" data-lang="all">전체</button>
-          <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
-          <button class="filter-btn" data-lang="HTML">HTML</button>
-          <button class="filter-btn" data-lang="CSS">CSS</button>
-          <button class="filter-btn" data-lang="Python">Python</button>
+        <!-- 언어 필터 버튼 & 새로고침 버튼 (툴바) -->
+        <div class="projects-toolbar fade-in">
+          <div class="filter-container" id="filter-container">
+            <!-- active 클래스: 현재 선택된 필터 버튼 강조 (기본: 전체) -->
+            <button class="filter-btn active" data-lang="all">전체</button>
+            <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
+            <button class="filter-btn" data-lang="HTML">HTML</button>
+            <button class="filter-btn" data-lang="CSS">CSS</button>
+            <button class="filter-btn" data-lang="Python">Python</button>
+          </div>
+          <!-- 새로고침 버튼: 클릭 시 GitHub API 재호출 및 순차 등장 시뮬레이션 -->
+          <button id="refresh-projects-btn" class="btn-refresh" aria-label="프로젝트 새로고침">
+            <i class="fa-solid fa-rotate" id="refresh-icon"></i> 새로고침
+          </button>
         </div>
 
         <!-- projects-container: JS가 상태(loading/success/error/empty)에 따라
