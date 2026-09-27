@@ -64,7 +64,8 @@ const elements = {
   emailError:       document.getElementById('email-error'),
   messageError:     document.getElementById('message-error'),
   formSuccessMsg:   document.getElementById('form-success-msg'),
-  typingText:       document.getElementById('typing-text')
+  typingText:       document.getElementById('typing-text'),
+  refreshBtn:       document.getElementById('refresh-projects-btn')
 };
 
 
@@ -192,7 +193,8 @@ const renderProjects = () => {
   /* ── 5. 성공 상태: 카드 목록 렌더링 ─────────────────── */
   // .map(): 배열의 각 요소를 변환해 새 배열 반환 (원본 변경 없음)
   // 각 repo 객체를 HTML 문자열(카드)로 변환
-  const cardsHtml = filtered.map(repo => {
+  // index: 0.5초 간격으로 차례대로 나타나도록 animation-delay 부여
+  const cardsHtml = filtered.map((repo, index) => {
     // 구조분해 할당: repo.name, repo.description 등을 변수로 한 번에 추출
     const { name, description, html_url, stargazers_count, language, updated_at } = repo;
 
@@ -205,10 +207,9 @@ const renderProjects = () => {
 
     const langClass = (language || 'default').toLowerCase().replace(/\s+/g, '-');
 
-    // 카드 HTML을 템플릿 리터럴로 생성
-    // || 연산자: 왼쪽 값이 falsy(null, undefined, '')이면 오른쪽 기본값 사용
+    // 카드 HTML을 템플릿 리터럴로 생성 (각 카드마다 0.5초씩 순차 등장)
     return `
-      <article class="project-card">
+      <article class="project-card" style="animation-delay: ${index * 0.5}s;">
         <div>
           <div class="project-header">
             <i class="fa-regular fa-folder-closed"></i>
@@ -252,42 +253,47 @@ const fetchGitHubProjects = async () => {
   // API 요청 전 로딩 상태로 변경하고 스피너 표시
   state.apiStatus = 'loading';
   renderProjects();
+  if (elements.refreshBtn) {
+    elements.refreshBtn.classList.add('loading');
+  }
+
+  // 사용자가 로딩 스피너 및 비동기 상태 전환을 충분히 체감할 수 있도록 최소 0.8초 보장
+  const minLoadingDelay = new Promise(resolve => setTimeout(resolve, 800));
 
   try {
-    // await fetch(...): 서버 응답이 올 때까지 기다림 (이 줄에서 일시 정지)
-    // sort=updated: 최근 업데이트 순 정렬 / per_page=12: 최대 12개 요청
-    const response = await fetch(
+    // await fetch(...): 서버 응답이 올 때까지 기다림
+    const fetchPromise = fetch(
       `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=12`
     );
 
+    // API 통신과 최소 대기 시간을 병렬 실행하여 스피너 가시성 확보
+    const [response] = await Promise.all([fetchPromise, minLoadingDelay]);
+
     // response.ok: HTTP 상태 코드가 200~299 범위인지 확인
-    // !response.ok: 성공이 아니면 (403, 404, 500 등) 에러 처리
     if (!response.ok) {
       if (response.status === 403) {
-        // throw new Error: 직접 에러를 발생시켜 catch 블록으로 이동
         throw new Error('API 호출 제한(Rate Limit)을 초과했습니다. 잠시 후 다시 시도해주세요.');
       }
-      // 백틱 + ${}: 상태 코드를 메시지에 동적으로 삽입
       throw new Error(`데이터를 불러오지 못했습니다. (코드: ${response.status})`);
     }
 
-    // await response.json(): 응답 본문을 JavaScript 객체로 파싱 (JSON → JS 배열)
+    // await response.json(): 응답 본문을 JavaScript 객체로 파싱
     const data = await response.json();
 
-    // .filter(repo => !repo.fork): fork된 저장소 제외 (내 원본 저장소만 표시)
-    // !repo.fork: fork 여부가 false인 것만 남김
+    // fork된 저장소 제외 (내 원본 저장소만 표시)
     state.projects = data.filter(repo => !repo.fork);
 
     // 저장소가 0개면 'empty', 1개 이상이면 'success'
     state.apiStatus = state.projects.length === 0 ? 'empty' : 'success';
 
   } catch (error) {
-    // try 블록 안에서 throw된 에러 또는 네트워크 단절 시 이 블록 실행
     state.apiStatus = 'error';
-    // error.message: Error 객체의 메시지 / 없으면 기본 메시지 사용
     state.errorMessage = error.message || '네트워크 통신 중 오류가 발생했습니다.';
 
   } finally {
+    if (elements.refreshBtn) {
+      elements.refreshBtn.classList.remove('loading');
+    }
     // finally: 성공이든 실패든 항상 실행 → 화면을 최종 상태로 업데이트
     renderProjects();
   }
@@ -471,6 +477,15 @@ const setupEventListeners = () => {
   elements.userNameInput.addEventListener('input', validateForm);
   elements.userEmailInput.addEventListener('input', validateForm);
   elements.userMessageInput.addEventListener('input', validateForm);
+
+  /* ⑨ 프로젝트 새로고침 버튼 클릭 ─────────────────────── */
+  if (elements.refreshBtn) {
+    elements.refreshBtn.addEventListener('click', () => {
+      // 이미 로딩 중이면 중복 클릭 방지
+      if (state.apiStatus === 'loading') return;
+      fetchGitHubProjects();
+    });
+  }
 };
 
 
