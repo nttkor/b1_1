@@ -373,7 +373,7 @@ header.scrolled {
 .hero-content {
   text-align: left;
   width: 100%;
-  max-width: 800px;
+  max-width: 980px;
   padding: 0 1rem;
 }
 
@@ -399,6 +399,7 @@ header.scrolled {
 
 .highlight {
   color: var(--accent-color);
+  white-space: nowrap;     /* 표시 문구가 길어도 무조건 1줄 유지 (2줄 줄바꿈 금지) */
   word-break: keep-all;
 }
 
@@ -934,5 +935,5 @@ header.scrolled {
 @media (min-width: 1024px) {
   /* 섹션 상하 여백 추가 확보 */
   .section { padding: 100px 0; }
-  .hero-title { font-size: 3.8rem; }
+  .hero-title { font-size: clamp(2.6rem, 3.5vw, 3.4rem); }
 }
