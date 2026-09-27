@@ -77,11 +77,12 @@
 - **답변**:
 ![DOMTree Gemini](../pic/Async_stateMachine.png)
   - `async` 함수 내에서 `fetch(url)`를 `await`로 호출하여 비동기 응답을 기다립니다.
+  - **로딩 가시성 및 UX 최적화**: API 통신이 너무 빨라 로딩 스피너가 순식간에 지나가지 않도록 `Promise.all([fetchPromise, minLoadingDelay])`을 활용해 최소 800ms의 로딩 스피너 가시성을 보장했습니다. 또한 언제든 상태 전환을 다시 확인할 수 있는 **[새로고침] 버튼**을 제공합니다.
   - **성공 처리 (`try`)**: 응답 status가 `res.ok` (200대)인 경우 JSON 변환 후 `state.projects`에 저장하고, `state.apiStatus = 'success'`로 지정한 뒤 프로젝트 카드를 화면에 렌더링합니다. (저장소가 비어있다면 `state.apiStatus = 'empty'`)
   - **실패 처리 (`catch`)**: 네트워크 오류나 API Rate Limit (403 forbidden) 발생 시 `catch` 블록으로 이동하여 `state.apiStatus = 'error'`로 설정하고, 사용자에게 "프로젝트를 불러올 수 없습니다" 메시지와 [재시도] 버튼을 렌더링합니다.
-  - **항상 실행 (`finally`)**: 성공/실패 여부와 관계없이 `renderProjects()`를 호출해 화면을 최신 상태로 업데이트합니다.
+  - **항상 실행 (`finally`)**: 성공/실패 여부와 관계없이 `renderProjects()`를 호출해 화면을 최신 상태로 업데이트하고 새로고침 버튼의 회전 애니메이션을 해제합니다.
 - 📖 이론: [study.md — 비동기 통신 fetch/async-await/try-catch](study.md#async) | [study.md — GitHub REST API 연동](study.md#github-api)
-- 💻 소스: [`app.js` — fetchGitHubProjects() (L250-L293)](../js/app.js#L250-L293)
+- 💻 소스: [`app.js` — fetchGitHubProjects()](../js/app.js)
 
 ---
 
@@ -89,9 +90,9 @@
 - **답변**:
 ![DOMTree Gemini](../pic/declare_dataprocessing.png)
   - **`filter` (데이터 정제)**: API로 전달받은 전체 저장소 배열에서 포크된 저장소를 제외하거나(`!repo.fork`), 사용자가 선택한 특정 언어(`state.filterLanguage`)에 해당하는 저장소만 걸러냅니다.
-  - **`map` (데이터 → UI 변환)**: 걸러진 저장소 객체 배열을 순회하며, 템플릿 리터럴(Template Literal)을 이용해 `<article class="project-card">` 형태의 HTML 태그 문자열 배열로 변환합니다.
+  - **`map` (데이터 → UI 변환 & 순차 등장)**: 걸러진 저장소 객체 배열을 순회하며, 템플릿 리터럴(Template Literal)을 이용해 `<article class="project-card">` 형태의 HTML 태그 문자열 배열로 변환합니다. 이때 `index`를 활용해 각 카드마다 `animation-delay: ${index * 0.5}s`를 인라인 스타일로 주입하여 **0.5초 간격으로 카드가 차례대로 스르륵 나타나는 순차 등장(Staggered) 애니메이션**을 구현했습니다.
   - 마지막으로 `.join('')`을 호출해 하나의 거대한 HTML 문자열로 합친 뒤 `projectsContainer.innerHTML`에 할당하여 화면에 렌더링합니다.
-- 💻 소스: [`app.js` — filter로 fork 제외 (L278)](../js/app.js#L276-L281) | [`app.js` — filter 언어 필터링 (L164-L177)](../js/app.js#L162-L177) | [`app.js` — map으로 카드 HTML 생성 (L194-L233)](../js/app.js#L194-L233)
+- 💻 소스: [`app.js` — filter로 fork 제외](../js/app.js) | [`app.js` — filter 언어 필터링](../js/app.js) | [`app.js` — map으로 카드 HTML 생성 및 순차 딜레이](../js/app.js)
 
 ---
 
