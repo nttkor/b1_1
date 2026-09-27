@@ -184,14 +184,14 @@
 
 ### ❓ Q15. Hero 섹션의 타이핑 효과(Typing Animation)는 어떻게 구현했나요?
 - **답변**:
-  - `words` 배열에 출력할 여러 문구를 정의하고, `setTimeout` 재귀 호출을 이용해 비동기 순환 루프를 구현했습니다.
-  - **타이핑 모드**: `charIndex`를 1씩 늘리며 `currentWord.substring(0, charIndex)`로 90ms마다 한 글자씩 추가합니다.
-  - **완성 대기**: 한 문장이 완전히 완성되면 사용자가 읽을 수 있도록 1.8초간 대기(`isDeleting = true`)합니다.
-  - **삭제 모드**: 40ms 간격으로 빠르게 한 글자씩 지워 백스페이스 효과를 연출합니다.
-  - **무한 루프**: 모두 지워지면 `(wordIndex + 1) % words.length`로 다음 문구로 넘어가고 0.4초 뒤 다시 타이핑을 시작합니다.
-  - **커서 애니메이션**: CSS `@keyframes blink`를 이용해 실제 타자기 커서(`|`)가 깜빡이는 디테일을 구현했습니다.
+  - `words` 배열에 출력할 문구들을 정의하고, `setTimeout` 재귀 호출을 이용해 비동기 순환 루프를 구현했습니다.
+  - **타이핑 모드**: 오른쪽으로 90ms마다 한 글자씩 추가(`substring(0, currentText.length + 1)`)하여 타자 치듯 텍스트를 완성합니다.
+  - **완성 대기**: 한 문장이 완성되면 사용자가 읽을 수 있도록 1초간 대기합니다.
+  - **좌측 스크롤 퇴장(앞글자 삭제) 모드**: 흔한 백스페이스 대신 **맨 앞 글자를 하나씩 잘라내어**(`currentText.substring(1)`, 45ms 간격) 전체 문장이 왼쪽으로 스르륵 빨려 들어가듯 사라지는 독창적인 퇴장 효과를 연출했습니다.
+  - **무한 루프**: 문장이 전부 사라지면 `(wordIndex + 1) % words.length`로 다음 문구로 전환 후 0.35초 뒤 다시 첫 글자부터 타이핑을 시작합니다.
+  - **커서 애니메이션**: CSS `@keyframes blink`를 이용해 실제 타자기 커서(`|`)가 깜빡이는 디테일을 살렸습니다.
 - 📖 이론: [README.md — 보너스 2 타이핑 효과](../README.md#보너스-2-타이핑-효과--완전-구현)
-- 💻 소스: [`app.js` — setupTypingAnimation() (L509-L560)](../js/app.js#L509-L560) | [`style.css` — .typing-cursor (L404-L418)](../css/style.css#L404-L418)
+- 💻 소스: [`app.js` — setupTypingAnimation() (L509-L565)](../js/app.js#L509-L565) | [`style.css` — .typing-cursor (L404-L418)](../css/style.css#L404-L418)
 
 ---
 
