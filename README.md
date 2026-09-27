@@ -586,10 +586,10 @@ const renderMenu = () => {
 
 - **동작 방식**:
   1. Hero 섹션의 주요 소개 문구를 `words` 배열로 관리하며, `setTimeout` 재귀 호출을 통해 부드러운 타이핑 루프 실행
-  2. **타이핑 모드**: 90ms 간격으로 글자를 한 글자씩 추가 (`substring(0, charIndex)`)
-  3. **완성 대기**: 문장이 완성되면 1.8초간 대기하여 사용자가 내용을 편안하게 읽을 수 있도록 처리
-  4. **삭제 모드**: 40ms 간격으로 빠르게 한 글자씩 삭제
-  5. **순환 전환**: 문장이 전부 지워지면 다음 문구 인덱스로 전환(`(wordIndex + 1) % words.length`) 후 0.4초 뒤 다시 타이핑 시작
+  2. **타이핑 모드**: 90ms 간격으로 글자를 한 글자씩 추가 (`substring(0, currentText.length + 1)`)
+  3. **완성 대기**: 문장이 완성되면 1초간 대기하여 사용자가 내용을 편안하게 읽을 수 있도록 처리
+  4. **좌측 스크롤 퇴장(앞글자 삭제) 모드**: 흔한 백스페이스 대신 **맨 앞 글자를 하나씩 잘라냄**(`currentText.substring(1)`, 45ms 간격)으로써 문장 전체가 왼쪽으로 스르륵 빨려 들어가듯 사라지는 독창적인 퇴장 연출 구현
+  5. **순환 전환**: 문장이 전부 사라지면 다음 문구 인덱스로 전환(`(wordIndex + 1) % words.length`) 후 0.35초 뒤 다시 첫 글자부터 타이핑 시작
   6. CSS 키프레임(`blink`) 애니메이션으로 타자기 커서(`|`)가 깜빡이는 디테일 연출
 
   ```javascript
@@ -605,40 +605,44 @@ const renderMenu = () => {
     ];
 
     let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
+    let currentText = '';
+    let isDeletingFromLeft = false;
 
-    const type = () => {
-      const currentWord = words[wordIndex];
+    const runAnimation = () => {
+      const fullWord = words[wordIndex];
 
-      if (isDeleting) {
-        charIndex--;
-        typingElement.textContent = currentWord.substring(0, charIndex);
+      if (!isDeletingFromLeft) {
+        // 오른쪽으로 한 글자씩 타이핑
+        currentText = fullWord.substring(0, currentText.length + 1);
+        typingElement.textContent = currentText;
+
+        if (currentText === fullWord) {
+          isDeletingFromLeft = true;
+          setTimeout(runAnimation, 1000); // 1초 대기
+          return;
+        }
+        setTimeout(runAnimation, 90);
       } else {
-        charIndex++;
-        typingElement.textContent = currentWord.substring(0, charIndex);
+        // 왼쪽 앞글자부터 하나씩 지우며 좌측 스크롤 퇴장
+        currentText = currentText.substring(1);
+        typingElement.textContent = currentText;
+
+        if (currentText.length === 0) {
+          isDeletingFromLeft = false;
+          wordIndex = (wordIndex + 1) % words.length;
+          setTimeout(runAnimation, 350); // 다음 문구 대기
+          return;
+        }
+        setTimeout(runAnimation, 45);
       }
-
-      let delay = isDeleting ? 40 : 90;
-
-      if (!isDeleting && charIndex === currentWord.length) {
-        delay = 1800; // 문장 완성 후 대기
-        isDeleting = true;
-      } else if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
-        delay = 400; // 삭제 완료 후 대기
-      }
-
-      setTimeout(type, delay);
     };
 
     typingElement.textContent = '';
-    setTimeout(type, 500);
+    setTimeout(runAnimation, 500);
   };
   ```
 
-- **GitHub 코드 링크**: [`js/app.js L509~560 (타이핑 애니메이션 로직)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L509) | [`css/style.css L403~418 (커서 깜빡임 애니메이션)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L403)
+- **GitHub 코드 링크**: [`js/app.js L509~565 (좌측 스크롤 퇴장 타이핑 애니메이션)`](https://github.com/nttkor/b1_1/blob/main/js/app.js#L509) | [`css/style.css L404~418 (커서 깜빡임 애니메이션)`](https://github.com/nttkor/b1_1/blob/main/css/style.css#L404)
 
 #### ❌ [보너스 3] 폼 실제 전송 (Formspree / EmailJS) — 미구현
 
