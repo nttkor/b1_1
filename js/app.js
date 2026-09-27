@@ -507,7 +507,8 @@ const setupScrollAnimation = () => {
 
 /* ==========================================================================
    8. 타이핑 애니메이션 루프 (Typing Animation Loop)
-   Hero 섹션의 타이틀 문구를 한 글자씩 타이핑하고 지우며 무한 순환
+   Hero 섹션의 타이틀 문구를 한 글자씩 타이핑하고, 왼쪽(앞글자)부터 지워지며
+   왼쪽으로 빨려 들어가듯 퇴장 후 다음 문구로 무한 순환
    ========================================================================== */
 const setupTypingAnimation = () => {
   const typingElement = elements.typingText;
@@ -521,43 +522,44 @@ const setupTypingAnimation = () => {
     '문제를 끝까지 파고듭니다.'
   ];
 
-  let wordIndex = 0;      // 현재 출력 중인 문구의 인덱스
-  let charIndex = 0;      // 현재 문구에서 출력된 글자 수
-  let isDeleting = false; // 글자를 지우는 중인지 여부
+  let wordIndex = 0;
+  let currentText = '';
+  let isDeletingFromLeft = false;
 
-  const type = () => {
-    const currentWord = words[wordIndex];
+  const runAnimation = () => {
+    const fullWord = words[wordIndex];
 
-    if (isDeleting) {
-      // 삭제 모드: 한 글자씩 줄임
-      charIndex--;
-      typingElement.textContent = currentWord.substring(0, charIndex);
+    if (!isDeletingFromLeft) {
+      // 1) 오른쪽으로 한 글자씩 타이핑
+      currentText = fullWord.substring(0, currentText.length + 1);
+      typingElement.textContent = currentText;
+
+      if (currentText === fullWord) {
+        // 문장 완성 시: 1초간 머물러 읽을 시간을 준 뒤 왼쪽부터 지우기 모드로 전환
+        isDeletingFromLeft = true;
+        setTimeout(runAnimation, 1000);
+        return;
+      }
+      setTimeout(runAnimation, 90); // 한 글자 타이핑 속도 (90ms)
     } else {
-      // 타이핑 모드: 한 글자씩 추가
-      charIndex++;
-      typingElement.textContent = currentWord.substring(0, charIndex);
+      // 2) 왼쪽 맨 앞글자를 하나씩 지워서 전체 문장이 왼쪽으로 슥 스크롤되듯 퇴장
+      currentText = currentText.substring(1);
+      typingElement.textContent = currentText;
+
+      if (currentText.length === 0) {
+        // 문장이 완전히 사라졌을 때: 다음 문구로 전환 후 0.35초 뒤 다시 타이핑 시작
+        isDeletingFromLeft = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        setTimeout(runAnimation, 350);
+        return;
+      }
+      setTimeout(runAnimation, 45); // 왼쪽으로 빨려 들어가는 빠른 속도 (45ms)
     }
-
-    // 기본 속도: 타이핑은 90ms, 지울 때는 40ms로 더 빠르게
-    let delay = isDeleting ? 40 : 90;
-
-    if (!isDeleting && charIndex === currentWord.length) {
-      // 문장이 완전히 완성되었을 때: 1.8초 동안 머물며 읽을 시간 제공 후 삭제 모드로 전환
-      delay = 1800;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      // 문장이 완전히 지워졌을 때: 다음 문구로 넘어가고 0.4초 후 타이핑 시작
-      isDeleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-      delay = 400;
-    }
-
-    setTimeout(type, delay);
   };
 
-  // 초기 렌더링 시 살짝 대기(500ms) 후 첫 글자부터 타이핑 시작
+  // 초기 렌더링 시 살짝 대기(500ms) 후 첫 글자 타이핑 시작
   typingElement.textContent = '';
-  setTimeout(type, 500);
+  setTimeout(runAnimation, 500);
 };
 
 
