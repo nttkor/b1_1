@@ -371,7 +371,8 @@ header.scrolled {
 }
 
 .hero-content {
-  text-align: center;
+  text-align: left;
+  width: 100%;
   max-width: 800px;
   padding: 0 1rem;
 }
@@ -424,7 +425,7 @@ header.scrolled {
 /* CTA 버튼 영역: flex-wrap으로 화면 좁을 때 버튼 자동 줄바꿈 */
 .hero-cta {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
 }
